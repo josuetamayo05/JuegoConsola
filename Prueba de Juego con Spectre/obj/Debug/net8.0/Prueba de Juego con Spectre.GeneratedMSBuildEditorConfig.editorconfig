@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Prueba_de_Juego_con_Spectre
-build_property.ProjectDir = B:\Ciencias de la Computación\Git\Prueba de Juego con Spectre\
+build_property.ProjectDir = B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba de Juego con Spectre\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

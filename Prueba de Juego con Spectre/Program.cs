@@ -1,9 +1,9 @@
-﻿namespace Prueba_de_Juego_con_Spectre;
+﻿using Spectre.Console;
 
-class Program
+public static class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        AnsiConsole.Markup("[underline red]Hello[/] World!");
     }
 }

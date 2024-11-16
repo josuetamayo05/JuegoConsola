@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "B:\\Ciencias de la Computación\\Git\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj": {}
+    "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj": {}
   },
   "projects": {
-    "B:\\Ciencias de la Computación\\Git\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj": {
+    "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "B:\\Ciencias de la Computación\\Git\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj",
+        "projectUniqueName": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj",
         "projectName": "Prueba de Juego con Spectre",
-        "projectPath": "B:\\Ciencias de la Computación\\Git\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj",
+        "projectPath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba de Juego con Spectre\\Prueba de Juego con Spectre.csproj",
         "packagesPath": "C:\\Users\\Dr. Ernesto\\.nuget\\packages\\",
-        "outputPath": "B:\\Ciencias de la Computación\\Git\\Prueba de Juego con Spectre\\obj\\",
+        "outputPath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba de Juego con Spectre\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dr. Ernesto\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -42,6 +42,16 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Spectre.Console": {
+              "target": "Package",
+              "version": "[0.49.1, )"
+            },
+            "Spectre.Console.Cli": {
+              "target": "Package",
+              "version": "[0.49.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
