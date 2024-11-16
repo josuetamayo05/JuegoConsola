@@ -71,6 +71,21 @@ class Program
         Console.ReadKey(); // Esperar a que el jugador presione una tecla
         Console.Clear();
     }
+
+    static string ObtenerEmoji(string tipo)
+    {
+        switch (tipo)
+        {
+            case "#":
+            return "[bold white]█[/]"; // Pared
+            case "X":
+            return "[bold yellow]👾[/]"; // Obstáculo
+            case "$":
+            return "[bold magenta]🎁[/]"; // Ficha de recompensa
+            default:
+            return "[white]  [/]"; // Espacio vacío
+        }
+    }
     
     static void InicializarMapa(int filas, int columnas)
     {
@@ -83,7 +98,7 @@ class Program
                 // Colocar bordes
                 if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1)    
                 {
-                    mapa[i, j] = "[bold red]#[/]"; // Pared adornada en rojo
+                    mapa[i, j] = "#"; // Pared adornada en negro
                 }
                 else
                 {
@@ -97,7 +112,7 @@ class Program
         mapa[jugador2[0], jugador2[1]] = " "; // Jugador 2
         mapa[3, 2] = " ";  // Espacio vacío para que el jugador 2 pueda moverse
         mapa[1, 2] = " ";  // Espacio vacío para que el jugador 1 pueda moverse
-        mapa[10, 10] = "M"; // Meta
+        mapa[10, 10] = "🎉"; // Meta
 
         CrearCamino(jugador1[0], jugador1[1], 10, 10);
 
@@ -114,14 +129,14 @@ class Program
 
             mapa[fila, columna] = "$"; // Ficha de recompensa
         }        
-}
+    }
 
     static void CrearCamino(int inicioFila, int inicioColumna, int metaFila, int metaColumna)
     {
         int fila = inicioFila;
         int columna = inicioColumna;
 
-          // Crear un camino simple hacia la meta
+        // Crear un camino simple hacia la meta
         while (fila != metaFila || columna != metaColumna)
         {
             mapa[fila, columna] = " "; // Asegurarse que el camino esté libre
@@ -165,11 +180,11 @@ class Program
             for (int j = 0; j < columnas; j++)
             {
                 if (i == jugador1[0] && j == jugador1[1])
-                    AnsiConsole.Markup("[green]1 [/]"); // Representa al jugador 1
+                    AnsiConsole.Markup("[green]😁 [/]"); // Representa al jugador 1
                 else if (i == jugador2[0] && j == jugador2[1])
-                    AnsiConsole.Markup("[blue]2 [/]"); // Representa al jugador 2
+                    AnsiConsole.Markup("[blue]😜 [/]"); // Representa al jugador 2
                 else
-                    AnsiConsole.Markup($"{mapa[i, j]} "); // Imprimir cada carácter sin salto de línea
+                    AnsiConsole.Markup(ObtenerEmoji(mapa[i, j])); // Obtener el emoji correspondiente
             }
             Console.WriteLine(); // Salto de línea al final de cada fila
         }
@@ -314,6 +329,5 @@ class Program
         }
 
         return false; // El jugador no ha ganado
-    }
-    
+    }   
 }
