@@ -22,7 +22,7 @@ class Program
 
         MostrarMensajesBienvenida(); // Llamar al método de bienvenida
         MostrarInstrucciones();  // Llamar al método de instrucciones
-        InicializarMapa(12, 12);  // Inicializar el mapa con 12 filas y 12 columnas
+        InicializarMapa(15, 15);  // Inicializar el mapa con 12 filas y 12 columnas
         ImprimirMapa();
 
         while (true)
@@ -56,34 +56,47 @@ class Program
 
     static void MostrarInstrucciones()
     {
-        AnsiConsole.MarkupLine($"Bienvenidos [bold yellow]({nombreJugador1})[/] y [bold yellow]({nombreJugador2})[/] a este emocionante juego del laberinto!");
-        AnsiConsole.MarkupLine("Instrucciones del juego: 📝");
-        AnsiConsole.MarkupLine("1. Usa las teclas W, A, S, D para mover a tu jugador: 🏃‍♂️");
-        AnsiConsole.MarkupLine("   - W: Arriba ⬆");
-        AnsiConsole.MarkupLine("   - A: Izquierda ⬅");
-        AnsiConsole.MarkupLine("   - S: Abajo ⬇");
-        AnsiConsole.MarkupLine("   - D: Derecha ➡");
-        AnsiConsole.MarkupLine("2. 🚧 Evita los obstáculos marcados con 'X'.");
-        AnsiConsole.MarkupLine("3. 🎁 Recoge las fichas de recompensa marcadas con '$' para ganar puntos.");
-        AnsiConsole.MarkupLine("4. 😋 Por cada ficha recompensa que cojas puedes hacer un movimiento extra.");
-        AnsiConsole.MarkupLine("5. 🏁 Llega a la meta marcada con 'M' para ganar el juego.");
-        AnsiConsole.MarkupLine("¡Buena Suerte! Presiona cualquier tecla para continuar... ⌨");
+        // Crear un panel para mostrar las instrucciones
+        var panel = new Panel(new Markup(
+            "[bold yellow]Instrucciones del Juego:[/]\n" +
+            "1. Usa las teclas W, A, S, D para mover a tu jugador: 🏃‍♂️\n" +
+            "   - W: Arriba ⬆\n" +
+            "   - A: Izquierda ⬅\n" +
+            "   - S: Abajo ⬇\n" +
+            "   - D: Derecha ➡\n" +
+            "2. 🚧 Evita los obstáculos marcados con '⛔'.\n" +
+            "3. 🎁 Recoge las fichas de recompensa marcadas con '💰' para ganar puntos.\n" +
+            "4. 😋 Por cada ficha recompensa que cojas puedes hacer un movimiento extra.\n" +
+            "5. 🏁 Llega a la meta marcada con '🚩' para ganar el juego.\n" +
+            "¡Buena Suerte! Presiona cualquier tecla para continuar... ⌨"
+        ));
+
+        // Configurar el panel
+        panel.Border = BoxBorder.Rounded; // Bordes redondeados
+        panel.Header = new PanelHeader("[bold cyan]Instrucciones[/]"); // Encabezado del panel
+
+        // Renderizar el panel
+        AnsiConsole.Render(panel);
+
         Console.ReadKey(); // Esperar a que el jugador presione una tecla
-        Console.Clear();
+        Console.Clear(); // Limpiar la consola
     }
 
     static string ObtenerEmoji(string tipo)
     {
         switch (tipo)
         {
+            case "M":
+            return "[bold white]🎉[/]"; // Pared
             case "#":
-            return "[bold white]█[/]"; // Pared
+            return "[bold white]🏠[/]"; // Pared
             case "X":
             return "[bold yellow]👾[/]"; // Obstáculo
             case "$":
             return "[bold magenta]🎁[/]"; // Ficha de recompensa
             default:
             return "[white]  [/]"; // Espacio vacío
+
         }
     }
     
@@ -112,7 +125,7 @@ class Program
         mapa[jugador2[0], jugador2[1]] = " "; // Jugador 2
         mapa[3, 2] = " ";  // Espacio vacío para que el jugador 2 pueda moverse
         mapa[1, 2] = " ";  // Espacio vacío para que el jugador 1 pueda moverse
-        mapa[10, 10] = "🎉"; // Meta
+        mapa[13, 13] = "M"; // Meta
 
         CrearCamino(jugador1[0], jugador1[1], 10, 10);
 
