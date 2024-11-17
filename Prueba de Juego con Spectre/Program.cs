@@ -93,24 +93,6 @@ class Program
         Console.ReadKey(); // Esperar a que el jugador presione una tecla
         Console.Clear(); // Limpiar la consola
     }
-
-    /*static string ObtenerEmoji(string tipo)
-    {
-        switch (tipo)
-        {
-            case "M":
-            return "[bold white]🎉[/]"; // Pared
-            case "#":
-            return "[bold white]🏠[/]"; // Pared
-            case "X":
-            return "[bold yellow]👾[/]"; // Obstáculo
-            case "$":
-            return "[bold magenta]🎁[/]"; // Ficha de recompensa
-            default:
-            return "[white]  [/]"; // Espacio vacío
-
-        }
-    }*/
     
     static void InicializarMapa(int filas, int columnas)
     {
@@ -287,7 +269,7 @@ class Program
                     AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual}, has caído en una trampa, vuelves a tu posición inicial, pulse una tecla para continuar![/]");
                     Console.ReadLine();
                     ImprimirMapa(); // Imprimir el mapa después de restaurar la posición
-                    return; // Salir del método para evitar más movimientos
+                    break; // Salir del método para evitar más movimientos
                 }
 
                 // Verificar si puede moverse a un nuevo espacio
@@ -296,50 +278,48 @@ class Program
                     // Actualizar posición del jugador
                     posicion[0] = nuevaFila;
                     posicion[1] = nuevaColumna;
-
+                
                     // Comprobar si ha recogido una recompensa
+                    Console.WriteLine("Evaluando posicion");
                     if (mapa[nuevaFila, nuevaColumna] == "$ ")
                     {
-                        mapa[nuevaFila, nuevaColumna] = "  "; // Limpiar la posición
+                        mapa[nuevaFila, nuevaColumna] = " "; // limpiar la posición
+
                         if (jugador == 1)
                         {                            
-                            puntosJugador1++;
-                            AnsiConsole.MarkupLine($"¡[bold green]{nombreJugador1}[/] ha recogido una ficha de recompensa! Puntos: [bold green]{puntosJugador1}[/]");                            
+                            puntosJugador1++;                        
                         }
                         else
                         {
-                            puntosJugador2++;
-                            AnsiConsole.MarkupLine($"¡[bold blue]{nombreJugador2}[/] ha recogido una ficha de recompensa! Puntos: [bold blue]{puntosJugador2}[/]");                        
-                        }                    
-                        movimientoExtra = true; // Permitir un movimiento extra
-                    }
-                    // Imprimir mapa después de un movimiento válido
-                    ImprimirMapa();
-
-                    if (movimientoExtra)
-                    {
-                        AnsiConsole.MarkupLine($"{nombreJugadorActual} has recogido una recompensa.");
+                            puntosJugador2++;                            
+                        }
                         movimientoExtra = true;
-                        return; // Salir del bucle para permitir un solo movimiento extra
+                        
+                        
                     }
+                    else
+                    {
+                        movimientoExtra = false;
+                    }
+
+                    ImprimirMapa();
                     
-                }
-                else
+                }                                                       
+                else 
                 {
                     AnsiConsole.MarkupLine("[bold red]¡No puedes moverte allí! Hay un obstáculo.[/]");
-                    break; // Salir del bucle si hay un obstáculo
+                    break; // Salir del bucle si se sale de los límites
                 }
             }
             else
             {
                 AnsiConsole.MarkupLine("[bold red]¡Te has salido de los límites![/]");
                 break; // Salir del bucle si se sale de los límites
-            }
+            }    
+        
+        } while (movimientoExtra); // Continuar si se ha recogido una ficha y no se ha caído en una trampa 
+    }
             
-
-        } while (movimientoExtra); // Continuar si se ha recogido una ficha y no se ha caído en una trampa
-    }   
-    
     static bool ComprobarVictoria(int[] jugador)
     {
         // Definir la posición de la meta
