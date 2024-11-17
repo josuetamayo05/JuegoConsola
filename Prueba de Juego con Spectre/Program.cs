@@ -196,7 +196,8 @@ class Program
             Console.WriteLine(); // Salto de línea al final de cada fila
         }
 
-        AnsiConsole.MarkupLine($"[bold yellow]Puntos {nombreJugador1}:[/][green]{puntosJugador1}[/] | [bold yellow]Puntos {nombreJugador2}:[/][blue]{puntosJugador2}[/]");
+        AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {nombreJugador1} : [/][red]{puntosJugador1}[/] | [bold blue]🎲 Puntos {nombreJugador2} : [/][red]{puntosJugador2}[/]");
+        Console.WriteLine();
     }
 
     static void MostrarResultados()
@@ -220,16 +221,34 @@ class Program
         int columnas = mapa.GetLength(1);
         bool movimientoExtra = false; // Controlar si se permite un movimiento extra
         string nombreJugadorActual = jugador == 1 ? nombreJugador1 : nombreJugador2;
+        string mensajeRecompensa = "";
+        string mensajeTrampa = "";
             
         do
         {
-            AnsiConsole.MarkupLine($"Turno de [bold yellow]{nombreJugadorActual}[/] (Jugador {jugador}), ingresa tu movimiento (W/A/S/D) o [bold red]Q[/] para salir: ");
+            // Mostrar el mensaje de recompensa si existe
+            if (!string.IsNullOrEmpty(mensajeRecompensa))
+            {
+                Console.WriteLine(mensajeRecompensa);
+                mensajeRecompensa = ""; // Limpiar el mensaje de recompensa
+            }
+            
+            if (!string.IsNullOrEmpty(mensajeTrampa))
+            {
+                Console.WriteLine(mensajeTrampa);
+                mensajeTrampa = ""; // Limpiar el mensaje de recompensa
+                ImprimirMapa(); // Imprimir el mapa después de mostrar el mensaje de trampa
+                break; // Salir del bucle para no seguir pidiendo movimiento
+            }    
+
+
+            AnsiConsole.MarkupLine($"Turno de [bold blue]{nombreJugadorActual}[/] (Jugador {jugador}), ingresa tu movimiento (W/A/S/D) o [bold red]Q[/] para salir: ");
             char movimiento = Console.ReadKey().KeyChar;
             Console.WriteLine(); // Salto de línea después de la entrada
 
             if (movimiento == 'q' || movimiento == 'Q') // Condición de salida
             {
-                AnsiConsole.MarkupLine("[bold green]¡Gracias por jugar![/]");
+                AnsiConsole.MarkupLine("[bold white]¡Gracias por jugar![/]");
                 Console.ReadLine();
                 Environment.Exit(0); // Salir del juego
             }
@@ -266,9 +285,8 @@ class Program
                         jugador2[0] = posicionInicialJugador2[0]; // Restaurar posición inicial del jugador 2
                         jugador2[1] = posicionInicialJugador2[1];
                     }
-                    AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual}, has caído en una trampa, vuelves a tu posición inicial, pulse una tecla para continuar![/]");
-                    Console.ReadLine();
-                    ImprimirMapa(); // Imprimir el mapa después de restaurar la posición
+                    mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
+                    // No imprimir el mapa aquí para que el mensaje se vea claramente
                     break; // Salir del método para evitar más movimientos
                 }
 
@@ -287,15 +305,15 @@ class Program
 
                         if (jugador == 1)
                         {                            
-                            puntosJugador1++;                        
+                            puntosJugador1++;     
+                            mensajeRecompensa = $"¡{nombreJugador1} has recogido una ficha de recompensa! Puedes realizar otro movimiento extra. Puntos: {puntosJugador1}";                  
                         }
                         else
                         {
-                            puntosJugador2++;                            
+                            puntosJugador2++;            
+                            mensajeRecompensa = $"¡{nombreJugador2} has recogido una ficha de recompensa! Puedes realizar otro movimiento extra. Puntos: {puntosJugador2}";                
                         }
                         movimientoExtra = true;
-                        
-                        
                     }
                     else
                     {
@@ -330,7 +348,7 @@ class Program
         if (jugador[0] == metaFila && jugador[1] == metaColumna)
         {
             string nombreJugadorActual = jugador == jugador1 ? nombreJugador1 : nombreJugador2;
-            AnsiConsole.MarkupLine($"[bold green]{nombreJugadorActual} ha alcanzado la meta y ha ganado el juego! 🎉[/]");
+            AnsiConsole.MarkupLine($"[bold blue]{nombreJugadorActual} ha alcanzado la meta y ha ganado el juego! 🎉[/]");
             return true; // El jugador ha ganado
         }
 
