@@ -121,21 +121,9 @@ class Program
         //mapa[1, 2] = "   ";  // Espacio vacío para que el jugador 1 pueda moverse
         mapa[12, 12] = "🏠 "; // Meta
 
+
         CrearCamino(jugador1[0], jugador1[1], 10, 10);
-
-        GenerarObstaculos(20); // 20% probabilidad de obstáculos (porciento)
-
-        for (int i = 0; i < 5; i++) // Colocar 5 fichas recompensa
-        {
-            int fila, columna;
-            do
-            {
-                fila = random.Next(1, filas - 1);
-                columna = random.Next(1, columnas - 1);
-            } while (mapa[fila, columna] != "   " || (fila == jugador1[0] && columna == jugador1[1]) || (fila == jugador2[0] && columna == jugador2[1])); // Asegurarse de que el espacio esté libre y no sea la posición de los jugadores
-
-            mapa[fila, columna] = "💰 "; // Ficha de recompensa
-        }        
+        ColocarFichasYObstaculos(5, 30, 6);       
     }
 
     static void CrearCamino(int inicioFila, int inicioColumna, int metaFila, int metaColumna)
@@ -156,22 +144,52 @@ class Program
         }    
     }
 
-    static void GenerarObstaculos(int porcentaje)
+    static void ColocarFichasYObstaculos(int cantidadFichas, int porcentajeObstaculos, int cantidadArboles)
     {
         int filas = mapa.GetLength(0);
         int columnas = mapa.GetLength(1);
         int totalCeldas = (filas - 2) * (columnas - 2); // Total de celdas interiores
+
         // Calcular el número de obstáculos basados en el porcentaje
-        int numeroObstaculos = totalCeldas * porcentaje / 100;
+        int numeroObstaculos = totalCeldas * porcentajeObstaculos / 100;
+
+        // Colocar fichas de recompensa
+        for (int i = 0; i < cantidadFichas; i++)
+        {
+            int fila, columna;
+            do
+            {
+                fila = random.Next(1, filas - 1);
+                columna = random.Next(1, columnas - 1);
+            } while (mapa[fila, columna] != "   "); // Asegurarse que el espacio esté vacío
+
+            mapa[fila, columna] = "💰 "; // Colocar ficha de recompensa
+        }
+
+        // Colocar árboles
+        for (int i = 0; i < cantidadArboles; i++)
+        {
+            int fila, columna;
+            do
+            {
+                fila = random.Next(1, filas - 1);
+                columna = random.Next(1, columnas - 1);
+            } while (mapa[fila, columna] != "   "); // Asegurarse que el espacio esté vacío
+
+            mapa[fila, columna] = "🌳 "; // Colocar árbol
+        }
+
+        // Colocar obstáculos
         for (int i = 0; i < numeroObstaculos; i++)
         {
             int fila, columna;
             do
             {
-                fila = random.Next(1, filas - 1); // Generar fila aleatoria
-            columna = random.Next(1, columnas - 1); // Generar columna aleatoria
-            } while (mapa[fila, columna] != "   " || (fila == jugador1[0] && columna == jugador1[1]) || (fila == jugador2[0] && columna == jugador2[1])); // Asegurarse que no se sobrescriba una pared o las posiciones de los jugadores
-            mapa[fila, columna] = "🌳 "; // Colocar obstáculo
+                fila = random.Next(1, filas - 1);
+                columna = random.Next(1, columnas - 1);
+            } while (mapa[fila, columna] != "   "); // Asegurarse que el espacio esté vacío
+
+            mapa[fila, columna] = "⬜ "; // Colocar obstáculo
         }
     }
 
@@ -272,7 +290,7 @@ class Program
             if (nuevaFila > 0 && nuevaColumna > 0 && nuevaFila < filas - 1 && nuevaColumna < columnas - 1)
             {
                 // Comprobar si ha caído en una trampa
-                if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
+                if (mapa[nuevaFila, nuevaColumna] == "⬜ ")
                 {                    
                     // Restaurar la posición inicial
                     if (jugador == 1)
@@ -291,7 +309,7 @@ class Program
                 }
 
                 // Verificar si puede moverse a un nuevo espacio
-                if (mapa[nuevaFila, nuevaColumna] != "🌳 ") // No puede moverse a un obstáculo
+                if (mapa[nuevaFila, nuevaColumna] != "⬜ ") // No puede moverse a un obstáculo
                 {
                     // Actualizar posición del jugador
                     posicion[0] = nuevaFila;
