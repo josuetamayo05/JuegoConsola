@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Prueba de Juego con Spectre")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("ComprEmojis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+61976228ff528f3338ccd1abd284a4c3de1f1cdb")]
-[assembly: System.Reflection.AssemblyProductAttribute("Prueba de Juego con Spectre")]
-[assembly: System.Reflection.AssemblyTitleAttribute("Prueba de Juego con Spectre")]
+[assembly: System.Reflection.AssemblyProductAttribute("ComprEmojis")]
+[assembly: System.Reflection.AssemblyTitleAttribute("ComprEmojis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Generado por la clase WriteCodeFragment de MSBuild.

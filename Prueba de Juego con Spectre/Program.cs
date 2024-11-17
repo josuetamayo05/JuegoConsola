@@ -105,21 +105,21 @@ class Program
                 // Colocar bordes
                 if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1)    
                 {
-                    mapa[i, j] = "# "; // Pared adornada en negro
+                    mapa[i, j] = "⬜ "; // Pared adornada en negro
                 }
                 else
                 {
-                    mapa[i, j] = "  "; // Espacio vacío
+                    mapa[i, j] = "   "; // Espacio vacío
                 }
             }
         }
         
         // Asegurarse de que los jugadores tengan un camino inicial libre
-        mapa[jugador1[0], jugador1[1]] = "  "; // Asegurarse que el espacio de inicio del Jugador 1 esté vacío
-        mapa[jugador2[0], jugador2[1]] = "  "; // Jugador 2
-        mapa[3, 2] = "  ";  // Espacio vacío para que el jugador 2 pueda moverse
-        mapa[1, 2] = "  ";  // Espacio vacío para que el jugador 1 pueda moverse
-        mapa[12, 12] = "& "; // Meta
+        mapa[jugador1[0], jugador1[1]] = "   "; // Asegurarse que el espacio de inicio del Jugador 1 esté vacío
+        mapa[jugador2[0], jugador2[1]] = "   "; // Jugador 2
+        //mapa[3, 2] = "   ";  // Espacio vacío para que el jugador 2 pueda moverse
+        //mapa[1, 2] = "   ";  // Espacio vacío para que el jugador 1 pueda moverse
+        mapa[12, 12] = "🏠 "; // Meta
 
         CrearCamino(jugador1[0], jugador1[1], 10, 10);
 
@@ -132,9 +132,9 @@ class Program
             {
                 fila = random.Next(1, filas - 1);
                 columna = random.Next(1, columnas - 1);
-            } while (mapa[fila, columna] != "  " || (fila == jugador1[0] && columna == jugador1[1]) || (fila == jugador2[0] && columna == jugador2[1])); // Asegurarse de que el espacio esté libre y no sea la posición de los jugadores
+            } while (mapa[fila, columna] != "   " || (fila == jugador1[0] && columna == jugador1[1]) || (fila == jugador2[0] && columna == jugador2[1])); // Asegurarse de que el espacio esté libre y no sea la posición de los jugadores
 
-            mapa[fila, columna] = "$ "; // Ficha de recompensa
+            mapa[fila, columna] = "💰 "; // Ficha de recompensa
         }        
     }
 
@@ -146,7 +146,7 @@ class Program
         // Crear un camino simple hacia la meta
         while (fila != metaFila || columna != metaColumna)
         {
-            mapa[fila, columna] = "  "; // Asegurarse que el camino esté libre
+            mapa[fila, columna] = "   "; // Asegurarse que el camino esté libre
 
             if (fila < metaFila) fila++; // Mover hacia abajo
             else if (fila > metaFila) fila--; // Mover hacia arriba
@@ -170,8 +170,8 @@ class Program
             {
                 fila = random.Next(1, filas - 1); // Generar fila aleatoria
             columna = random.Next(1, columnas - 1); // Generar columna aleatoria
-            } while (mapa[fila, columna] != "  " || (fila == jugador1[0] && columna == jugador1[1]) || (fila == jugador2[0] && columna == jugador2[1])); // Asegurarse que no se sobrescriba una pared o las posiciones de los jugadores
-            mapa[fila, columna] = "X "; // Colocar obstáculo
+            } while (mapa[fila, columna] != "   " || (fila == jugador1[0] && columna == jugador1[1]) || (fila == jugador2[0] && columna == jugador2[1])); // Asegurarse que no se sobrescriba una pared o las posiciones de los jugadores
+            mapa[fila, columna] = "🌳 "; // Colocar obstáculo
         }
     }
 
@@ -187,11 +187,11 @@ class Program
             for (int j = 0; j < columnas; j++)
             {
                 if (i == jugador1[0] && j == jugador1[1])
-                    AnsiConsole.Markup("[green]1 [/]"); // Representa al jugador 1
+                    Console.Write("😠  "); // Representa al jugador 1                   
                 else if (i == jugador2[0] && j == jugador2[1])
-                    AnsiConsole.Markup("[blue]2 [/]"); // Representa al jugador 2
+                    Console.Write("😎  "); // Representa al jugador 2
                 else
-                    AnsiConsole.Markup(mapa[i, j]); // Obtener el emoji correspondiente
+                Console.Write(mapa[i, j] + "   "); // Imprimir cada carácter sin salto de línea
             }
             Console.WriteLine(); // Salto de línea al final de cada fila
         }
@@ -272,7 +272,7 @@ class Program
             if (nuevaFila > 0 && nuevaColumna > 0 && nuevaFila < filas - 1 && nuevaColumna < columnas - 1)
             {
                 // Comprobar si ha caído en una trampa
-                if (mapa[nuevaFila, nuevaColumna] == "X ")
+                if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
                 {                    
                     // Restaurar la posición inicial
                     if (jugador == 1)
@@ -291,7 +291,7 @@ class Program
                 }
 
                 // Verificar si puede moverse a un nuevo espacio
-                if (mapa[nuevaFila, nuevaColumna] != "X ") // No puede moverse a un obstáculo
+                if (mapa[nuevaFila, nuevaColumna] != "🌳 ") // No puede moverse a un obstáculo
                 {
                     // Actualizar posición del jugador
                     posicion[0] = nuevaFila;
@@ -299,9 +299,9 @@ class Program
                 
                     // Comprobar si ha recogido una recompensa
                     Console.WriteLine("Evaluando posicion");
-                    if (mapa[nuevaFila, nuevaColumna] == "$ ")
+                    if (mapa[nuevaFila, nuevaColumna] == "💰 ")
                     {
-                        mapa[nuevaFila, nuevaColumna] = " "; // limpiar la posición
+                        mapa[nuevaFila, nuevaColumna] = "   "; // limpiar la posición
 
                         if (jugador == 1)
                         {                            
