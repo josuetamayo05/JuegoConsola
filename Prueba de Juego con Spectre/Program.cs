@@ -187,11 +187,11 @@ class Program
             for (int j = 0; j < columnas; j++)
             {
                 if (i == jugador1[0] && j == jugador1[1])
-                    Console.Write("😠  "); // Representa al jugador 1                   
+                    Console.Write("😠 "); // Representa al jugador 1                   
                 else if (i == jugador2[0] && j == jugador2[1])
-                    Console.Write("😎  "); // Representa al jugador 2
+                    Console.Write("😎 "); // Representa al jugador 2
                 else
-                Console.Write(mapa[i, j] + "   "); // Imprimir cada carácter sin salto de línea
+                Console.Write(mapa[i, j] + ""); // Imprimir cada carácter sin salto de línea
             }
             Console.WriteLine(); // Salto de línea al final de cada fila
         }
