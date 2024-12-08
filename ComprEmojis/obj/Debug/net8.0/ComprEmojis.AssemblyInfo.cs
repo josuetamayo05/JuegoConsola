@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ComprEmojis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+61976228ff528f3338ccd1abd284a4c3de1f1cdb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9fd6ad26f05a28e8bc2a082b195f3a9eb9e2b82c")]
 [assembly: System.Reflection.AssemblyProductAttribute("ComprEmojis")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ComprEmojis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

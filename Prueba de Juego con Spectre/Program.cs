@@ -1,6 +1,9 @@
-﻿namespace PruebaJuegoSpectre;
+﻿using Spectre.Console;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-using Spectre.Console;
+namespace PruebaJuegoSpectre;
 
 class Program
 {
@@ -10,10 +13,14 @@ class Program
     static string nombreJugador1; 
     static string nombreJugador2;
     static int[] posicionInicialJugador1 = { 1, 1 }; // Posición inicial del jugador 1
-    static int[] posicionInicialJugador2 = { 3, 1 }; // Posición inicial del jugador 2
+    static int[] posicionInicialJugador2 = { 1, 13 }; // Posición inicial del jugador 2
     static int[] jugador1 = (int[])posicionInicialJugador1.Clone(); // Posición actual del jugador 1
     static int[] jugador2 = (int[])posicionInicialJugador2.Clone(); // Posición actual del jugador 2
     static Random random = new Random(); 
+    static int metaFila = 13;
+    static int metaColumna = 7;
+    static int[] puerta1 = { 3, 5 };
+    static int[] puerta2 = { 10, 5 };
 
 
     static void Main(string[] args) // Iniciar el laberinto
@@ -23,6 +30,13 @@ class Program
         MostrarMensajesBienvenida(); // Llamar al método de bienvenida
         MostrarInstrucciones();  // Llamar al método de instrucciones
         InicializarMapa(15, 15);  // Inicializar el mapa con 12 filas y 12 columnas
+        ImprimirMapa();
+        // Verificar si hay un camino a la meta
+        if (!HayCamino(posicionInicialJugador1[0], posicionInicialJugador1[1], metaFila, metaColumna) || !HayCamino(posicionInicialJugador2[0], posicionInicialJugador2[1], metaFila, metaColumna))
+        {
+            Console.WriteLine("No hay un camino accesible a la meta. Regenerando el laberinto...");
+            InicializarMapa(15, 15); // Regenerar el laberinto
+        }
         ImprimirMapa();
 
         while (true)
@@ -98,60 +112,121 @@ class Program
     {
         mapa = new string[filas, columnas];
 
+        // Inicializar el laberinto con paredes
         for (int i = 0; i < filas; i++)
         {
             for (int j = 0; j < columnas; j++)
             {
-                // Colocar bordes
-                if (i == 0 || i == filas - 1 || j == 0 || j == columnas - 1)    
+                mapa[i, j] = "⬜ "; // Pared
+            }
+        }
+
+        
+        GenerarLaberinto(1, 1);
+        
+        mapa[posicionInicialJugador1[0], posicionInicialJugador1[1]] = "   "; // Jugador 1
+        mapa[posicionInicialJugador2[0], posicionInicialJugador2[1]] = "   "; // Jugador 2
+        mapa[metaFila, metaColumna] = "🏠 "; // Meta
+        mapa[puerta1[0], puerta1[1]] = "🚪 "; // Puerta 1
+        mapa[puerta2[0], puerta2[1]] = "🚪 "; // Puerta 2
+
+        
+
+        //ColocarFichasYObstaculos(5, 6);       
+    }
+
+    static void GenerarLaberinto(int fila, int columna)
+    {
+        // Marcar la celda actual como parte del camino
+        mapa[fila, columna] = "   ";
+
+        // Definir los movimientos posibles (arriba, abajo, izquierda, derecha)
+        var movimientos = new (int, int)[]
+        {
+            (-2, 0), // Arriba
+            (2, 0),  // Abajo
+            (0, -2), // Izquierda
+            (0, 2)   // Derecha
+        };
+
+        // Mezclar los movimientos para aleatoriedad
+        movimientos = movimientos.OrderBy(x => random.Next()).ToArray();
+
+        foreach (var (dRow, dCol) in movimientos)
+        {
+            int nuevaFila = fila + dRow;
+            int nuevaColumna = columna + dCol;
+
+            // Verificar si la nueva posición está dentro de los límites
+            if (nuevaFila > 0 && nuevaFila < mapa.GetLength(0) && nuevaColumna > 0 && nuevaColumna < mapa.GetLength(1) && mapa[nuevaFila, nuevaColumna] == "⬜ ")
+            {
+                // Eliminar la pared entre la celda actual y la nueva celda
+                mapa[fila + dRow / 2, columna + dCol / 2] = "   "; // Espacio vacío
+                GenerarLaberinto(nuevaFila, nuevaColumna); // Recursión
+            }
+        }
+    }
+
+    
+    static bool HayCamino(int startRow, int startCol, int metaRow, int metaCol)
+    {
+        // Crear una cola para la búsqueda
+        Queue<(int, int)> queue = new Queue<(int, int)>();
+        bool[,] visitado = new bool[mapa.GetLength(0), mapa.GetLength(1)];
+
+        // Agregar la posición inicial a la cola y marcarla como visitada
+        queue.Enqueue((startRow, startCol));
+        visitado[startRow, startCol] = true;
+
+        // Definir los movimientos posibles (arriba, abajo, izquierda, derecha)
+        int[,] movimientos = new int[,]
+        {
+            { -2, 0 }, // Arriba
+            { 2, 0 },  // Abajo
+            { 0, -2 }, // Izquierda
+            { 0, 2 }   // Derecha
+        };
+
+        while (queue.Count > 0)
+        {
+            var (filaActual, colActual) = queue.Dequeue();
+
+            // Comprobar si hemos llegado a la meta
+            if (filaActual == metaRow && colActual == metaCol)
+            {
+                return true; // Hay un camino a la meta
+            }
+
+            // Explorar las celdas adyacentes
+            for (int i = 0; i < movimientos.GetLength(0); i++)
+            {
+                int nuevaFila = filaActual + movimientos[i, 0];
+                int nuevaColumna = colActual + movimientos[i, 1];
+
+                // Verificar si la nueva posición está dentro de los límites y es un espacio vacío
+                if (nuevaFila > 0 && nuevaFila < mapa.GetLength(0) - 1 &&
+                    nuevaColumna > 0 && nuevaColumna < mapa.GetLength(1) - 1 &&
+                    mapa[nuevaFila, nuevaColumna] == "   " && !visitado[nuevaFila, nuevaColumna])
                 {
-                    mapa[i, j] = "⬜ "; // Pared adornada en negro
-                }
-                else
-                {
-                    mapa[i, j] = "   "; // Espacio vacío
+                    // Marcar la nueva posición como visitada y agregarla a la cola
+                    visitado[nuevaFila, nuevaColumna] = true;
+                    queue.Enqueue((nuevaFila, nuevaColumna));
                 }
             }
         }
-        
-        // Asegurarse de que los jugadores tengan un camino inicial libre
-        mapa[jugador1[0], jugador1[1]] = "   "; // Asegurarse que el espacio de inicio del Jugador 1 esté vacío
-        mapa[jugador2[0], jugador2[1]] = "   "; // Jugador 2
-        //mapa[3, 2] = "   ";  // Espacio vacío para que el jugador 2 pueda moverse
-        //mapa[1, 2] = "   ";  // Espacio vacío para que el jugador 1 pueda moverse
-        mapa[12, 12] = "🏠 "; // Meta
 
-
-        CrearCamino(jugador1[0], jugador1[1], 10, 10);
-        ColocarFichasYObstaculos(5, 30, 6);       
+        return false; // No hay camino a la meta
     }
 
-    static void CrearCamino(int inicioFila, int inicioColumna, int metaFila, int metaColumna)
-    {
-        int fila = inicioFila;
-        int columna = inicioColumna;
 
-        // Crear un camino simple hacia la meta
-        while (fila != metaFila || columna != metaColumna)
-        {
-            mapa[fila, columna] = "   "; // Asegurarse que el camino esté libre
-
-            if (fila < metaFila) fila++; // Mover hacia abajo
-            else if (fila > metaFila) fila--; // Mover hacia arriba
-
-            if (columna < metaColumna) columna++; // Mover hacia la derecha
-            else if (columna > metaColumna) columna--; // Mover hacia la izquierda
-        }    
-    }
-
-    static void ColocarFichasYObstaculos(int cantidadFichas, int porcentajeObstaculos, int cantidadArboles)
+    static void ColocarFichasYObstaculos(int cantidadFichas, int cantidadArboles)
     {
         int filas = mapa.GetLength(0);
         int columnas = mapa.GetLength(1);
         int totalCeldas = (filas - 2) * (columnas - 2); // Total de celdas interiores
 
         // Calcular el número de obstáculos basados en el porcentaje
-        int numeroObstaculos = totalCeldas * porcentajeObstaculos / 100;
+        //int numeroObstaculos = totalCeldas * porcentajeObstaculos / 100;
 
         // Colocar fichas de recompensa
         for (int i = 0; i < cantidadFichas; i++)
@@ -174,22 +249,9 @@ class Program
             {
                 fila = random.Next(1, filas - 1);
                 columna = random.Next(1, columnas - 1);
-            } while (mapa[fila, columna] != "   "); // Asegurarse que el espacio esté vacío
+            } while (mapa[fila, columna] != "   " || (fila == puerta1[0] && columna == puerta1[1] || fila == puerta2[0] && columna == puerta2[1])); // Asegurarse que el espacio esté vacío
 
             mapa[fila, columna] = "🌳 "; // Colocar árbol
-        }
-
-        // Colocar obstáculos
-        for (int i = 0; i < numeroObstaculos; i++)
-        {
-            int fila, columna;
-            do
-            {
-                fila = random.Next(1, filas - 1);
-                columna = random.Next(1, columnas - 1);
-            } while (mapa[fila, columna] != "   "); // Asegurarse que el espacio esté vacío
-
-            mapa[fila, columna] = "⬜ "; // Colocar obstáculo
         }
     }
 
@@ -204,7 +266,7 @@ class Program
         {
             for (int j = 0; j < columnas; j++)
             {
-                if (i == jugador1[0] && j == jugador1[1])
+               if (i == jugador1[0] && j == jugador1[1])
                     Console.Write("😠 "); // Representa al jugador 1                   
                 else if (i == jugador2[0] && j == jugador2[1])
                     Console.Write("😎 "); // Representa al jugador 2
@@ -290,7 +352,7 @@ class Program
             if (nuevaFila > 0 && nuevaColumna > 0 && nuevaFila < filas - 1 && nuevaColumna < columnas - 1)
             {
                 // Comprobar si ha caído en una trampa
-                if (mapa[nuevaFila, nuevaColumna] == "⬜ ")
+                if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
                 {                    
                     // Restaurar la posición inicial
                     if (jugador == 1)
@@ -309,12 +371,42 @@ class Program
                 }
 
                 // Verificar si puede moverse a un nuevo espacio
-                if (mapa[nuevaFila, nuevaColumna] != "⬜ ") // No puede moverse a un obstáculo
-                {
-                    // Actualizar posición del jugador
+                if (mapa[nuevaFila, nuevaColumna] != "⬜ ") // No puede moverse a una pared
+                {    // Actualizar posición del jugador
                     posicion[0] = nuevaFila;
                     posicion[1] = nuevaColumna;
-                
+
+                    if (nuevaFila == puerta1[0] && nuevaColumna == puerta1[1])
+                    {
+                        if (jugador == 1)
+                        {    
+                            jugador1[0] = puerta2[0]; // Mover jugador 1 a
+                            jugador1[1] = puerta2[1];
+                        }
+                        else
+                        {
+                            jugador2[0] = puerta2[0];
+                            jugador2[1] = puerta2[1];
+                        }
+                        mensajeRecompensa = $"{nombreJugadorActual}, has sido teletransportado a la Puerta 2.";
+                    }
+                    
+
+                    else if (nuevaFila == puerta2[0] && nuevaColumna == puerta2[1])
+                    {
+                        if (jugador == 1)
+                        {
+                            jugador1[0] = puerta1[0];
+                            jugador1[1] = puerta1[1];
+                        }
+                        else 
+                        {
+                            jugador2[0] = puerta1[0];
+                            jugador2[1] = puerta1[1];
+                        }
+                        mensajeRecompensa = $"{nombreJugadorActual}, has sido teletransportado a la Puerta 1.";
+                    }
+
                     // Comprobar si ha recogido una recompensa
                     Console.WriteLine("Evaluando posicion");
                     if (mapa[nuevaFila, nuevaColumna] == "💰 ")
@@ -343,7 +435,7 @@ class Program
                 }                                                       
                 else 
                 {
-                    AnsiConsole.MarkupLine("[bold red]¡No puedes moverte allí! Hay un obstáculo.[/]");
+                    AnsiConsole.MarkupLine("[bold red]¡No puedes moverte allí! Hay una pared.[/]");
                     break; // Salir del bucle si se sale de los límites
                 }
             }
@@ -359,8 +451,8 @@ class Program
     static bool ComprobarVictoria(int[] jugador)
     {
         // Definir la posición de la meta
-        int metaFila = 12;
-        int metaColumna = 12;
+        int metaFila = 13;
+        int metaColumna = 7;
 
         // Comprobar si la posición del jugador coincide con la posición de la meta
         if (jugador[0] == metaFila && jugador[1] == metaColumna)
@@ -373,3 +465,4 @@ class Program
         return false; // El jugador no ha ganado
     }   
 }
+

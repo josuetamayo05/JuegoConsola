@@ -94,3 +94,70 @@ class Program
         }
     }
 }
+/*
+static void InicializarMapa(int filas, int columnas)
+    {
+        mapa = new string[filas, columnas];
+
+        for (int i = 0; i < filas; i++)
+        {    
+            for (int j = 0; j < columnas; j++)
+            {    
+                mapa[i, j] = "⬜ ";
+            }    
+        }
+        GenerarLaberinto();
+        
+        // Asegurarse de que los jugadores tengan un camino inicial libre
+        mapa[jugador1[0], jugador1[1]] = "   "; // Asegurarse que el espacio de inicio del Jugador 1 esté vacío
+        mapa[jugador2[0], jugador2[1]] = "   "; // Jugador 2
+        mapa[17, 17] = "🏠 "; // Meta
+
+        ColocarFichasYObstaculos(8, 30, 10); // fichas, porcentaje de obstáculos, árboles       
+    }
+
+    private static void GenerarLaberinto()
+    {
+        bool[,] visitadas = new bool[mapa.GetLength(0), mapa.GetLength(1)];
+        List<Tuple<int, int>> bordes = new List<Tuple<int, int>>();
+        //Comenzar desde la celda (1, 1)
+        visitadas[1, 1] = true;
+        mapa[1, 1] = "   ";
+        AgregarBordes(1, 1, bordes);
+
+        while (bordes.Count > 0)
+        {
+            // Elegir borde aleatorio
+            int index = random.Next(bordes.Count);
+            var borde = bordes[index];
+            bordes.RemoveAt(index);
+
+            int fila = borde.Item1;
+            int columna = borde.Item2;
+
+            //Determinar las celdas adyacentes
+            int adyacenteFila = fila % 2 == 0 ? fila + 1 : fila - 1;
+            int adyacenteColumna = columna % 2 == 0 ? columna + 1 : columna - 1;
+
+            // Verificar si la celda adyacente está dentro de los límites
+            if (adyacenteFila > 0 && adyacenteFila < mapa.GetLength(0) && adyacenteColumna > 0 && adyacenteColumna < mapa.GetLength(1))
+            {
+                if (!visitadas[adyacenteFila, adyacenteColumna])
+                {
+                    //eliminar borde
+                    mapa[fila, columna] = "   "; //Convertir la pared en un espacio en blanco
+                    visitadas[adyacenteFila, adyacenteColumna] = true; // Marcar la celda adyacente como visitada
+                    AgregarBordes(adyacenteFila, adyacenteColumna, bordes); //Agregar los bordes de la nueva celda
+
+                }
+            }
+        }
+    }
+
+    private static void AgregarBordes(int fila, int columna, List<Tuple<int, int>> bordes)
+    {
+        // Agregar los bordes de las celdas adyacentes
+        if (fila - 1 > 0) bordes.Add(new Tuple<int, int>(fila - 1, columna)); // Arriba
+        if (fila + 1 < mapa.GetLength(0)) bordes.Add(new Tuple<int, int>(fila + 1, columna)); // Abajo
+        if (columna - 1 > 0) bordes.Add(new Tuple<int, int>(fila, columna - 1)); // Izquierda
+        if (columna + 1 < mapa.GetLength(1)) bordes.Add(new Tuple<int, int>(fila, columna + 1)); // Derecha*/
