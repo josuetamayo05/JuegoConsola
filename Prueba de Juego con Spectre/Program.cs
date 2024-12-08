@@ -130,9 +130,7 @@ class Program
         mapa[puerta1[0], puerta1[1]] = "🚪 "; // Puerta 1
         mapa[puerta2[0], puerta2[1]] = "🚪 "; // Puerta 2
 
-        
-
-        //ColocarFichasYObstaculos(5, 6);       
+        ColocarFichasYObstaculos(5, 6);       
     }
 
     static void GenerarLaberinto(int fila, int columna)
@@ -251,8 +249,23 @@ class Program
                 columna = random.Next(1, columnas - 1);
             } while (mapa[fila, columna] != "   " || (fila == puerta1[0] && columna == puerta1[1] || fila == puerta2[0] && columna == puerta2[1])); // Asegurarse que el espacio esté vacío
 
-            mapa[fila, columna] = "🌳 "; // Colocar árbol
+            if (EsPosicionEstrategica(fila, columna))
+            {
+                mapa[fila, columna] = "🌳 "; // Colocar árbol
+            }    
         }
+    }
+
+    static bool EsPosicionEstrategica(int fila, int columna)
+    {
+        // Verificar si hay un camino desde la posición (fila, columna) a la meta
+        bool caminoMeta = HayCamino(fila, columna, metaFila, metaColumna);
+
+        bool caminoPuerta1 = HayCamino(fila, columna, puerta1[0], puerta1[1]);
+
+        bool caminoPuerta2 = HayCamino(fila, columna, puerta2[0], puerta2[1]);
+
+        return !caminoMeta || !caminoPuerta1 || !caminoPuerta2;
     }
 
     
@@ -354,21 +367,29 @@ class Program
                 // Comprobar si ha caído en una trampa
                 if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
                 {                    
+                    posicion[0] = nuevaFila;
+                    posicion[1] = nuevaColumna;
                     // Restaurar la posición inicial
+                    
                     if (jugador == 1)
                     {
                         jugador1[0] = posicionInicialJugador1[0]; // Restaurar posición inicial del jugador 1
                         jugador1[1] = posicionInicialJugador1[1];
+                        mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
+
                     }
                     else
                     {
                         jugador2[0] = posicionInicialJugador2[0]; // Restaurar posición inicial del jugador 2
                         jugador2[1] = posicionInicialJugador2[1];
+                        mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
+
                     }
-                    mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
-                    // No imprimir el mapa aquí para que el mensaje se vea claramente
-                    break; // Salir del método para evitar más movimientos
+                    ImprimirMapa();
+                    
+                    return; // Salir del método para evitar más movimientos
                 }
+
 
                 // Verificar si puede moverse a un nuevo espacio
                 if (mapa[nuevaFila, nuevaColumna] != "⬜ ") // No puede moverse a una pared
@@ -431,7 +452,16 @@ class Program
                     }
 
                     ImprimirMapa();
-                    
+
+                    // Opción para usar pode
+                    AnsiConsole.MarkupLine($"¿Quieres usar un poder para atravesar un árbol? (S/N): ");
+                    char usarPoder = Console.ReadKey().KeyChar;
+                    Console.WriteLine(); // Salto de línea
+
+                    if (usarPoder == 'f' || usarPoder == 'F')
+                    {
+                        UsarPoder(jugador); // LLamar al método UsarPoder
+                    }
                 }                                                       
                 else 
                 {
@@ -464,5 +494,80 @@ class Program
 
         return false; // El jugador no ha ganado
     }   
+
+    static void UsarPoder(int jugador)
+    {
+        // Determinar el jugador actual y sus puntos
+        string nombreJugadorActual = jugador == 1 ? nombreJugador1 : nombreJugador2;
+        int puntosJugadorActual = jugador == 1 ? puntosJugador1 : puntosJugador2;
+
+        // Verificar si el jugador tiene suficientes puntos para usar el poder
+        if (puntosJugadorActual >= 1) // Supongamos que se necesita 1 punto para usar el poder
+        {
+            // Gastar un punto para usar el poder
+            if (jugador == 1)
+            {
+                puntosJugador1--;
+                AnsiConsole.MarkupLine($"{nombreJugadorActual} ha usado un poder para atravesar un árbol.");
+            }
+            else
+            {
+                puntosJugador2--;
+                AnsiConsole.MarkupLine($"{nombreJugadorActual} ha usado un poder para atravesar un árbol.");
+            }
+
+            // Obtener la posición actual del jugador
+            int[] posicion = jugador == 1 ? jugador1 : jugador2;
+            int filaActual = posicion[0];
+            int columnaActual = posicion[1];
+
+            // Permitir al jugador moverse a la siguiente posición
+            AnsiConsole.MarkupLine($"[bold blue]{nombreJugadorActual}[/] elige una nueva posición para moverse (W/A/S/D): ");
+            char movimiento = Console.ReadKey().KeyChar;
+            Console.WriteLine(); // Salto de línea después de la entrada
+
+            int nuevaFila = filaActual;
+            int nuevaColumna = columnaActual;
+
+            switch (movimiento)
+            {
+                case 'w': nuevaFila--; break; // Arriba
+                case 's': nuevaFila++; break; // Abajo
+                case 'a': nuevaColumna--; break; // Izquierda
+                case 'd': nuevaColumna++; break; // Derecha
+                default:
+                    AnsiConsole.MarkupLine("[bold red]Movimiento no válido. Intenta de nuevo.[/]");
+                    return; // Salir si el movimiento no es válido
+            }
+
+            // Verificar límites y si puede moverse a la nueva posición
+            if (nuevaFila > 0 && nuevaColumna > 0 && nuevaFila < mapa.GetLength(0) - 1 && nuevaColumna < mapa.GetLength(1) - 1)
+            {
+                // Permitir el movimiento a través de un árbol
+                if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
+                {
+                    // Actualizar la posición del jugador
+                    posicion[0] = nuevaFila;
+                    posicion[1] = nuevaColumna;
+                    AnsiConsole.MarkupLine($"{nombreJugadorActual} ha atravesado un árbol y se ha movido a la nueva posición.");
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[bold red]¡No puedes moverte allí! No hay un árbol para atravesar.[/]");
+                }
+            }
+            else
+            {
+                AnsiConsole.MarkupLine("[bold red]¡Te has salido de los límites![/]");
+            }
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[bold red]¡No tienes suficientes puntos para usar un poder![/]");
+        }
+    }
 }
+
+
+
 
