@@ -368,27 +368,69 @@ class Program
                 // Comprobar si ha caído en una trampa
                 if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
                 {                    
-                    posicion[0] = nuevaFila;
-                    posicion[1] = nuevaColumna;
-                    // Restaurar la posición inicial
-                    
-                    if (jugador == 1)
+                    // Verificar si el jugador tiene puntos para usar el poder
+                    if ((jugador == 1 && puntosJugador1 > 0) || (jugador == 2 && puntosJugador2 > 0))
                     {
-                        jugador1[0] = posicionInicialJugador1[0]; // Restaurar posición inicial del jugador 1
-                        jugador1[1] = posicionInicialJugador1[1];
+                        // Preguntar si quiere usar el poder
+                        AnsiConsole.MarkupLine($"{nombreJugadorActual}, has caído en un árbol. ¿Quieres usar el poder para atravesarlo? Presiona 'F' para usar el poder o cualquier otra tecla para volver a tu posición inicial.");
+                        char decision = Console.ReadKey().KeyChar;
+                        Console.WriteLine(); // Salto de línea después de la entrada
 
-                    }
+                        if (decision == 'f' || decision == 'F')
+                        {
+                            // Restar un punto al jugador
+                            if (jugador == 1)
+                            {
+                                puntosJugador1--;
+                            }
+                            else
+                            {
+                                puntosJugador2--;
+                            }
+
+                            // Permitir al jugador moverse a la nueva posición
+                            posicion[0] = nuevaFila;
+                            posicion[1] = nuevaColumna;
+                            AnsiConsole.MarkupLine($"{nombreJugadorActual} ha atravesado el árbol y se ha movido a la nueva posición.");
+                        }
+                        else
+                        {
+                            // Restaurar la posición inicial
+                            if (jugador == 1)
+                            {
+                                jugador1[0] = posicionInicialJugador1[0]; // Restaurar posición inicial del jugador 1
+                                jugador1[1] = posicionInicialJugador1[1];
+                            }
+                            else
+                            {
+                                jugador2[0] = posicionInicialJugador2[0]; // Restaurar posición inicial del jugador 2
+                                jugador2[1] = posicionInicialJugador2[1];
+                            }
+                            
+                            mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
+                            ImprimirMapa();
+                            return;  // Salir del método para evitar más movimientos
+                        }
+                    }                        
                     else
                     {
-                        jugador2[0] = posicionInicialJugador2[0]; // Restaurar posición inicial del jugador 2
-                        jugador2[1] = posicionInicialJugador2[1];
+                        // Si el jugador no tiene puntos, no puede usar el poder
+                        mensajeTrampa = $"{nombreJugadorActual}, no tienes suficientes puntos para usar el poder. Vuelves a tu posición inicial."; // Mensaje de trampa
+                        if (jugador == 1)
+                        {
+                            jugador1[0] = posicionInicialJugador1[0]; // Restaurar posición inicial del jugador 1
+                            jugador1[1] = posicionInicialJugador1[1];
+                        }
+                        else
+                        {
+                            jugador2[0] = posicionInicialJugador2[0]; // Restaurar posición inicial del jugador 2
+                            jugador2[1] = posicionInicialJugador2[1];
+                        }
+                        ImprimirMapa();
+                        return;  // Salir del método para evitar más movimientos
                     }
-                    
-                    mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
-                    ImprimirMapa();
-                    return;  // Salir del método para evitar más movimientos
-                }
-
+                }    
+            
 
                 // Verificar si puede moverse a un nuevo espacio
                 if (mapa[nuevaFila, nuevaColumna] != "⬜ ") // No puede moverse a una pared

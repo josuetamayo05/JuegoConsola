@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Prueba de Juego con Spectre")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7d3f59930458c385b454260c2b0e3812c4c0d8d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef7ff11d9e2d4f5366c7a2243b7d237701e1b7cc")]
 [assembly: System.Reflection.AssemblyProductAttribute("Prueba de Juego con Spectre")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Prueba de Juego con Spectre")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
