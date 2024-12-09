@@ -331,8 +331,6 @@ class Program
             {
                 Console.WriteLine(mensajeTrampa);
                 mensajeTrampa = ""; // Limpiar el mensaje de recompensa
-                ImprimirMapa(); // Imprimir el mapa después de mostrar el mensaje de trampa
-                break; // Salir del bucle para no seguir pidiendo movimiento
             }    
 
 
@@ -367,7 +365,7 @@ class Program
             {
                 // Comprobar si ha caído en una trampa
                 if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
-                {                    
+                {                   
                     // Verificar si el jugador tiene puntos para usar el poder
                     if ((jugador == 1 && puntosJugador1 > 0) || (jugador == 2 && puntosJugador2 > 0))
                     {
@@ -375,6 +373,7 @@ class Program
                         AnsiConsole.MarkupLine($"{nombreJugadorActual}, has caído en un árbol. ¿Quieres usar el poder para atravesarlo? Presiona 'F' para usar el poder o cualquier otra tecla para volver a tu posición inicial.");
                         char decision = Console.ReadKey().KeyChar;
                         Console.WriteLine(); // Salto de línea después de la entrada
+
 
                         if (decision == 'f' || decision == 'F')
                         {
@@ -392,10 +391,13 @@ class Program
                             posicion[0] = nuevaFila;
                             posicion[1] = nuevaColumna;
                             AnsiConsole.MarkupLine($"{nombreJugadorActual} ha atravesado el árbol y se ha movido a la nueva posición.");
-                        }
+                        }                        
+                                            
                         else
                         {
                             // Restaurar la posición inicial
+                            mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa  
+                            Console.WriteLine(mensajeTrampa); // Imprimir el mensaje de trampa
                             if (jugador == 1)
                             {
                                 jugador1[0] = posicionInicialJugador1[0]; // Restaurar posición inicial del jugador 1
@@ -406,16 +408,27 @@ class Program
                                 jugador2[0] = posicionInicialJugador2[0]; // Restaurar posición inicial del jugador 2
                                 jugador2[1] = posicionInicialJugador2[1];
                             }
-                            
-                            mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa
                             ImprimirMapa();
-                            return;  // Salir del método para evitar más movimientos
+                            return;  // Salir del método para evitar más movimientétodo para evitar más movimientos
                         }
-                    }                        
+                    }
                     else
                     {
                         // Si el jugador no tiene puntos, no puede usar el poder
                         mensajeTrampa = $"{nombreJugadorActual}, no tienes suficientes puntos para usar el poder. Vuelves a tu posición inicial."; // Mensaje de trampa
+                        Console.WriteLine(mensajeTrampa); // Imprimir el mensaje antes de restaurar la posición
+                        
+                        for (int j = 0; j < 3; j++)
+                        {
+                            Console.Write($"{nombreJugadorActual} retrocediendo");
+                            for (int k = 0; k < 3; k++)
+                            {
+                                Console.Write("."); // Mostrar puntos para la animación
+                                System.Threading.Thread.Sleep(300); // Esperar un poco
+                            }
+                            Console.WriteLine(); // Salto de línea después de cada retroceso
+                        }
+
                         if (jugador == 1)
                         {
                             jugador1[0] = posicionInicialJugador1[0]; // Restaurar posición inicial del jugador 1
@@ -428,9 +441,8 @@ class Program
                         }
                         ImprimirMapa();
                         return;  // Salir del método para evitar más movimientos
-                    }
-                }    
-            
+                    }    
+                }
 
                 // Verificar si puede moverse a un nuevo espacio
                 if (mapa[nuevaFila, nuevaColumna] != "⬜ ") // No puede moverse a una pared
@@ -440,6 +452,15 @@ class Program
 
                     if (nuevaFila == puerta1[0] && nuevaColumna == puerta1[1])
                     {
+                        // Imprimir el mensaje de teletransportación
+                        AnsiConsole.MarkupLine($"{nombreJugadorActual}, has sido teletransportado a la Puerta 2.");
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Console.Write(".");
+                            System.Threading.Thread.Sleep(700);
+                        }
+                        Console.WriteLine();
+
                         if (jugador == 1)
                         {    
                             jugador1[0] = puerta2[0]; // Mover jugador 1 a
@@ -450,7 +471,6 @@ class Program
                             jugador2[0] = puerta2[0];
                             jugador2[1] = puerta2[1];
                         }
-                        mensajeRecompensa = $"{nombreJugadorActual}, has sido teletransportado a la Puerta 2.";
                     }
                     
 
@@ -478,13 +498,23 @@ class Program
                         if (jugador == 1)
                         {                            
                             puntosJugador1++;     
-                            mensajeRecompensa = $"¡{nombreJugador1} has recogido una ficha de recompensa! Puedes realizar otro movimiento extra. Puntos: {puntosJugador1}";                  
+                            AnsiConsole.MarkupLine($"¡🎉 {nombreJugador1} has recogido una ficha de recompensa! 🎉 Puntos: {puntosJugador1}");
+                            
                         }
                         else
                         {
                             puntosJugador2++;            
-                            mensajeRecompensa = $"¡{nombreJugador2} has recogido una ficha de recompensa! Puedes realizar otro movimiento extra. Puntos: {puntosJugador2}";                
+                            AnsiConsole.MarkupLine($"¡🎉 {nombreJugador2} has recogido una ficha de recompensa! 🎉 Puntos: {puntosJugador2}");
                         }
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            Console.WriteLine("🎊 🎊 🎊 ¡Felicidades, has recogido una ficha recompensa y puedes volver a jugar! 🎊 🎊 🎊");
+                            System.Threading.Thread.Sleep(700); // Esperar medio segundo
+                        }
+                        
+                        
+                        ImprimirMapa(); // Imprimir mapa actualiz
                         movimientoExtra = true;
                     }
                     else
@@ -520,82 +550,27 @@ class Program
         {
             string nombreJugadorActual = jugador == jugador1 ? nombreJugador1 : nombreJugador2;
             AnsiConsole.MarkupLine($"[bold blue]{nombreJugadorActual} ha alcanzado la meta y ha ganado el juego! 🎉[/]");
+
+            for (int i = 0; i < 5; i++)
+            {
+                // Imprimir el mensaje de "¡Felicidades!"
+                Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
+                AnsiConsole.MarkupLine("[bold yellow]🎊 🎊 🎊 ¡Felicidades! 🎊 🎊 🎊[/]");
+                
+                // Esperar medio segundo
+                System.Threading.Thread.Sleep(500);
+
+                // Imprimir el mensaje de "¡Victoria!"
+                Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
+                AnsiConsole.MarkupLine("[bold yellow]🎉 🎉 🎉 ¡Victoria! 🎉 🎉 🎉[/]");
+                
+                // Esperar medio segundo
+                System.Threading.Thread.Sleep(500);
+            }
             return true; // El jugador ha ganado
         }
 
         return false; // El jugador no ha ganado
     }   
-
-    /*static void UsarPoder(int jugador)
-    {
-        // Determinar el jugador actual y sus puntos
-        string nombreJugadorActual = jugador == 1 ? nombreJugador1 : nombreJugador2;
-        int puntosJugadorActual = jugador == 1 ? puntosJugador1 : puntosJugador2;
-
-        // Verificar si el jugador tiene suficientes puntos para usar el poder
-        if (puntosJugadorActual >= 1) // Supongamos que se necesita 1 punto para usar el poder
-        {
-            // Gastar un punto para usar el poder
-            if (jugador == 1)
-            {
-                puntosJugador1--;
-                AnsiConsole.MarkupLine($"{nombreJugadorActual} ha usado un poder para atravesar un árbol.");
-            }
-            else
-            {
-                puntosJugador2--;
-                AnsiConsole.MarkupLine($"{nombreJugadorActual} ha usado un poder para atravesar un árbol.");
-            }
-
-            // Obtener la posición actual del jugador
-            int[] posicion = jugador == 1 ? jugador1 : jugador2;
-            int filaActual = posicion[0];
-            int columnaActual = posicion[1];
-
-            // Permitir al jugador moverse a la siguiente posición
-            AnsiConsole.MarkupLine($"[bold blue]{nombreJugadorActual}[/] elige una nueva posición para moverse (W/A/S/D): ");
-            char movimiento = Console.ReadKey().KeyChar;
-            Console.WriteLine(); // Salto de línea después de la entrada
-
-            int nuevaFila = filaActual;
-            int nuevaColumna = columnaActual;
-
-            switch (movimiento)
-            {
-                case 'w': nuevaFila--; break; // Arriba
-                case 's': nuevaFila++; break; // Abajo
-                case 'a': nuevaColumna--; break; // Izquierda
-                case 'd': nuevaColumna++; break; // Derecha
-                default:
-                    AnsiConsole.MarkupLine("[bold red]Movimiento no válido. Intenta de nuevo.[/]");
-                    return; // Salir si el movimiento no es válido
-            }
-
-            // Verificar límites y si puede moverse a la nueva posición
-            if (nuevaFila > 0 && nuevaColumna > 0 && nuevaFila < mapa.GetLength(0) - 1 && nuevaColumna < mapa.GetLength(1) - 1)
-            {
-                // Permitir el movimiento a través de un árbol
-                if (mapa[nuevaFila, nuevaColumna] == "🌳 ")
-                {
-                    // Actualizar la posición del jugador
-                    posicion[0] = nuevaFila;
-                    posicion[1] = nuevaColumna;
-                    AnsiConsole.MarkupLine($"{nombreJugadorActual} ha atravesado un árbol y se ha movido a la nueva posición.");
-                }
-                else
-                {
-                    AnsiConsole.MarkupLine("[bold red]¡No puedes moverte allí! No hay un árbol para atravesar.[/]");
-                }
-            }
-            else
-            {
-                AnsiConsole.MarkupLine("[bold red]¡Te has salido de los límites![/]");
-            }
-        }
-        else
-        {
-            AnsiConsole.MarkupLine("[bold red]¡No tienes suficientes puntos para usar un poder![/]");
-        }
-    }*/
 }
 
