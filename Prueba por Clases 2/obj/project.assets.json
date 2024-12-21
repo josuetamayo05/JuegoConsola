@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Juego Consola\\Juego Consola.csproj",
-      "projectName": "Juego Consola",
-      "projectPath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Juego Consola\\Juego Consola.csproj",
+      "projectUniqueName": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba por Clases 2\\Prueba por Clases 2.csproj",
+      "projectName": "Prueba por Clases 2",
+      "projectPath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba por Clases 2\\Prueba por Clases 2.csproj",
       "packagesPath": "C:\\Users\\Dr. Ernesto\\.nuget\\packages\\",
-      "outputPath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Juego Consola\\obj\\",
+      "outputPath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba por Clases 2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dr. Ernesto\\AppData\\Roaming\\NuGet\\NuGet.Config"

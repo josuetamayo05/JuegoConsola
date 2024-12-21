@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Company.ClassLibrary1;
+namespace Prueba_Por_Clases;
 
 public class Mapa
 {

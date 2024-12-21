@@ -1,0 +1,15 @@
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\bin\Debug\net8.0\Prueba por Clases 2.exe
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\bin\Debug\net8.0\Prueba por Clases 2.deps.json
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\bin\Debug\net8.0\Prueba por Clases 2.runtimeconfig.json
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\bin\Debug\net8.0\Prueba por Clases 2.dll
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\bin\Debug\net8.0\Prueba por Clases 2.pdb
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.GeneratedMSBuildEditorConfig.editorconfig
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.AssemblyInfoInputs.cache
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.AssemblyInfo.cs
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.csproj.CoreCompileInputs.cache
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.sourcelink.json
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.dll
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\refint\Prueba por Clases 2.dll
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.pdb
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.genruntimeconfig.cache
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\ref\Prueba por Clases 2.dll
