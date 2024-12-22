@@ -30,11 +30,12 @@ public class Mapa
             for (int j = 0; j < cols; j++)
             {
                 mapa[i , j] = "⬜ ";
-
             }
         }
 
         GenerateMaze(1, 1);
+        mapa[13, 7] = "🏠 ";
+        PlaceChips(3, 6, 5);
     }
 
     public void GenerateMaze(int row, int col)
@@ -77,5 +78,39 @@ public class Mapa
             Console.WriteLine();
         }
     }
+
+    public void PlaceChips(int cantidadPower, int cantidadReward, int cantidadArbol)
+    {
+        for (int i = 0; i < cantidadPower; i++)
+        {
+            PlaceChipsAleatorio("⚡ ");
+        }
+
+        for (int i = 0; i < cantidadReward; i++)
+        {
+            PlaceChipsAleatorio("💰 ");
+        }
+
+        for (int i = 0; i < cantidadArbol; i++)
+        {
+            PlaceChipsAleatorio("🌳 ");
+        }
+    }
+
+    private void PlaceChipsAleatorio(string simbolo)
+    {
+        int row, col;
+        do
+        {
+            row = random.Next(1, Rows - 1);
+            col = random.Next(1, Cols - 1);
+        } while(mapa[row, col] != "⬜ ");
+        mapa[row, col] = simbolo;
+    }
+
+
 }
+
+
+
 
