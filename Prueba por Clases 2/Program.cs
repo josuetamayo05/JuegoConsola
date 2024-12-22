@@ -15,7 +15,7 @@ class Program
         };
         int[] meta = new int[] { 8, 14};
 
-        Juego juego = new Juego(15, 15, jugadores, meta);
+        Juego juego = new Juego(15, 15, jugadores);
         juego.Iniciar();
     }
 }

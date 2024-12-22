@@ -75,6 +75,11 @@ public class Mapa
         {
             for (int j = 0; j < Cols; j++)
             {
+                if (i == jugadores[0].Position[0] && j == jugadores[0].Position[1])
+                    Console.Write("😠 ");
+                else if (i == jugadores[1].Position[0] && j == jugadores[1].Position[1])
+                    Console.Write("😁 ");
+                else
                 Console.Write(mapa[i, j]);
             }
             Console.WriteLine();
@@ -145,6 +150,30 @@ public class Mapa
             // Lógica para manejar la interacción con el árbol
             Console.WriteLine($"{jugador.Nombre} ha encontrado un árbol.");
         }
+    }
+    public bool MoverJugador(Jugador jugador, int nuevaFila, int nuevaColumna)
+    {
+        // Verificar límites del mapa
+        if (nuevaFila >= 0 && nuevaFila < Rows && nuevaColumna >= 0 && nuevaColumna < Cols)
+        {
+            // Verificar si la nueva posición no es una pared
+            if (mapa[nuevaFila, nuevaColumna] != "⬜ ")
+            {
+                // Actualizar la posición del jugador
+                jugador.Position[0] = nuevaFila;
+                jugador.Position[1] = nuevaColumna;
+                return true; // Movimiento exitoso
+            }
+            else
+            {
+                Console.WriteLine("No puedes moverte a una pared.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Movimiento fuera de límites.");
+        }
+        return false; // Movimiento fallido
     }
 }
 
