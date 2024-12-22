@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Spectre.Console;
+using System.Threading;
 
 namespace Prueba_por_Clases_2;
 
@@ -15,7 +17,7 @@ class Program
         };
         int[] meta = new int[] { 8, 14};
 
-        Juego juego = new Juego(15, 15, jugadores);
+        Juego juego = new Juego(27, 27, jugadores);
         juego.Iniciar();
     }
 }

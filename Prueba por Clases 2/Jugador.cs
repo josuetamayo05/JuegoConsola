@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-//using Spectre.Console;
+using Spectre.Console;
 
 namespace Prueba_por_Clases_2;
 
@@ -13,12 +13,12 @@ public class Jugador
     public int[] Position { get; set; }
     private int[] PositionInicial { get; set;}
 
-    public Jugador(string nombre, int[] positionInicial)
+    public Jugador(string nombre, int[] position)
     {
         Nombre = nombre;
         Puntos = 0;
-        Position = positionInicial;
-        PositionInicial = positionInicial; //guardo posic inicial
+        Position = position;
+        //PositionInicial = positionInicial; //guardo posic inicial
     }
 
     public void RecogerRecompensa(int puntos)

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "MkwuaJCz0Jk=",
+  "dgSpecHash": "b8rR9/Gqw6g=",
   "success": true,
   "projectFilePath": "B:\\Ciencias de la Computación\\Git\\proyecto-juego-Consola\\Prueba por Clases 2\\Prueba por Clases 2.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Dr. Ernesto\\.nuget\\packages\\spectre.console\\0.49.1\\spectre.console.0.49.1.nupkg.sha512"
+  ],
   "logs": []
 }

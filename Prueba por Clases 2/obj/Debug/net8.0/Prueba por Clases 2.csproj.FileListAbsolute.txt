@@ -13,3 +13,6 @@ B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\ob
 B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.pdb
 B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.genruntimeconfig.cache
 B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\ref\Prueba por Clases 2.dll
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\bin\Debug\net8.0\Spectre.Console.dll
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba por Clases 2.csproj.AssemblyReference.cache
+B:\Ciencias de la Computación\Git\proyecto-juego-Consola\Prueba por Clases 2\obj\Debug\net8.0\Prueba p.16DFE251.Up2Date

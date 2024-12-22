@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-//using Spectre.Console;
+using Spectre.Console;
 
 namespace Prueba_por_Clases_2;
 
@@ -37,7 +37,11 @@ public class Mapa
 
         GenerateMaze(1, 1);
         mapa[13, 7] = "🏠 ";
-        PlaceChips(3, 6, 5);
+        mapa[12, 15] = "🚪 "; 
+        mapa[21, 21] = "🚪 "; 
+
+
+        PlaceChips(6, 15, 12);
     }
 
     public void GenerateMaze(int row, int col)
@@ -71,6 +75,7 @@ public class Mapa
     
     public void Imprimir()
     {
+        Console.Clear();
         for (int i = 0; i < Rows; i++)
         {
             for (int j = 0; j < Cols; j++)
@@ -84,6 +89,8 @@ public class Mapa
             }
             Console.WriteLine();
         }
+        AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
+        Console.WriteLine();
     }
 
     public void PlaceChips(int cantidadPower, int cantidadReward, int cantidadArbol)

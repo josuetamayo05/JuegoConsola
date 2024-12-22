@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Spectre.Console;
 namespace Prueba_por_Clases_2;
 
 
@@ -9,12 +10,14 @@ public class Juego
     private Mapa mapa;
     private Jugador[] jugadores;
     private int turnoActual;
+    private int[] meta;
 
     public Juego(int rows, int cols, Jugador[] jugadores)
     {
         this.mapa = new Mapa(rows, cols, jugadores);
         this.jugadores = jugadores;
         this.turnoActual = 0;
+        this.meta = new int[] { 25, 20};
     }
 
     public void Iniciar()
@@ -29,6 +32,13 @@ public class Juego
             Console.WriteLine($"{jugadorActual.Nombre}, ingresa tu movimiento (W/A/S/D):");
             ConsoleKeyInfo tecla = Console.ReadKey(true);
             Console.WriteLine();
+
+            if (tecla.Key == ConsoleKey.Q)
+            {
+                Console.WriteLine("Saliendo");
+                juegoEnCurso = false;
+                continue;
+            }
             
             int nuevaFila = jugadorActual.Position[0];
             int nuevaColumna = jugadorActual.Position[1];
@@ -45,8 +55,21 @@ public class Juego
             }
             if (mapa.MoverJugador(jugadorActual, nuevaFila, nuevaColumna))
             {
-                // Si el movimiento fue exitoso, pasar al siguiente jugador
-                turnoActual = (turnoActual + 1) % jugadores.Length; // Cambiar al siguiente jugador
+                if(JugadorHaAlcanzadoMeta(jugadorActual))
+                {
+                    Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
+                    AnsiConsole.MarkupLine("[bold yellow]🎊 🎊 🎊 ¡Felicidades! 🎊 🎊 🎊[/]");                    
+                    System.Threading.Thread.Sleep(500);
+                    Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
+                    AnsiConsole.MarkupLine("[bold yellow]🎉 🎉 🎉 ¡Victoria! 🎉 🎉 🎉[/]");
+                    System.Threading.Thread.Sleep(500);
+                    juegoEnCurso = false;
+                }
+                else
+                {
+                    // Si el movimiento fue exitoso, pasar al siguiente jugador
+                    turnoActual = (turnoActual + 1) % jugadores.Length; // Cambiar al siguiente jugador
+                }
             }
             else
             {
@@ -55,8 +78,8 @@ public class Juego
         }
     }
 
-    /*private bool JugadorHaAlcanzadoMeta(Jugador jugador)
+    private bool JugadorHaAlcanzadoMeta(Jugador jugador)
     {
         return jugador.Position[0] == meta[0] && jugador.Position[1] == meta[1];
-    }*/
+    }
 }
