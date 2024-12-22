@@ -3,28 +3,33 @@ using System.Collections.Generic;
 using System.Text;
 //using Spectre.Console;
 
-namespace PruebaJuegoSpectre;
+namespace Prueba_por_Clases_2;
+
 
 public class Jugador
 {
-    public string Name { get; set; }
-    public int Points { get; set; }
+    public string Nombre { get; set; }
+    public int Puntos { get; set; }
     public int[] Position { get; set; }
+    private int[] PositionInicial { get; set;}
 
-    public Jugador(string name, int[] positionInitial)
+    public Jugador(string nombre, int[] positionInicial)
     {
-        Name = name;
-        Points = 0;
-        Position = positionInitial;
+        Nombre = nombre;
+        Puntos = 0;
+        Position = positionInicial;
+        PositionInicial = positionInicial; //guardo posic inicial
     }
 
-    public void RecogerRecompensa()
+    public void RecogerRecompensa(int puntos)
     {
-        Points++;
+        Puntos += puntos;
     }
 
-    public void RestorePositionInitial(int[] positionInitial)
+    public void RestaurarPositionInicial()
     {
-        Position = positionInitial;
+        Position[0] = PositionInicial[0];
+        Position[1] = PositionInicial[1];
+        Console.WriteLine($"{Nombre} ha regresado a su posición inicial.");
     }
 }

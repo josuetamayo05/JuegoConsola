@@ -8,15 +8,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        Mapa mapa = new Mapa(15, 15);
-        /*mapa.GenerarLaberinto(1, 1);
         Jugador[] jugadores = new Jugador[]
         {
             new Jugador("Jugador 1", new int[] {1, 1}),
             new Jugador("Jugador 2", new int[] {1, 13})
-        };*/
-        
-        Console.WriteLine("Mapa Inicial:");        
-        mapa.Imprimir();
+        };
+        int[] meta = new int[] { 8, 14};
+
+        Juego juego = new Juego(15, 15, jugadores, meta);
+        juego.Iniciar();
     }
 }

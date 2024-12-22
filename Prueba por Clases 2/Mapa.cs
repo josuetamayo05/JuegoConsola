@@ -12,11 +12,13 @@ public class Mapa
     public int Rows { get; set;}
     public int Cols { get; set; }
     Random random = new Random();
+    private Jugador[] jugadores;
 
-    public Mapa(int rows, int cols)
+    public Mapa(int rows, int cols, Jugador[] jugadores)
     {
         Rows = rows;
         Cols = cols;
+        this.jugadores = jugadores;
         InicializarMapa(rows, cols);
     }
     
@@ -105,10 +107,45 @@ public class Mapa
             row = random.Next(1, Rows - 1);
             col = random.Next(1, Cols - 1);
         } while(mapa[row, col] != "⬜ ");
+        
         mapa[row, col] = simbolo;
     }
 
+    public void ManejarInteraccion(Jugador jugador)
+    {
+        int row = jugador.Position[0];
+        int col = jugador.Position[1];
 
+        if (mapa[row, col] == "⚡ ")
+        {
+            Power poderCaptura = new Power("Poder Extra", 1, 3);
+            Jugador jugadorCapturado = jugadores[1];
+
+            poderCaptura.Capturar(jugador, jugadorCapturado);
+            mapa[row, col] = "   ";
+
+        }
+        else if (mapa[row, col] == "🚩")
+        {
+            Trampa trampa = new Trampa("Trampa de Puntos", 3); // Ejemplo de trampa
+            jugador.Puntos -= trampa.PuntosPerdidos;
+            mapa[row, col] = "   "; // Reemplazar la trampa con un espacio en blanco
+            Console.WriteLine($"{jugador.Nombre} ha caído en una trampa: {trampa.Nombre}!");
+        }
+        // Verificar si hay una recompensa en la posición del jugador
+        else if (mapa[row, col] == "💰 ")
+        {
+            Reward reward = new Reward("Recompensa de Puntos", 10); // Ejemplo de recompensa
+            jugador.RecogerRecompensa(reward.Puntos);
+            mapa[row, col] = "   "; // Reemplazar la recompensa con un espacio en blanco
+            Console.WriteLine($"{jugador.Nombre} ha recogido una recompensa: {reward.Nombre}!");
+        }
+        else if (mapa[row, col] == "🌳 ")
+        {
+            // Lógica para manejar la interacción con el árbol
+            Console.WriteLine($"{jugador.Nombre} ha encontrado un árbol.");
+        }
+    }
 }
 
 

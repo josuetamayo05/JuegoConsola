@@ -6,12 +6,19 @@ namespace Prueba_por_Clases_2;
 
 public class Trampa
 {
-    public string Name { get; set; }
-    public int PointLoses { get; set; }
+    public string Nombre { get; set; }
+    public int PuntosPerdidos { get; set; }
 
-    public Trampa(string name, int pointLoses)
+    public Trampa(string nombre, int puntosPerdidos)
     {
-        Name = name;
-        PointLoses = pointLoses;
+        Nombre = nombre;
+        PuntosPerdidos = puntosPerdidos;
+    }
+
+    public void AplicarEfecto(Jugador jugador)
+    {
+        jugador.Puntos -= PuntosPerdidos; // Reducir puntos del jugador
+        Console.WriteLine($"{jugador.Nombre} ha perdido {PuntosPerdidos} puntos por caer en la trampa: {Nombre}!");
     }
 }
+
