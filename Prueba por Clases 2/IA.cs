@@ -12,29 +12,50 @@ public class IA
     public void Mover(Mapa mapa, Jugador jugadorHumano)
     {
         Random rand = new Random(); 
-        int movimiento = rand.Next(4); // 0: Arriba, 1: Abajo, 2: Izquierda, 3: Derecha
+        List<(int, int)> posiblesMovimientos = new List<(int, int)>();
 
-        int nuevaFila = jugadorIA.Position[0];
-        int nuevaColumna = jugadorIA.Position[1];
-
-        switch (movimiento)
+        int[][] movimientos = new int[][]
         {
-            case 0: nuevaFila--; break; //arrib
-            case 1: nuevaFila++; break; //abaj
-            case 2: nuevaColumna--; break;
-            case 3: nuevaColumna++; break;
+            new int[] { -1, 0 }, // Arriba
+            new int[] { 1, 0 },  // Abajo
+            new int[] { 0, -1 }, // Izquierda
+            new int[] { 0, 1 }   // Derecha
+        };
+
+        foreach (var movimiento in movimientos)
+        {
+            int nuevaFila = jugadorIA.Position[0] + movimiento[0];
+            int nuevaColumna = jugadorIA.Position[1] + movimiento[1];
+
+            // Verificar límites y si la nueva posición es un espacio vacío o una ficha
+            if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
+            {
+                string ficha = mapa.GetFicha(nuevaFila, nuevaColumna);
+                if (ficha == "   " || ficha == "💰 ") // Espacio vacío o ficha de recompensa
+                {
+                    posiblesMovimientos.Add((nuevaFila, nuevaColumna));
+                }
+            }
         }
 
-        if (nuevaFila >= 0 && nuevaColumna >= 0 && nuevaFila < mapa.Rows && nuevaColumna < mapa.Cols)
+        if (posiblesMovimientos.Count > 0)
         {
-            jugadorIA.Position[0] = nuevaFila;
-            jugadorIA.Position[1] = nuevaColumna;
-            Console.WriteLine($"{jugadorIA.Nombre} se ha movido a la posición ({nuevaFila}, {nuevaColumna}).");
+            var movimientoElegido = posiblesMovimientos[rand.Next(posiblesMovimientos.Count)];
+            jugadorIA.Position[0] = movimientoElegido.Item1;
+            jugadorIA.Position[1] = movimientoElegido.Item2;
+
+            // Verificar si ha recogido una ficha de recompensa
+            if (mapa.GetFicha(jugadorIA.Position[0], jugadorIA.Position[1]) == "💰 ")
+            {
+                mapa.SetFicha(jugadorIA.Position[0], jugadorIA.Position[1], "   "); // Limpiar la ficha
+                jugadorIA.Puntos++; // Incrementar puntos
+                Console.WriteLine($"{jugadorIA.Nombre} ha recogido una ficha de recompensa! Puntos: {jugadorIA.Puntos}");
+            }
         }
     }
 
     public Jugador GetJugadorIA()
     {
-        return jugadorIA;
+        return jugadorIA; // Obtener jugador IA
     }
 }

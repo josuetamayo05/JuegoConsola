@@ -108,7 +108,7 @@ public class Juego
         while (true)
         {
             MoverJugador(1);
-            mapa.Imprimir(jugadores);
+            //mapa.Imprimir(jugadores);
 
             if (VerificarVictoria(jugadores[0]))
             {
@@ -119,7 +119,7 @@ public class Juego
             if (jugadores.Length == 2)
             {
                 ia.Mover(mapa, jugadores[0]);
-                mapa.Imprimir(jugadores);
+               // mapa.Imprimir(jugadores);
                 
                 if (VerificarVictoria(jugadores[1]))
                 {
