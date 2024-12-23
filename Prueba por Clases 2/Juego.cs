@@ -30,7 +30,6 @@ public class Juego
     {
         while (true)
         {
-            mapa.Imprimir();
             MoverJugador(turnoActual + 1);
             turnoActual = (turnoActual + 1) % jugadores.Length;
         }
@@ -57,6 +56,7 @@ public class Juego
                 Console.WriteLine(mensajeTrampa);
                 mensajeTrampa = ""; // Limpiar el mensaje de trampa
             }
+            mapa.Imprimir();
 
             // Solicitar movimiento
             Console.WriteLine($"Turno de {nombreJugadorActual} (Jugador {jugador}), ingresa tu movimiento (W/A/S/D) o 'Q' para salir: ");
@@ -128,7 +128,7 @@ public class Juego
                                 jugadores[1].Position[0] = jugadores[1].PosicionInicial[0]; // Restaurar posición inicial del jugador 2
                                 jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
                             }
-                            mapa.Imprimir(); // Imprimir el mapa después de restaurar la posición
+                            //mapa.Imprimir(); // Imprimir el mapa después de restaurar la posición
                             return;  // Salir del método para evitar más movimientos
                         }
                     }
@@ -158,7 +158,7 @@ public class Juego
                             jugadores[1].Position[0] = jugadores[1].PosicionInicial[0]; // Restaurar posición inicial del jugador 2
                             jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
                         }
-                        mapa.Imprimir(); // Imprimir el mapa después de restaurar la posición
+                        //mapa.Imprimir(); // Imprimir el mapa después de restaurar la posición
                         return;  // Salir del método para evitar más movimientos
                     }    
                 }
@@ -181,7 +181,7 @@ public class Juego
 
                         posicion[0] = puerta2[0]; // Mover jugador 1 a
                         posicion[1] = puerta2[1];
-                        mapa.Imprimir();
+                        //mapa.Imprimir();
                     }
                         
                     else if (nuevaFila == puerta2[0] && nuevaColumna == puerta2[1])
@@ -196,7 +196,7 @@ public class Juego
 
                         posicion[0] = puerta1[0];
                         posicion[1] = puerta1[1];
-                        mapa.Imprimir();
+                        //mapa.Imprimir();
                     }
 
                     Console.WriteLine("Evaluando posición");
@@ -216,14 +216,14 @@ public class Juego
                             AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} has recogido una ficha de recompensa! 🎉 Puntos: {jugadores[1].Puntos}");
                         }
 
-                        for (int j = 0; j < 3; j++)
+                        for (int j = 0; j < 1; j++)
                         {
                             Console.WriteLine("🎊 🎊 🎊 ¡Felicidades, has recogido una ficha recompensa y puedes volver a jugar! 🎊 🎊 🎊");
-                            System.Threading.Thread.Sleep(500); // Esperar medio segundo
+                            System.Threading.Thread.Sleep(600); // Esperar medio segundo
                         }
                             
                             
-                        mapa.Imprimir(); // Imprimir mapa actualiz
+                        //mapa.Imprimir(); // Imprimir mapa actualiz
                         movimientoExtra = true;
                     }
                     else
@@ -231,13 +231,23 @@ public class Juego
                         movimientoExtra = false;
                     }
                         
-                    mapa.Imprimir();
+                    //mapa.Imprimir();
 
                     if (mapa.GetFicha(nuevaFila, nuevaColumna) == "⚡ ")
                     {
                         AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} ha recogido una ficha de captura! 🎉 Puedes usar el poder de captura.");
-                        mapa.SetFicha(nuevaFila, nuevaColumna, "   "); // Limpiar la posición
-                            
+                        mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
+                        if (jugador == 1)
+                        {
+                            jugadores[0].PoderesCaptura++;
+                        }                            
+                        else
+                        {
+                            jugadores[1].PoderesCaptura++;
+                        }
+                    }    
+                    if (jugadores[jugador - 1].PoderesCaptura > 0)
+                    {    
                         AnsiConsole.MarkupLine($"¿Quieres usar el poder de captura? Presiona 'C' para capturar al otro jugador solo en caso de que ambos están en la misma fila o columna o cualquier otra tecla para continuar.");
                         char decision = Console.ReadKey().KeyChar;
                         Console.WriteLine(); // Salto de línea después de la en
@@ -246,7 +256,7 @@ public class Juego
                         {
                             // Verificar si el otro jugador está en la misma fila o columna
                             int[] otroJugador = jugador == 1 ? jugadores[1].Position : jugadores[0].Position;
-                            if (otroJugador[0] == nuevaFila || otroJugador[1] == nuevaColumna)
+                            if (otroJugador[0] == posicion[0] || otroJugador[1] == posicion[1])
                             {
                                 AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
                                 // Animación de captura
@@ -272,7 +282,8 @@ public class Juego
                                     jugadores[0].Position[0] = jugadores[0].PosicionInicial[0];
                                     jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
                                 }
-                                mapa.Imprimir(); // Imprimir mapa actualizado
+                                jugadores[jugador - 1].PoderesCaptura--;
+                                mapa.Imprimir();
                             }
                             else
                             {

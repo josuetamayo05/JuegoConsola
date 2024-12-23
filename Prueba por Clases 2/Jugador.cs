@@ -12,6 +12,7 @@ public class Jugador
     public int Puntos { get; set; } = 0;
     public int[] Position { get; set; } = new int[2]; // [fila, columna]
     public int[] PosicionInicial { get; set; } = new int[2]; // [fila, columna]
+    public int PoderesCaptura { get; set; }
 
     public Jugador(string nombre, int filaInicial, int columnaInicial)
     {
@@ -20,6 +21,8 @@ public class Jugador
         Position[1] = columnaInicial;
         PosicionInicial[0] = filaInicial; // Inicializar posición inicial
         PosicionInicial[1] = columnaInicial;
+        Puntos = 0;
+        PoderesCaptura = 0;
     }
 
     public void RecogerRecompensa(int puntos)

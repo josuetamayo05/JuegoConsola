@@ -11,7 +11,7 @@ class Program
     static void Main(string[] args)
     {
         Jugador jugador1 = new Jugador("Jugador 1", 1, 1); // Posición inicial (1, 1)
-        Jugador jugador2 = new Jugador("Jugador 2", 1, 2); // Posición inicial (1, 2)
+        Jugador jugador2 = new Jugador("Jugador 2", 1, 25); // Posición inicial (1, 2)
 
         Jugador[] jugadores = new Jugador[] { jugador1, jugador2 };
 
