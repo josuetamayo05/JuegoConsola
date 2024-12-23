@@ -22,8 +22,8 @@ public class Juego
     {
         this.filas = rows; // Inicializar filas
         this.columnas = cols;
-        mapa = new Mapa(rows, cols);
-        jugadores = new Jugador[2];
+        this.mapa = new Mapa(rows, cols);
+        this.jugadores = new Jugador[2];
         this.turnoActual = 0;
     }
 
@@ -40,7 +40,7 @@ public class Juego
             InscribirJugadores(); //inscrib dos jugad
         }
         MostrarInstrucciones();
-        Jugar();
+        Jugar(modoJuego);
     }
 
     private int ElegirModoJuego()
@@ -73,8 +73,8 @@ public class Juego
             Console.Write($"Ingresa el nombre del Jugador {i + 1}: ");
             string nombre = Console.ReadLine();
             // Asignar posiciones iniciales
-            int fila = i == 0 ? 1 : 0; 
-            int columna = i == 0 ? 1 : columnas - 1; 
+            int fila = 1;  // Fila para ambos jugadores
+            int columna = i == 0 ? 1 : 25; // Jugador 1 en (1, 1), Jugador 2 en (1, 26)
             jugadores[i] = new Jugador(nombre, fila, columna);
         }
     }
@@ -102,29 +102,46 @@ public class Juego
         Console.Clear();
     }
 
-    public void Jugar()
+    public void Jugar(int modoJuego)
     {
 
         while (true)
         {
+            if (jugadores == null || jugadores.Length < 2)
+            {
+                Console.WriteLine("Error: Los jugadores no están correctamente inicializados.");
+                return; // Salir del método si hay un problema
+            }
             MoverJugador(1);
-            //mapa.Imprimir(jugadores);
+            mapa.Imprimir(jugadores);
 
             if (VerificarVictoria(jugadores[0]))
             {
                 Console.WriteLine($"{jugadores[0].Nombre} ha llegado a la meta y ha ganado el juego!");
                 break;
             }
-            
-            if (jugadores.Length == 2)
+
+            if (modoJuego == 1)
             {
                 ia.Mover(mapa, jugadores[0]);
-               // mapa.Imprimir(jugadores);
-                
+                mapa.Imprimir(jugadores);
+
+                if (VerificarVictoria(ia.GetJugadorIA()))
+                {
+                    Console.WriteLine($"{ia.GetJugadorIA().Nombre} ha llegado a la meta y ha ganado el juego!");
+                    break;
+                }
+            }
+
+            else if (modoJuego == 2)
+            {
+                MoverJugador(2); // Mover al segundo jugador
+                mapa.Imprimir(jugadores); // Asegúrate de pasar el arreglo de jugadores
+
                 if (VerificarVictoria(jugadores[1]))
                 {
                     Console.WriteLine($"{jugadores[1].Nombre} ha llegado a la meta y ha ganado el juego!");
-                    break;
+                    break; // Salir del bucle si el jugador 2 gana
                 }
             }
             turnoActual = (turnoActual + 1) % jugadores.Length;
@@ -166,7 +183,7 @@ public class Juego
                 Environment.Exit(0); // Salir del juego
             }
 
-            int[] posicion = jugador == 1 ? jugadores[0].Position : jugadores[1].Position;
+            int[] posicion = jugadores[jugador - 1].Position;
             int nuevaFila = posicion[0];
             int nuevaColumna = posicion[1];
 
@@ -182,7 +199,7 @@ public class Juego
             }
 
             // Verificar límites
-            if (nuevaFila >= 0 && nuevaColumna >= 0 && nuevaFila < filas && nuevaColumna < columnas)
+            if (nuevaFila >= 0 && nuevaColumna >= 0 && nuevaFila < mapa.Rows && nuevaColumna < mapa.Cols)
             {
                 if (mapa.GetFicha(nuevaFila, nuevaColumna) == "🌳 ")
                 {                   
