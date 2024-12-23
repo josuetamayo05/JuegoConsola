@@ -15,7 +15,7 @@ public class Mapa
     Random random = new Random();
     private Jugador[] jugadores;
 
-    public Mapa(int rows, int cols, Jugador[] jugadores)
+    public Mapa(int rows, int cols)
     {
         Rows = rows;
         Cols = cols;
@@ -78,24 +78,34 @@ public class Mapa
         }
     }
     
-    public void Imprimir()
+   public void Imprimir(Jugador[] jugadores)
     {
-        Console.Clear();
+        Console.Clear(); // Limpiar la consola antes de imprimir el mapa
         for (int i = 0; i < Rows; i++)
         {
             for (int j = 0; j < Cols; j++)
             {
-                if (i == jugadores[0].Position[0] && j == jugadores[0].Position[1])
-                    Console.Write("😠 ");
-                else if (i == jugadores[1].Position[0] && j == jugadores[1].Position[1])
-                    Console.Write("😁 ");
-                else
-                    Console.Write(mapa[i, j] + "");
-            }        
-            Console.WriteLine();
+                // Verificar si hay un jugador en la posición actual
+                bool jugadorEncontrado = false;
+                foreach (var jugador in jugadores)
+                {
+                    if (i == jugador.Position[0] && j == jugador.Position[1])
+                    {
+                        // Imprimir el símbolo del jugador
+                        Console.Write(jugador.Nombre == "IA" ? "🤖 " : "😃 "); // Usar un emoji diferente para la IA
+                        jugadorEncontrado = true;
+                        break; // Salir del bucle si se encontró un jugador
+                    }
+                }
+
+                // Si no hay jugador en la posición, imprimir el contenido del mapa
+                if (!jugadorEncontrado)
+                {
+                    Console.Write(mapa[i, j]);
+                }
+            }
+            Console.WriteLine(); // Nueva línea después de cada fila
         }
-        AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
-        Console.WriteLine();
     }
 
     private void PlaceRandomChips(int cantidad, string tipo)
@@ -160,11 +170,19 @@ public class Mapa
 
     public string GetFicha(int fila, int columna)
     {
+        if (fila < 0 || fila >= Rows || columna < 0 || columna >= Cols)
+        {
+            throw new IndexOutOfRangeException("Índice fuera de los límites del mapa.");
+        }
         return mapa[fila, columna];
     }
 
     public void SetFicha(int fila, int columna, string ficha)
     {
+        if (fila < 0 || fila >= Rows || columna < 0 || columna >= Cols)
+        {
+            throw new IndexOutOfRangeException("Índice fuera de los límites del mapa.");
+        }
         mapa[fila, columna] = ficha;
     }
 }
