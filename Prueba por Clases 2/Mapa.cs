@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Spectre.Console;
+using System.Linq;
 
 namespace Prueba_por_Clases_2;
 
@@ -31,17 +32,21 @@ public class Mapa
         {
             for (int j = 0; j < cols; j++)
             {
-                mapa[i , j] = "⬜ ";
+                mapa[i, j] = "⬜ ";
             }
         }
 
         GenerateMaze(1, 1);
-        mapa[13, 7] = "🏠 ";
-        mapa[12, 15] = "🚪 "; 
-        mapa[21, 21] = "🚪 "; 
+        
+        mapa[20, 20] = "🏠 ";
+        mapa[15, 15] = "🚪 ";
+        mapa[20, 24] = "🚪 ";
 
-
-        PlaceChips(6, 15, 12);
+        
+        PlaceRandomChips(6, "⚡ ");
+        PlaceRandomChips(12, "💰 ");
+        PlaceRandomChips(12, "🚩 ");
+        PlaceRandomChips(8, "🌳 ");
     }
 
     public void GenerateMaze(int row, int col)
@@ -63,7 +68,7 @@ public class Mapa
             int nCol = col + dCol;
 
             //Verificar si la new posicion está dentro de los límites
-            if (nRow > 0 && nRow < mapa.GetLength(0) && nCol > 0 && nCol < mapa.GetLength(1) && mapa[nRow, nCol] == "⬜ ")
+            if (nRow > 0 && nRow < Rows && nCol > 0 && nCol < Cols && mapa[nRow, nCol] == "⬜ ")
             {
                 mapa[row + dRow / 2, col + dCol / 2] = "   ";
                 GenerateMaze(nRow, nCol); 
@@ -85,33 +90,23 @@ public class Mapa
                 else if (i == jugadores[1].Position[0] && j == jugadores[1].Position[1])
                     Console.Write("😁 ");
                 else
-                Console.Write(mapa[i, j]);
-            }
+                    Console.Write(mapa[i, j] + "");
+            }        
             Console.WriteLine();
         }
         AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
         Console.WriteLine();
     }
 
-    public void PlaceChips(int cantidadPower, int cantidadReward, int cantidadArbol)
+    private void PlaceRandomChips(int cantidad, string tipo)
     {
-        for (int i = 0; i < cantidadPower; i++)
+        for (int i = 0; i < cantidad; i++)
         {
-            PlaceChipsAleatorio("⚡ ");
-        }
-
-        for (int i = 0; i < cantidadReward; i++)
-        {
-            PlaceChipsAleatorio("💰 ");
-        }
-
-        for (int i = 0; i < cantidadArbol; i++)
-        {
-            PlaceChipsAleatorio("🌳 ");
+            PlaceChipsAleatorio(tipo);
         }
     }
 
-    private void PlaceChipsAleatorio(string simbolo)
+    private void PlaceChipsAleatorio(string tipo)
     {
         int row, col;
         do
@@ -120,53 +115,33 @@ public class Mapa
             col = random.Next(1, Cols - 1);
         } while(mapa[row, col] != "⬜ ");
         
-        mapa[row, col] = simbolo;
+        mapa[row, col] = tipo;
     }
 
-    public void ManejarInteraccion(Jugador jugador)
+    private int GetValorPorTipo(TipoFicha tipo)
     {
-        int row = jugador.Position[0];
-        int col = jugador.Position[1];
-
-        if (mapa[row, col] == "⚡ ")
+        return tipo switch // dar valor a las fichas
         {
-            Power poderCaptura = new Power("Poder Extra", 1, 3);
-            Jugador jugadorCapturado = jugadores[1];
-
-            poderCaptura.Capturar(jugador, jugadorCapturado);
-            mapa[row, col] = "   ";
-
-        }
-        else if (mapa[row, col] == "🚩")
-        {
-            Trampa trampa = new Trampa("Trampa de Puntos", 3); // Ejemplo de trampa
-            jugador.Puntos -= trampa.PuntosPerdidos;
-            mapa[row, col] = "   "; // Reemplazar la trampa con un espacio en blanco
-            Console.WriteLine($"{jugador.Nombre} ha caído en una trampa: {trampa.Nombre}!");
-        }
-        // Verificar si hay una recompensa en la posición del jugador
-        else if (mapa[row, col] == "💰 ")
-        {
-            Reward reward = new Reward("Recompensa de Puntos", 10); // Ejemplo de recompensa
-            jugador.RecogerRecompensa(reward.Puntos);
-            mapa[row, col] = "   "; // Reemplazar la recompensa con un espacio en blanco
-            Console.WriteLine($"{jugador.Nombre} ha recogido una recompensa: {reward.Nombre}!");
-        }
-        else if (mapa[row, col] == "🌳 ")
-        {
-            // Lógica para manejar la interacción con el árbol
-            Console.WriteLine($"{jugador.Nombre} ha encontrado un árbol.");
-        }
+            TipoFicha.Poder => 3,
+            TipoFicha.Recompensa => 10,
+            TipoFicha.Trampa => 3,
+            _ => 0, // valor por defecto si el tipo no coincide
+        };
     }
     public bool MoverJugador(Jugador jugador, int nuevaFila, int nuevaColumna)
     {
         // Verificar límites del mapa
         if (nuevaFila >= 0 && nuevaFila < Rows && nuevaColumna >= 0 && nuevaColumna < Cols)
         {
-            // Verificar si la nueva posición no es una pared
-            if (mapa[nuevaFila, nuevaColumna] != "⬜ ")
+            if (mapa[nuevaFila, nuevaColumna] == "💰 ")
             {
-                // Actualizar la posición del jugador
+                jugador.Puntos += 1;
+                Console.WriteLine("¡Felicidades! Has cogido un punto.");
+                mapa[nuevaFila, nuevaColumna] = "   "; 
+                return true;
+            }
+            else if (mapa[nuevaFila, nuevaColumna] != "⬜ ")
+            {
                 jugador.Position[0] = nuevaFila;
                 jugador.Position[1] = nuevaColumna;
                 return true; // Movimiento exitoso
@@ -181,6 +156,16 @@ public class Mapa
             Console.WriteLine("Movimiento fuera de límites.");
         }
         return false; // Movimiento fallido
+    }
+
+    public string GetFicha(int fila, int columna)
+    {
+        return mapa[fila, columna];
+    }
+
+    public void SetFicha(int fila, int columna, string ficha)
+    {
+        mapa[fila, columna] = ficha;
     }
 }
 

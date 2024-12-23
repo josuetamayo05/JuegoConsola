@@ -9,16 +9,17 @@ namespace Prueba_por_Clases_2;
 public class Jugador
 {
     public string Nombre { get; set; }
-    public int Puntos { get; set; }
-    public int[] Position { get; set; }
-    private int[] PositionInicial { get; set;}
+    public int Puntos { get; set; } = 0;
+    public int[] Position { get; set; } = new int[2]; // [fila, columna]
+    public int[] PosicionInicial { get; set; } = new int[2]; // [fila, columna]
 
-    public Jugador(string nombre, int[] position)
+    public Jugador(string nombre, int filaInicial, int columnaInicial)
     {
         Nombre = nombre;
-        Puntos = 0;
-        Position = position;
-        //PositionInicial = positionInicial; //guardo posic inicial
+        Position[0] = filaInicial;
+        Position[1] = columnaInicial;
+        PosicionInicial[0] = filaInicial; // Inicializar posición inicial
+        PosicionInicial[1] = columnaInicial;
     }
 
     public void RecogerRecompensa(int puntos)
@@ -26,10 +27,5 @@ public class Jugador
         Puntos += puntos;
     }
 
-    public void RestaurarPositionInicial()
-    {
-        Position[0] = PositionInicial[0];
-        Position[1] = PositionInicial[1];
-        Console.WriteLine($"{Nombre} ha regresado a su posición inicial.");
-    }
+    
 }

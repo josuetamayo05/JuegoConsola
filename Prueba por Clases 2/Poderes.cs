@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Text;
 using Spectre.Console;
@@ -36,6 +36,6 @@ public class Power
             Console.WriteLine($"{jugadorCaptor.Nombre} no puede capturar a {jugadorCapturado.Nombre} porque no están en la misma fila o columna.");
         }
     }
-}
+}*/
 
 

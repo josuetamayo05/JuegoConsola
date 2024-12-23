@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Text;
 using Spectre.Console;
@@ -20,5 +20,5 @@ public class Trampa
         jugador.Puntos -= PuntosPerdidos; // Reducir puntos del jugador
         Console.WriteLine($"{jugador.Nombre} ha perdido {PuntosPerdidos} puntos por caer en la trampa: {Nombre}!");
     }
-}
+}*/
 
