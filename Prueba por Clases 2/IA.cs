@@ -16,6 +16,52 @@ public class IA
 
     public void Mover(Mapa mapa, Jugador jugadorHumano)
     {
+        Random rand = new Random(); 
+        List<(int, int)> posiblesMovimientos = new List<(int, int)>();
+
+        int[][] movimientos = new int[][]
+        {
+            new int[] { -1, 0 }, // Arriba
+            new int[] { 1, 0 },  // Abajo
+            new int[] { 0, -1 }, // Izquierda
+            new int[] { 0, 1 }   // Derecha
+        };
+
+        foreach (var movimiento in movimientos)
+        {
+            int nuevaFila = jugadorIA.Position[0] + movimiento[0];
+            int nuevaColumna = jugadorIA.Position[1] + movimiento[1];
+
+            // Verificar límites y si la nueva posición es un espacio vacío o una ficha
+            if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
+            {
+                string ficha = mapa.GetFicha(nuevaFila, nuevaColumna);
+                if (ficha == "   " || ficha == "💰 ") // Espacio vacío o ficha de recompensa
+                {
+                    posiblesMovimientos.Add((nuevaFila, nuevaColumna));
+                }
+            }
+        }
+
+        if (posiblesMovimientos.Count > 0)
+        {
+            var movimientoElegido = posiblesMovimientos[rand.Next(posiblesMovimientos.Count)];
+            jugadorIA.Position[0] = movimientoElegido.Item1;
+            jugadorIA.Position[1] = movimientoElegido.Item2;
+
+            // Verificar si ha recogido una ficha de recompensa
+            if (mapa.GetFicha(jugadorIA.Position[0], jugadorIA.Position[1]) == "💰 ")
+            {
+                mapa.SetFicha(jugadorIA.Position[0], jugadorIA.Position[1], "   "); // Limpiar la ficha
+                jugadorIA.Puntos++; // Incrementar puntos
+                Console.WriteLine($"{jugadorIA.Nombre} ha recogido una ficha de recompensa! Puntos: {jugadorIA.Puntos}");
+            }
+        }
+    }
+
+
+    /*public void Mover(Mapa mapa, Jugador jugadorHumano)
+    {
         int[] posicionIA = jugadorIA.Position;
         int[] meta = new int[] { 20, 20 };
         List<Nodo> camino = BuscarCaminoLee(posicionIA, meta, mapa);
@@ -38,6 +84,29 @@ public class IA
         {
             EvaluarObstaculos(posicionIA, mapa);
         }
+    }
+
+    private void MoverAleatoriamente(Mapa mapa)
+    {
+        Random random = new Random();
+        int[] posiblesMovimientos = { -1, 0, 1 }; // Movimientos en fila y columna
+
+        // Intentar mover a una posición aleatoria adyacente
+        for (int i = 0; i < 4; i++) // 4 direcciones: arriba, abajo, izquierda, derecha
+        {
+            int nuevaFila = jugadorIA.Position[0] + posiblesMovimientos[random.Next(0, 3)];
+            int nuevaColumna = jugadorIA.Position[1] + posiblesMovimientos[random.Next(0, 3)];
+
+            if (mapa.EsPosicionValida(nuevaFila, nuevaColumna))
+            {
+                jugadorIA.Position[0] = nuevaFila;
+                jugadorIA.Position[1] = nuevaColumna;
+                Console.WriteLine($"{jugadorIA.Nombre} se ha movido a la posición ({nuevaFila}, {nuevaColumna}).");
+                return; // Salir después de moverse
+            }
+        }
+
+        Console.WriteLine($"{jugadorIA.Nombre} no puede moverse a ninguna posición válida.");
     }
 
     private List<Nodo> BuscarCaminoLee(int[] inicio, int [] meta, Mapa mapa)
@@ -182,6 +251,6 @@ public class IA
         {
             return (Fila, Columna).GetHashCode();
         }
-    }
+    }*/
     
 }
