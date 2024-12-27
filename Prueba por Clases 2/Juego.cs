@@ -113,7 +113,6 @@ public class Juego
                 return; // Salir del método si hay un problema
             }
             MoverJugador(1);
-            mapa.Imprimir(jugadores);
 
             if (VerificarVictoria(jugadores[0]))
             {
@@ -124,7 +123,6 @@ public class Juego
             if (modoJuego == 1)
             {
                 ia.Mover(mapa, jugadores[0]);
-                mapa.Imprimir(jugadores);
 
                 if (VerificarVictoria(ia.GetJugadorIA()))
                 {
@@ -136,7 +134,6 @@ public class Juego
             else if (modoJuego == 2)
             {
                 MoverJugador(2); // Mover al segundo jugador
-                mapa.Imprimir(jugadores); // Asegúrate de pasar el arreglo de jugadores
 
                 if (VerificarVictoria(jugadores[1]))
                 {
@@ -204,7 +201,7 @@ public class Juego
                 if (mapa.GetFicha(nuevaFila, nuevaColumna) == "🌳 ")
                 {                   
                     // Verificar si el jugador tiene puntos para usar el poder
-                    if ((jugador == 1 && jugadores[0].Puntos > 0) || (jugador == 2 && jugadores[1].Puntos > 0))
+                    if (jugadores[jugador - 1].Puntos > 0)
                     {
                         // Preguntar si quiere usar el poder
                         Console.WriteLine($"{nombreJugadorActual}, has caído en un árbol. ¿Quieres usar el poder para atravesarlo? Se te restará un punto de tu contador. Presiona 'F' para usar el poder o cualquier otra tecla para volver a tu posición inicial.");
@@ -213,15 +210,7 @@ public class Juego
 
                         if (decision == 'f' || decision == 'F')
                         {
-                            // Restar un punto al jugador
-                            if (jugador == 1)
-                            {
-                                jugadores[0].Puntos--;
-                            }
-                            else
-                            {
-                                jugadores[1].Puntos--;
-                            }
+                            jugadores[jugador - 1].Puntos--;
 
                             // Permitir al jugador moverse a la nueva posición
                             posicion[0] = nuevaFila;
@@ -230,19 +219,9 @@ public class Juego
                         }                        
                         else
                         {
-                            //string mensajeTrampa = $"{nombreJugadorActual}, has caído en una trampa. Vuelves a tu posición inicial."; // Mensaje de trampa  
-                            Console.WriteLine(mensajeTrampa); // Imprimir el mensaje de trampa
-                            if (jugador == 1)
-                            {
-                                jugadores[0].Position[0] = jugadores[0].PosicionInicial[0]; // Restaurar posición inicial del jugador 1
-                                jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
-                            }
-                            else
-                            {
-                                jugadores[1].Position[0] = jugadores[1].PosicionInicial[0]; // Restaurar posición inicial del jugador 2
-                                jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
-                            }
-                            //mapa.Imprimir(); // Imprimir el mapa después de restaurar la posición
+                            Console.WriteLine($"{nombreJugadorActual}, has decidido no usar el poder. Regresando a la posición inicial.");
+                            posicion[0] = jugadores[jugador - 1].PosicionInicial[0];
+                            posicion[1] = jugadores[jugador - 1].PosicionInicial[1];
                             return;  // Salir del método para evitar más movimientos
                         }
                     }
@@ -262,17 +241,9 @@ public class Juego
                             Console.WriteLine(); // Salto de línea después de cada retroceso
                         }
 
-                        if (jugador == 1)
-                        {
-                            jugadores[0].Position[0] = jugadores[0].PosicionInicial[0]; // Restaurar posición inicial del jugador 1
-                            jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
-                        }
-                        else
-                        {
-                            jugadores[1].Position[0] = jugadores[1].PosicionInicial[0]; // Restaurar posición inicial del jugador 2
-                            jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
-                        }
-                        //mapa.Imprimir(); // Imprimir el mapa después de restaurar la posición
+                        Console.WriteLine($"{nombreJugadorActual}, no tienes suficientes puntos para usar el poder. Regresando a la posición inicial.");
+                        posicion[0] = jugadores[jugador - 1].PosicionInicial[0];
+                        posicion[1] = jugadores[jugador - 1].PosicionInicial[1];
                         return;  // Salir del método para evitar más movimientos
                     }    
                 }
@@ -425,7 +396,7 @@ public class Juego
     {
         // Supongamos que la meta está en la posición (5, 5)
         int filaMeta = 20;
-        int columnaMeta = 26;
+        int columnaMeta = 20;
 
         // Verificar si el jugador ha llegado a la meta
         return jugador.Position[0] == filaMeta && jugador.Position[1] == columnaMeta;

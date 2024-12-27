@@ -168,6 +168,24 @@ public class Mapa
         return false; // Movimiento fallido
     }
 
+    public bool EsPosicionValida(int fila, int columna)
+    {
+        // Verificar si la posición está dentro de los límites del mapa
+        if (fila < 0 || fila >= mapa.GetLength(0) || columna < 0 || columna >= mapa.GetLength(1))
+        {
+            return false; // Fuera de límites
+        }
+
+        // Verificar si la posición no está ocupada por un obstáculo
+        // Por ejemplo, si "🌳" representa un árbol
+        if (mapa[fila, columna] == "🌳")
+        {
+            return false; // Hay un obstáculo
+        }
+
+        return true; // La posición es válida
+    }
+
     public string GetFicha(int fila, int columna)
     {
         if (fila < 0 || fila >= Rows || columna < 0 || columna >= Cols)
