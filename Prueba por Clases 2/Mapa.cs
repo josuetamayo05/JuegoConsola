@@ -138,53 +138,7 @@ public class Mapa
             _ => 0, // valor por defecto si el tipo no coincide
         };
     }
-    public bool MoverJugador(Jugador jugador, int nuevaFila, int nuevaColumna)
-    {
-        // Verificar límites del mapa
-        if (nuevaFila >= 0 && nuevaFila < Rows && nuevaColumna >= 0 && nuevaColumna < Cols)
-        {
-            if (mapa[nuevaFila, nuevaColumna] == "💰 ")
-            {
-                jugador.Puntos += 1;
-                Console.WriteLine("¡Felicidades! Has cogido un punto.");
-                mapa[nuevaFila, nuevaColumna] = "   "; 
-                return true;
-            }
-            else if (mapa[nuevaFila, nuevaColumna] != "⬜ ")
-            {
-                jugador.Position[0] = nuevaFila;
-                jugador.Position[1] = nuevaColumna;
-                return true; // Movimiento exitoso
-            }
-            else
-            {
-                Console.WriteLine("No puedes moverte a una pared.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Movimiento fuera de límites.");
-        }
-        return false; // Movimiento fallido
-    }
-
-    public bool EsPosicionValida(int fila, int columna)
-    {
-        // Verificar si la posición está dentro de los límites del mapa
-        if (fila < 0 || fila >= mapa.GetLength(0) || columna < 0 || columna >= mapa.GetLength(1))
-        {
-            return false; // Fuera de límites
-        }
-
-        // Verificar si la posición no está ocupada por un obstáculo
-        // Por ejemplo, si "🌳" representa un árbol
-        if (mapa[fila, columna] == "🌳")
-        {
-            return false; // Hay un obstáculo
-        }
-
-        return true; // La posición es válida
-    }
+    
 
     public string GetFicha(int fila, int columna)
     {

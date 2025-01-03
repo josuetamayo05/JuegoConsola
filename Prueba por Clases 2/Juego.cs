@@ -117,7 +117,8 @@ public class Juego
 
             if (VerificarVictoria(jugadores[0]))
             {
-                Console.WriteLine($"{jugadores[0].Nombre} ha llegado a la meta y ha ganado el juego!");
+                MostrarMensajeVictoria(jugadores[0].Nombre);
+                MostrarResultados();
                 break;
             }
 
@@ -127,7 +128,8 @@ public class Juego
 
                 if (VerificarVictoria(ia.GetJugadorIA()))
                 {
-                    Console.WriteLine($"{ia.GetJugadorIA().Nombre} ha llegado a la meta y ha ganado el juego!");
+                    MostrarMensajeVictoria(ia.GetJugadorIA().Nombre);
+                    MostrarResultados();
                     break;
                 }
             }
@@ -138,7 +140,8 @@ public class Juego
 
                 if (VerificarVictoria(jugadores[1]))
                 {
-                    Console.WriteLine($"{jugadores[1].Nombre} ha llegado a la meta y ha ganado el juego!");
+                    MostrarMensajeVictoria(jugadores[1].Nombre);
+                    MostrarResultados();
                     break; // Salir del bucle si el jugador 2 gana
                 }
             }
@@ -147,13 +150,45 @@ public class Juego
     }
     
 
-      
-
     private bool VerificarVictoria(Jugador jugador)
     {
         int filaMeta = 20;
         int columnaMeta = 20;
 
         return jugador.Position[0] == filaMeta && jugador.Position[1] == columnaMeta;
+    }
+
+    private void MostrarMensajeVictoria(string nombreGanador)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            // Imprimir el mensaje de "¡Felicidades!"
+            Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
+            AnsiConsole.MarkupLine($"[bold yellow]🎊 🎊 🎊 ¡Felicidades, {nombreGanador}! 🎊 🎊 🎊[/]");
+
+            // Esperar medio segundo
+            System.Threading.Thread.Sleep(500);
+
+            // Imprimir el mensaje de "¡Victoria!"
+            Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
+            AnsiConsole.MarkupLine($"[bold yellow]🎉 🎉 🎉 ¡Victoria, {nombreGanador}! 🎉 🎉 🎉[/]");
+
+            // Esperar medio segundo
+            System.Threading.Thread.Sleep(500);
+        }
+    }
+    private void MostrarResultados()
+    {
+        var table = new Table();
+        table.AddColumn("Jugador");
+        table.AddColumn("Puntos");
+
+        table.AddRow(jugadores[0].Nombre, jugadores[0].Puntos.ToString());
+        table.AddRow(jugadores[1].Nombre, jugadores[1].Puntos.ToString());
+
+        AnsiConsole.Render(table);
+
+        AnsiConsole.MarkupLine("Presiona cualquier tecla para salir...");
+        Console.ReadKey();
     }
 }

@@ -43,15 +43,54 @@ public class MovimientoJugador
             }
             mapa.Imprimir(jugadores);
 
-            // Solicitar movimiento
+            AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
+            Console.WriteLine();
+
             Console.WriteLine($"Turno de {nombreJugadorActual} (Jugador {jugador}), ingresa tu movimiento (W/A/S/D) o 'Q' para salir: ");
             char movimiento = Console.ReadKey().KeyChar;
-            Console.WriteLine(); // Salto de línea después de la entrada
+            Console.WriteLine(); 
 
-            if (movimiento == 'q' || movimiento == 'Q') // Condición de salida
+            if (movimiento == 'q' || movimiento == 'Q') 
             {
                 Console.WriteLine("¡Gracias por jugar!");
-                Environment.Exit(0); // Salir del juego
+                Environment.Exit(0); 
+            }
+
+            if (jugadores[jugador - 1].PoderesCaptura > 0 && (movimiento == 'c' || movimiento == 'C'))
+            {    
+                int[] otroJugador = jugador == 1 ? jugadores[1].Position : jugadores[0].Position;
+                if (otroJugador[0] == jugadores[jugador - 1].Position[0] || otroJugador[1] == jugadores[jugador - 1].Position[1])
+                {
+                    AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Console.Write("Capturando al otro jugador");
+                        for (int j = 0; j < 3; j++)
+                        {
+                            Console.Write("."); // Mostrar puntos para la animación
+                                System.Threading.Thread.Sleep(300); // Esperar un poco
+                        }
+                        Console.WriteLine(); // Salto de línea después de cada captura
+                    }
+
+                    if (jugador == 1)
+                    {
+                        jugadores[1].Position[0] = jugadores[1].PosicionInicial[0];
+                        jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
+                    }
+                    else
+                    {
+                        jugadores[0].Position[0] = jugadores[0].PosicionInicial[0];
+                        jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
+                    }
+                    jugadores[jugador - 1].PoderesCaptura--; // Decrementar el poder de captura
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[bold red]¡No puedes usar el poder de captura! El otro jugador no está en la misma fila o columna.[/]");
+                    jugadores[jugador - 1].PoderesCaptura--; // Decrementar el poder de captura
+                }
+                continue;
             }
 
             int[] posicion = jugadores[jugador - 1].Position;
@@ -178,7 +217,7 @@ public class MovimientoJugador
                         for (int j = 0; j < 1; j++)
                         {
                             Console.WriteLine("🎊 🎊 🎊 ¡Felicidades, has recogido una ficha recompensa y puedes volver a jugar! 🎊 🎊 🎊");
-                            System.Threading.Thread.Sleep(600); // Esperar medio segundo
+                            System.Threading.Thread.Sleep(900); // Esperar medio segundo
                         }
                             
                             
@@ -195,6 +234,8 @@ public class MovimientoJugador
                     if (mapa.GetFicha(nuevaFila, nuevaColumna) == "⚡ ")
                     {
                         AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} ha recogido una ficha de captura! 🎉 Puedes usar el poder de captura.");
+                        System.Threading.Thread.Sleep(1000); // Esperar medio segundo
+
                         if (jugador == 1)
                         {
                             mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
@@ -205,53 +246,8 @@ public class MovimientoJugador
                             mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
                             jugadores[1].PoderesCaptura++;
                         }
-                        mapa.Imprimir(jugadores);
                     }    
-                    if (jugadores[jugador - 1].PoderesCaptura > 0)
-                    {    
-                        AnsiConsole.MarkupLine($"¿Quieres usar el poder de captura? Presiona 'C' para capturar al otro jugador solo en caso de que ambos están en la misma fila o columna o cualquier otra tecla para continuar.");
-                        char decision = Console.ReadKey().KeyChar;
-                        Console.WriteLine(); // Salto de línea después de la en
-
-                        if (decision == 'c' || decision == 'C')
-                        {
-                            // Verificar si el otro jugador está en la misma fila o columna
-                            int[] otroJugador = jugador == 1 ? jugadores[1].Position : jugadores[0].Position;
-                            if (otroJugador[0] == posicion[0] || otroJugador[1] == posicion[1])
-                            {
-                                AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
-                                // Animación de captura
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    Console.Write("Capturando al otro jugador");
-                                    for (int j = 0; j < 3; j++)
-                                    {
-                                        Console.Write("."); // Mostrar puntos para la animación
-                                        System.Threading.Thread.Sleep(300); // Esperar un poco
-                                    }
-                                    Console.WriteLine(); // Salto de línea después de cada captura
-                                }
-
-                                // Mover al otro jugador a su posición inicial
-                                if (jugador == 1)
-                                {
-                                    jugadores[1].Position[0] = jugadores[1].PosicionInicial[0];
-                                    jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
-                                }
-                                else
-                                {
-                                    jugadores[0].Position[0] = jugadores[0].PosicionInicial[0];
-                                    jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
-                                }
-                                jugadores[jugador - 1].PoderesCaptura--;
-                            }
-                            else
-                            {
-                                AnsiConsole.MarkupLine("[bold red]¡No puedes usar el poder de captura! El otro jugador no está en la misma fila o columna.[/]");
-                                jugadores[jugador - 1].PoderesCaptura--;
-                            }
-                        }
-                    }
+                    
                 }
                 else
                 {
