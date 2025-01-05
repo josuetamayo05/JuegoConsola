@@ -43,10 +43,10 @@ public class Mapa
         mapa[20, 24] = "🚪 ";
 
         
-        PlaceRandomChips(6, "⚡ ");
-        PlaceRandomChips(12, "💰 ");
-        PlaceRandomChips(12, "🚩 ");
-        PlaceRandomChips(8, "🌳 ");
+        ColocarFichasRandom(6, "⚡ ");
+        ColocarFichasRandom(12, "💰 ");
+        ColocarFichasRandom(12, "🚩 ");
+        ColocarFichasRandom(8, "🌳 ");
     }
 
     public void GenerateMaze(int row, int col)
@@ -80,7 +80,7 @@ public class Mapa
     
    public void Imprimir(Jugador[] jugadores)
     {
-        Console.Clear(); // Limpiar la consola antes de imprimir el mapa
+        Console.Clear(); 
         for (int i = 0; i < Rows; i++)
         {
             for (int j = 0; j < Cols; j++)
@@ -98,25 +98,25 @@ public class Mapa
                     }
                 }
 
-                // Si no hay jugador en la posición, imprimir el contenido del mapa
+                
                 if (!jugadorEncontrado)
                 {
                     Console.Write(mapa[i, j]);
                 }
             }
-            Console.WriteLine(); // Nueva línea después de cada fila
+            Console.WriteLine(); 
         }
     }
 
-    private void PlaceRandomChips(int cantidad, string tipo)
+    private void ColocarFichasRandom(int cantidad, string tipo)
     {
         for (int i = 0; i < cantidad; i++)
         {
-            PlaceChipsAleatorio(tipo);
+            ColocarFichasAleatorias(tipo);
         }
     }
 
-    private void PlaceChipsAleatorio(string tipo)
+    private void ColocarFichasAleatorias(string tipo)
     {
         int row, col;
         do
@@ -128,7 +128,7 @@ public class Mapa
         mapa[row, col] = tipo;
     }
 
-    private int GetValorPorTipo(TipoFicha tipo)
+    /*private int GetValorPorTipo(TipoFicha tipo)
     {
         return tipo switch // dar valor a las fichas
         {
@@ -137,7 +137,7 @@ public class Mapa
             TipoFicha.Trampa => 3,
             _ => 0, // valor por defecto si el tipo no coincide
         };
-    }
+    }*/
     
 
     public string GetFicha(int fila, int columna)

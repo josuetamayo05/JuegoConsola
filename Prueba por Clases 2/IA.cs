@@ -3,254 +3,147 @@ namespace Prueba_por_Clases_2;
 public class IA
 {
     private Jugador jugadorIA;
+    private Random random;
+    private int poderCapturaUsado = 0;
 
     public IA(string nombre, int fila, int columna)
     {
         jugadorIA = new Jugador(nombre, fila, columna);
+        random = new Random();
     }
 
     public Jugador GetJugadorIA()
     {
-        return jugadorIA; // Obtener jugador IA
+        return jugadorIA; 
     }
 
     public void Mover(Mapa mapa, Jugador jugadorHumano)
     {
-        Random rand = new Random(); 
-        List<(int, int)> posiblesMovimientos = new List<(int, int)>();
+        int[] movimiento = DecidirMovimiento(jugadorHumano, mapa);
 
-        int[][] movimientos = new int[][]
-        {
-            new int[] { -1, 0 }, // Arriba
-            new int[] { 1, 0 },  // Abajo
-            new int[] { 0, -1 }, // Izquierda
-            new int[] { 0, 1 }   // Derecha
-        };
-
-        foreach (var movimiento in movimientos)
+        if (movimiento != null)
         {
             int nuevaFila = jugadorIA.Position[0] + movimiento[0];
             int nuevaColumna = jugadorIA.Position[1] + movimiento[1];
 
-            // Verificar límites y si la nueva posición es un espacio vacío o una ficha
+            // Verificar si la nueva posición es válida
             if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
-            {
-                string ficha = mapa.GetFicha(nuevaFila, nuevaColumna);
-                if (ficha == "   " || ficha == "💰 ") // Espacio vacío o ficha de recompensa
-                {
-                    posiblesMovimientos.Add((nuevaFila, nuevaColumna));
-                }
-            }
-        }
-
-        if (posiblesMovimientos.Count > 0)
-        {
-            var movimientoElegido = posiblesMovimientos[rand.Next(posiblesMovimientos.Count)];
-            jugadorIA.Position[0] = movimientoElegido.Item1;
-            jugadorIA.Position[1] = movimientoElegido.Item2;
-
-            // Verificar si ha recogido una ficha de recompensa
-            if (mapa.GetFicha(jugadorIA.Position[0], jugadorIA.Position[1]) == "💰 ")
-            {
-                mapa.SetFicha(jugadorIA.Position[0], jugadorIA.Position[1], "   "); // Limpiar la ficha
-                jugadorIA.Puntos++; // Incrementar puntos
-                Console.WriteLine($"{jugadorIA.Nombre} ha recogido una ficha de recompensa! Puntos: {jugadorIA.Puntos}");
-            }
-        }
-    }
-
-
-    /*public void Mover(Mapa mapa, Jugador jugadorHumano)
-    {
-        int[] posicionIA = jugadorIA.Position;
-        int[] meta = new int[] { 20, 20 };
-        List<Nodo> camino = BuscarCaminoLee(posicionIA, meta, mapa);
-
-        if (camino.Count > 0)
-        {
-            Nodo siguientePaso = camino[0];
-            jugadorIA.Position[0] = siguientePaso.Fila;
-            jugadorIA.Position[1] = siguientePaso.Columna;
-
-            if (mapa.GetFicha(jugadorIA.Position[0], jugadorIA.Position[1]) == "💰 ")
-            {
-                mapa.SetFicha(jugadorIA.Position[0], jugadorIA.Position[1], "   ");
-                jugadorIA.Puntos++;
-                Console.WriteLine($"{jugadorIA.Nombre} ha recogido una ficha de recompensa! Puntos: {jugadorIA.Puntos}");
-
-            }
-        }
-        else
-        {
-            EvaluarObstaculos(posicionIA, mapa);
-        }
-    }
-
-    private void MoverAleatoriamente(Mapa mapa)
-    {
-        Random random = new Random();
-        int[] posiblesMovimientos = { -1, 0, 1 }; // Movimientos en fila y columna
-
-        // Intentar mover a una posición aleatoria adyacente
-        for (int i = 0; i < 4; i++) // 4 direcciones: arriba, abajo, izquierda, derecha
-        {
-            int nuevaFila = jugadorIA.Position[0] + posiblesMovimientos[random.Next(0, 3)];
-            int nuevaColumna = jugadorIA.Position[1] + posiblesMovimientos[random.Next(0, 3)];
-
-            if (mapa.EsPosicionValida(nuevaFila, nuevaColumna))
             {
                 jugadorIA.Position[0] = nuevaFila;
                 jugadorIA.Position[1] = nuevaColumna;
-                Console.WriteLine($"{jugadorIA.Nombre} se ha movido a la posición ({nuevaFila}, {nuevaColumna}).");
-                return; // Salir después de moverse
-            }
-        }
 
-        Console.WriteLine($"{jugadorIA.Nombre} no puede moverse a ninguna posición válida.");
-    }
-
-    private List<Nodo> BuscarCaminoLee(int[] inicio, int [] meta, Mapa mapa)
-    {
-        Queue<Nodo> cola = new Queue<Nodo>();
-        HashSet<Nodo> visitados = new HashSet<Nodo>();
-        Nodo nodoInicial = new Nodo(inicio[0], inicio [1]);
-        cola.Enqueue(nodoInicial);
-        visitados.Add(nodoInicial);
-        nodoInicial.Distancia = 0; // Inicializar la distancia del nodo inicial
-
-        while (cola.Count > 0)
-        {
-            Nodo nodoActual = cola.Dequeue();
-            // Comprobar si es el objetivo
-            if (nodoActual.Fila == meta[0] && nodoActual.Columna == meta[1])
-            {
-                return ReconstruirCamino(nodoActual); // Método para reconstruir el camino
-            }
-
-            foreach (Nodo vecino in ObtenerVecinos(nodoActual, mapa))
-            {
-                if (!visitados.Contains(vecino))
+                // Verificar si la IA ha atrapado al jugador
+                if (jugadorIA.Position[0] == jugadorHumano.Position[0] || jugadorIA.Position[1] == jugadorHumano.Position[1])
                 {
-                    visitados.Add(vecino);
-                    cola.Enqueue(vecino);
-                    vecino.Distancia = nodoActual.Distancia + 1; // Actualizar la distancia
-                    vecino.Padre = nodoActual; // Guardar el nodo padre para reconstruir el camino
+                    
+                    if (poderCapturaUsado < 2)
+                    {
+                        Console.Write("Capturando al otro jugador");
+                        for (int j = 0; j < 3; j++)
+                        {
+                            Console.Write("."); // Mostrar puntos para la animación
+                            System.Threading.Thread.Sleep(500); // Esperar un poco
+                        }
+                        Console.WriteLine();
+                        EnviarJugadorAPosicionInicial(jugadorHumano);
+                        poderCapturaUsado++;
+                    }  
+                    else
+                    {
+                        Console.WriteLine("La IA no puede usar el poder de captura de nuevo.");
+                    }  
                 }
             }
         }
-        return new List<Nodo>(); // Retornar vacío si no se encuentra camino
-    }
-    
-    private List<Nodo> ObtenerVecinos(Nodo nodoActual, Mapa mapa)
+    }    
+
+    private void EnviarJugadorAPosicionInicial(Jugador jugador)
     {
-        List<Nodo> vecinos = new List<Nodo>();
-            // Definir movimientos posibles (arriba, abajo, izquierda, derecha)
-        int[,] movimientos = new int[,] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
-
-        for (int i = 0; i < movimientos.GetLength(0); i++)
-        {
-            int nuevaFila = nodoActual.Fila + movimientos[i, 0]; // Acceder a la fila
-            int nuevaColumna = nodoActual.Columna + movimientos[i, 1]; // Acceder a la columna
-
-                // Verificar límites y obstáculos
-            if (mapa.EsPosicionValida(nuevaFila, nuevaColumna))
-            {
-                vecinos.Add(new Nodo(nuevaFila, nuevaColumna));
-            }
-        }
-        return vecinos;
+        jugador.Position[0] = 1;
+        jugador.Position[1] = 1;
+        Console.WriteLine($"{jugador.Nombre} ha sido enviado a su posición inicial.");
     }
 
-    private List<Nodo> ReconstruirCamino(Nodo nodoObjetivo)
+    public int[] DecidirMovimiento(Jugador jugador, Mapa mapa)
     {
-        List<Nodo> camino = new List<Nodo>();
-        Nodo nodoActual = nodoObjetivo;
+        int[] posicionIA = jugadorIA.Position;
+        int[] posicionJugador = jugador.Position;
 
-            // Reconstruir el camino hacia atrás
-        while (nodoActual != null)
+            // Prioridad 1: Atrapar al jugador si está en la misma fila o columna
+        if (posicionIA[0] == posicionJugador[0] || posicionIA[1] == posicionJugador[1])
         {
-            camino.Add(nodoActual);
-            nodoActual = nodoActual.Padre; // Asumiendo que cada nodo tiene un puntero al nodo padre
+            return MoverseHacia(posicionJugador[0], posicionJugador[1]);
         }
 
-        camino.Reverse(); // Invertir el camino para que vaya desde el inicio hasta el objetivo
-        return camino;
+            // Prioridad 2: Moverse hacia la meta
+        int[] posicionMeta = BuscarMeta(mapa);
+        
+        if (posicionMeta != null)
+        {
+            return MoverseHacia(posicionMeta[0], posicionMeta[1]);
+        }
+
+            // Si no hay jugador cerca ni meta, moverse aleatoriamente
+        return MoverseAleatoriamente(mapa);
     }
 
-    private void EvaluarObstaculos(int[] posicionIA, Mapa mapa)
+    private int[] MoverseHacia(int objetivoX, int objetivoY)
     {
-        string fichaActual = mapa.GetFicha(posicionIA[0], posicionIA[1]);
+        int[] posicionIA = jugadorIA.Position;
+        int[] movimiento = new int[2];
 
-        // Supongamos que "🌳" representa un árbol y que la IA tiene un poder especial para atravesarlo
-        if (fichaActual == "🌳")
+        if (objetivoX > posicionIA[0])
+            movimiento[0] = 1; // Mover abajo
+        else if (objetivoX < posicionIA[0])
+            movimiento[0] = -1; // Mover arriba
+        else
+            movimiento[0] = 0;
+
+        if (objetivoY > posicionIA[1])
+            movimiento[1] = 1; // Mover derecha
+        else if (objetivoY < posicionIA[1])
+            movimiento[1] = -1; // Mover izquierda
+        else
+            movimiento[1] = 0;
+
+        return movimiento;
+    }
+
+    private int[] BuscarMeta(Mapa mapa)
+    {
+        for (int i = 0; i < mapa.Rows; i++)
         {
-            // Verificar si la IA tiene un poder especial
-            if (jugadorIA.TienePoderEspecial)
+            for (int j = 0; j < mapa.Cols; j++)
             {
-                Console.WriteLine($"{jugadorIA.Nombre} usa su poder especial para atravesar el árbol!");
-                // Aquí podrías implementar la lógica para mover a la IA a la siguiente posición
-                MoverAdyacente(posicionIA, mapa);
+                if (mapa.GetFicha(i, j) == "🏠 ")
+                {
+                    return new int[] { i, j };
+                }
             }
-            else
-            {
-                Console.WriteLine($"{jugadorIA.Nombre} no puede avanzar, hay un árbol en su camino y no tiene poder especial.");
-            }
+        }
+        return null; // No se encontró la meta
+    }
+
+    private int[] MoverseAleatoriamente(Mapa mapa)
+    {
+        var movimientos = new(int, int)[] { (-1, 0), (1, 0), (0, -1), (0, 1) };
+        var movimiento = movimientos[random.Next(movimientos.Length)];
+
+        int nuevaFila = jugadorIA.Position[0] + movimiento.Item1;
+        int nuevaColumna = jugadorIA.Position[1] + movimiento.Item2;
+
+        // Verificar si el movimiento es válido
+        if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
+        {
+            return new int[] { movimiento.Item1, movimiento.Item2 };
         }
         else
         {
-            Console.WriteLine($"{jugadorIA.Nombre} no puede avanzar, pero no hay obstáculos en su camino.");
+            // Si el movimiento no es válido, intentar otro movimiento aleatorio
+            return MoverseAleatoriamente(mapa);
         }
     }
-
-    private void MoverAdyacente(int[] posicionIA, Mapa mapa)
-    {
-        // Lógica para mover a la IA a una posición adyacente
-            // Por ejemplo, mover a la derecha si es posible
-        int nuevaFila = posicionIA[0];
-        int nuevaColumna = posicionIA[1] + 1; // Mover a la derecha
-
-        if (mapa.EsPosicionValida(nuevaFila, nuevaColumna))
-        {
-            jugadorIA.Position[0] = nuevaFila;
-            jugadorIA.Position[1] = nuevaColumna;
-            Console.WriteLine($"{jugadorIA.Nombre} se ha movido a la posición ({nuevaFila}, {nuevaColumna}).");
-        }
-        else
-        {
-            Console.WriteLine($"{jugadorIA.Nombre} no puede moverse a la posición ({nuevaFila}, {nuevaColumna}), evaluando otras opciones...");
-                // Aquí podrías implementar lógica adicional para intentar mover en otras direcciones
-        }
-    }
-
-    public class Nodo
-    {
-        public int Fila { get; set; }
-        public int Columna { get; set; }
-        public int Distancia { get; set; }
-        public Nodo Padre { get; set; } // Para reconstruir el camino
-
-        public Nodo(int fila, int columna)
-        {
-            Fila = fila;
-            Columna = columna;
-            Distancia = int.MaxValue; // Inicializar con un valor alto
-            Padre = null; // Inicialmente no tiene padre
-        }
-
-        // Sobrecarga de Equals y GetHashCode para usar en HashSet
-        public override bool Equals(object obj)
-        {
-            if (obj is Nodo nodo)
-            {
-                return Fila == nodo.Fila && Columna == nodo.Columna;
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return (Fila, Columna).GetHashCode();
-        }
-    }*/
-    
 }
+
+    
+    

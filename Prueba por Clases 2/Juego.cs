@@ -12,14 +12,14 @@ public class Juego
     private int turnoActual;
     private bool movimientoExtra;
     private MovimientoJugador movimientoJugador;
-    private int filas; // Declarar filas
+    private int filas; 
     private int columnas;
     private IA ia;
 
 
     public Juego(int rows, int cols)
     {
-        this.filas = rows; // Inicializar filas
+        this.filas = rows; 
         this.columnas = cols;
         this.mapa = new Mapa(rows, cols);
         this.jugadores = new Jugador[2];
@@ -32,12 +32,12 @@ public class Juego
         int modoJuego = ElegirModoJuego();
         if (modoJuego == 1)
         {
-            InscribirJugador(); // inscrib humano
+            InscribirJugador(); 
             CrearIA();
         }
         else
         {
-            InscribirJugadores(); //inscrib dos jugad
+            InscribirJugadores(); 
         }
         MostrarInstrucciones();
         Jugar(modoJuego);
@@ -72,7 +72,6 @@ public class Juego
         {
             Console.Write($"Ingresa el nombre del Jugador {i + 1}: ");
             string nombre = Console.ReadLine();
-            // Asignar posiciones iniciales
             int fila = 1;  // Fila para ambos jugadores
             int columna = i == 0 ? 1 : 25; // Jugador 1 en (1, 1), Jugador 2 en (1, 26)
             jugadores[i] = new Jugador(nombre, fila, columna);
@@ -81,24 +80,33 @@ public class Juego
 
     private void MostrarInstrucciones()
     {
+        Console.Clear();
         var panel = new Panel(new Markup(
             "[bold yellow]Instrucciones del Juego:[/]\n" +
-            "1. Usa las teclas W, A, S, D para mover a tu jugador: 🏃‍♂️\n" +
-            "   - W: Arriba ⬆\n" +
-            "   - A: Izquierda ⬅\n" +
-            "   - S: Abajo ⬇\n" +
-            "   - D: Derecha ➡\n" +
-            "2. 🚧 Evita los obstáculos marcados con '⛔'.\n" +
-            "3. 🎁 Recoge las fichas de recompensa marcadas con '💰' para ganar puntos.\n" +
-            "4. 😋 Por cada ficha recompensa que cojas puedes hacer un movimiento extra.\n" +
-            "5. 🏁 Llega a la meta marcada con '🚩' para ganar el juego.\n" +
-            "¡Buena Suerte! Presiona cualquier tecla para continuar... ⌨"
-        ));
+            "1. [bold blue]Objetivo del juego:[/] El objetivo del juego es evitar que la IA te capture mientras intentas llegar a la meta.\n" +
+            "2. [bold blue]Movimientos:[/] Puedes moverte en cualquier dirección (arriba, abajo, izquierda, derecha) utilizando las teclas W, A, S, D.\n" +
+            "3. [bold blue]IA:[/] La IA se moverá en un patrón de movimiento determinado y intentará capturarte si te detecta.\n" +
+            "4. [bold blue]Detección:[/] La IA solo puede detectarte si estás dentro de un rango determinado de casillas.\n" +
+            "5. [bold blue]Captura:[/] Si la IA te detecta, tiene una probabilidad de capturarte. Si te captura, el juego terminará.\n" +
+            "6. [bold blue]Meta:[/] La meta es el objetivo final del juego. Debes intentar llegar a la meta sin que la IA te capture.\n" +
+            "\n" +
+            "[bold green]Consejos:[/]\n" +
+            "1. [bold blue]Mantén la distancia:[/] Intenta mantener la distancia con la IA para evitar que te detecte.\n" +
+            "2. [bold blue]Utiliza el patrón de movimiento:[/] Utiliza el patrón de movimiento de la IA para anticipar sus movimientos y evitar que te capture.\n" +
+            "3. [bold blue]Mantén la calma:[/] No te desanimes si la IA te detecta. Intenta mantener la calma y encontrar una forma de escapar.\n" +
+            "\n" +
+            "[bold red]Notas:[/]\n" +
+            "1. [bold blue]La IA se vuelve más agresiva:[/] A medida que avanzas en el juego, la IA se vuelve más agresiva y tiene más probabilidad de capturarte.\n" +
+            "2. [bold blue]La meta se vuelve más difícil de alcanzar:[/] A medida que avanzas en el juego, la meta se vuelve más difícil de alcanzar debido a la presencia de la IA.\n" +
+            "\n" +
+            "[bold blue]¡Buena suerte! Presiona cualquier tecla para continuar...[/]"
+        ))
+        .Header(new PanelHeader("[bold cyan]Instrucciones[/]"))
+        .BorderColor(Color.Green)
+        .Border(BoxBorder.Rounded);
 
-        panel.Border = BoxBorder.Rounded; 
-        panel.Header = new PanelHeader("[bold cyan]Instrucciones[/]"); // Encabezado del panel
         AnsiConsole.Render(panel);
-        Console.ReadKey(); 
+        Console.ReadKey();
         Console.Clear();
     }
 
@@ -118,7 +126,6 @@ public class Juego
             if (VerificarVictoria(jugadores[0]))
             {
                 MostrarMensajeVictoria(jugadores[0].Nombre);
-                MostrarResultados();
                 break;
             }
 
@@ -129,7 +136,6 @@ public class Juego
                 if (VerificarVictoria(ia.GetJugadorIA()))
                 {
                     MostrarMensajeVictoria(ia.GetJugadorIA().Nombre);
-                    MostrarResultados();
                     break;
                 }
             }
@@ -141,7 +147,6 @@ public class Juego
                 if (VerificarVictoria(jugadores[1]))
                 {
                     MostrarMensajeVictoria(jugadores[1].Nombre);
-                    MostrarResultados();
                     break; // Salir del bucle si el jugador 2 gana
                 }
             }
@@ -160,35 +165,35 @@ public class Juego
 
     private void MostrarMensajeVictoria(string nombreGanador)
     {
-        for (int i = 0; i < 5; i++)
+        
+         AnsiConsole.Status()
+        .Spinner(Spinner.Known.CircleQuarters)
+        .Start("Celebrando la victoria...", (_) =>
         {
-            // Imprimir el mensaje de "¡Felicidades!"
-            Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
-            AnsiConsole.MarkupLine($"[bold yellow]🎊 🎊 🎊 ¡Felicidades, {nombreGanador}! 🎊 🎊 🎊[/]");
-
-            // Esperar medio segundo
-            System.Threading.Thread.Sleep(500);
-
-            // Imprimir el mensaje de "¡Victoria!"
-            Console.SetCursorPosition(0, 16); // Ajusta la posición según sea necesario
-            AnsiConsole.MarkupLine($"[bold yellow]🎉 🎉 🎉 ¡Victoria, {nombreGanador}! 🎉 🎉 🎉[/]");
-
-            // Esperar medio segundo
-            System.Threading.Thread.Sleep(500);
-        }
-    }
-    private void MostrarResultados()
-    {
-        var table = new Table();
-        table.AddColumn("Jugador");
-        table.AddColumn("Puntos");
-
-        table.AddRow(jugadores[0].Nombre, jugadores[0].Puntos.ToString());
-        table.AddRow(jugadores[1].Nombre, jugadores[1].Puntos.ToString());
-
-        AnsiConsole.Render(table);
-
-        AnsiConsole.MarkupLine("Presiona cualquier tecla para salir...");
-        Console.ReadKey();
+            AnsiConsole.Clear();
+            var panel = new Panel(new Markup($"¡Felicidades, {nombreGanador}!"))
+                .Header(new PanelHeader("¡Victoria!"))
+                .BorderColor(Color.Green)
+                .Border(BoxBorder.Rounded);
+            AnsiConsole.Write(panel);
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[green]¡Has demostrado ser el mejor en este juego![/]");
+            AnsiConsole.MarkupLine("[blue]¡Tu habilidad y estrategia te han llevado a la victoria![/]");
+            AnsiConsole.MarkupLine("[red]¡No te rindas, sigue adelante y sigue mejorando![/]");
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {nombreGanador} : [/][red]1000[/]");
+            AnsiConsole.WriteLine();
+            var table = new Table();
+            table.AddColumn("Estadísticas de la partida");
+            table.AddRow($"Nombre del jugador: {nombreGanador}");
+            table.AddRow($"Puntuación: 1000");
+            table.AddRow($"Tiempo de juego: 10 minutos");
+            AnsiConsole.Render(table);
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[bold blue]¡Gracias por jugar! Esperamos verte de nuevo pronto.[/]");
+            AnsiConsole.MarkupLine("[bold blue]Presiona cualquier tecla para salir...[/]");
+            Console.ReadKey(); // Esperar a que el jugador presione una tecla
+        });
+        
     }
 }
