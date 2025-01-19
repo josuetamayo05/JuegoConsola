@@ -45,6 +45,7 @@ public class Juego
 
     private int ElegirModoJuego()
     {
+        Console.Clear();
         Console.WriteLine("¿Cuántos jugadores van a jugar?");
         Console.WriteLine("1. Un jugador (contra la IA)");
         Console.WriteLine("2. Dos jugadores (multijugador)");
@@ -120,8 +121,10 @@ public class Juego
                 Console.WriteLine("Error: Los jugadores no están correctamente inicializados.");
                 return; // Salir del método si hay un problema
             }
-            
-            movimientoJugador.MoverJugador(1);
+            for(int i = 0; i < 3; i++)
+            {
+                movimientoJugador.MoverJugador(1);
+            }
 
             if (VerificarVictoria(jugadores[0]))
             {
@@ -142,12 +145,13 @@ public class Juego
 
             else if (modoJuego == 2)
             {
-                movimientoJugador.MoverJugador(2); // Mover al segundo jugador
+                for( int i = 0; i < 3; i++)
+                    movimientoJugador.MoverJugador(2); 
 
                 if (VerificarVictoria(jugadores[1]))
                 {
                     MostrarMensajeVictoria(jugadores[1].Nombre);
-                    break; // Salir del bucle si el jugador 2 gana
+                    break; 
                 }
             }
             turnoActual = (turnoActual + 1) % jugadores.Length;

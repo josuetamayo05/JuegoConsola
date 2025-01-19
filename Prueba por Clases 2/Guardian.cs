@@ -1,4 +1,4 @@
-public class Guardian
+/*public class Guardian
 {
     private string nombre;
     private int fila;
@@ -52,7 +52,7 @@ public class Guardian
             }
             else if (this.fila > jugador.Fila)
             {
-                this.fila -= this.velocidad;
+                this.fila -= this.velocidad;  
             }
 
             if (this.columna < jugador.Columna)
@@ -71,4 +71,4 @@ public class Guardian
             Console.WriteLine($"El guardián {this.nombre} ha capturado al jugador {jugador.Nombre}!");
         }
     }
-}
+}*/

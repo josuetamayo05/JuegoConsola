@@ -26,8 +26,7 @@ public class IA
             int nuevaFila = jugadorIA.Position[0] + movimiento[0];
             int nuevaColumna = jugadorIA.Position[1] + movimiento[1];
 
-            // Verificar si la nueva posición es válida
-            if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
+              if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
             {
                 jugadorIA.Position[0] = nuevaFila;
                 jugadorIA.Position[1] = nuevaColumna;
