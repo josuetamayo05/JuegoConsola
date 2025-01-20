@@ -19,13 +19,22 @@
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/tu_usuario/juego-laberinto.git
+
 Navega al directorio del proyecto:
 cd juego-laberinto
 
-Cómo Jugar
+Restaurar las dependencias:
+dotnet restore
+
+Ejecuta el juego:
+dotnet run
+
+Cómo Jugar?
 
 Usa las teclas⬤👨‍💻
 El objetivo es divertirse👾
 ¡Buena Suerte!⬤🥠
+
+Las contribuciones son bienvenidas. Si deseas mejorar el juego o agregar nuevas características, no dudes en abrir un problema o enviar un pull request .
 
 
