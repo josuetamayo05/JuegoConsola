@@ -1,74 +1,72 @@
 /*public class Guardian
 {
-    private string nombre;
-    private int fila;
-    private int columna;
+    private int x;
+    private int y;
     private int velocidad;
 
-    public Guardián(string nombre, int fila, int columna, int velocidad)
+    public Guardian(int x, int y, int velocidad)
     {
-        this.nombre = nombre;
-        this.fila = fila;
-        this.columna = columna;
+        this.x = x;
+        this.y = y;
         this.velocidad = velocidad;
     }
 
-    public void Mover(Mapa mapa, Jugador jugador)
+    public void Mover(Jugador jugador)
     {
         // Calcula la distancia entre el guardián y el jugador
-        int distanciaFila = Math.Abs(this.fila - jugador.Fila);
-        int distanciaColumna = Math.Abs(this.columna - jugador.Columna);
+        int distanciaX = Math.Abs(this.x - jugador.X);
+        int distanciaY = Math.Abs(this.y - jugador.Y);
 
         // Si el guardián está en la misma fila que el jugador, mueve hacia la columna del jugador
-        if (distanciaFila == 0)
+        if (distanciaY == 0)
         {
-            if (this.columna < jugador.Columna)
+            if (this.x < jugador.X)
             {
-                this.columna += this.velocidad;
+                this.x += this.velocidad;
             }
-            else if (this.columna > jugador.Columna)
+            else if (this.x > jugador.X)
             {
-                this.columna -= this.velocidad;
+                this.x -= this.velocidad;
             }
         }
         // Si el guardián está en la misma columna que el jugador, mueve hacia la fila del jugador
-        else if (distanciaColumna == 0)
+        else if (distanciaX == 0)
         {
-            if (this.fila < jugador.Fila)
+            if (this.y < jugador.Y)
             {
-                this.fila += this.velocidad;
+                this.y += this.velocidad;
             }
-            else if (this.fila > jugador.Fila)
+            else if (this.y > jugador.Y)
             {
-                this.fila -= this.velocidad;
+                this.y -= this.velocidad;
             }
         }
         // Si el guardián no está en la misma fila ni columna que el jugador, mueve hacia la diagonal del jugador
         else
         {
-            if (this.fila < jugador.Fila)
+            if (this.x < jugador.X)
             {
-                this.fila += this.velocidad;
+                this.x += this.velocidad;
             }
-            else if (this.fila > jugador.Fila)
+            else if (this.x > jugador.X)
             {
-                this.fila -= this.velocidad;  
+                this.x -= this.velocidad;
             }
 
-            if (this.columna < jugador.Columna)
+            if (this.y < jugador.Y)
             {
-                this.columna += this.velocidad;
+                this.y += this.velocidad;
             }
-            else if (this.columna > jugador.Columna)
+            else if (this.y > jugador.Y)
             {
-                this.columna -= this.velocidad;
+                this.y -= this.velocidad;
             }
         }
 
-        // Verifica si el guardián ha capturado al jugador
-        if (this.fila == jugador.Fila && this.columna == jugador.Columna)
+        // Verifica si el guardián ha atrapado al jugador
+        if (this.x == jugador.X && this.y == jugador.Y)
         {
-            Console.WriteLine($"El guardián {this.nombre} ha capturado al jugador {jugador.Nombre}!");
+            Console.WriteLine("El guardián ha atrapado al jugador!");
         }
     }
 }*/

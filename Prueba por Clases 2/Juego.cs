@@ -29,7 +29,13 @@ public class Juego
 
     public void IniciarJuego()
     {
-        int modoJuego = ElegirModoJuego();
+        Console.Clear();
+        Console.WriteLine("¡Bienvenido al juego!");
+        Console.WriteLine("Presiona cualquier tecla para comenzar...");
+        Console.ReadKey();
+
+        int modoJuego = MostrarMenuJuego();
+
         if (modoJuego == 1)
         {
             InscribirJugador(); 
@@ -39,32 +45,119 @@ public class Juego
         {
             InscribirJugadores(); 
         }
-        MostrarInstrucciones();
         Jugar(modoJuego);
+
     }
 
-    private int ElegirModoJuego()
+    
+    public void MostrarMenuInicio()
     {
         Console.Clear();
-        Console.WriteLine("¿Cuántos jugadores van a jugar?");
-        Console.WriteLine("1. Un jugador (contra la IA)");
-        Console.WriteLine("2. Dos jugadores (multijugador)");
-        Console.Write("Elige una opción (1 o 2): ");
+        /*var imagen = new Image(@"B:\Pictures\Actividad Circunscripcion.jpg");
+        imagen.Width = 80;
+        imagen.Height = 20;
+        AnsiConsole.Write(imagen);*/
+        var table = new Table();
+        table.AddColumn("Menú de inicio");
+
+        table.AddRow("[bold green]Jugar[/]");
+
+        table.AddRow("[bold blue]Instrucciones[/]");
+
+        table.AddRow("[bold red]Salir[/]");
+
+        table.AddRow("[bold yellow]Créditos[/]");
+
+        table.AddRow("[bold cyan]Acerca de[/]");
+        table.Width = 80;
+        AnsiConsole.Render(table);
+
+        Console.Write("Elige una opción: ");
         int opcion = int.Parse(Console.ReadLine());
+
+        switch (opcion)
+        {
+            case 1:
+                IniciarJuego();
+                break;
+            case 2:
+                MostrarInstrucciones();
+                break;
+            case 3:
+                Salir();
+                break;
+            case 4:
+                MostrarCreditos();
+                break;
+            case 5:
+                MostrarAcercaDe();
+                break;
+            default:
+                Console.WriteLine("Opción inválida. Por favor, elige una opción válida.");
+                MostrarMenuInicio();
+                break;
+        }
+    }
+    public int MostrarMenuJuego()
+    {
+        var table = new Table();
+        table.AddColumn("Menú de juego");
+        table.AddRow("[bold green]Juego contra la IA[/]");
+        table.AddRow("[bold blue]Juego contra otro jugador[/]");
+
+        AnsiConsole.Render(table);
+
+        Console.Write("Elige una opción: ");
+        int opcion = int.Parse(Console.ReadLine());
+
         return opcion;
+    }
+    public void Salir()
+    {
+        Console.Clear();
+        Console.WriteLine("¡Gracias por jugar!");
+        Console.WriteLine("Presiona cualquier tecla para salir...");
+        Console.ReadKey();
+        Environment.Exit(0);
+    }
+    public void MostrarCreditos()
+    {
+        Console.Clear();
+        Console.WriteLine("Créditos:");
+        Console.WriteLine("-------------------------");
+        Console.WriteLine("Desarrollador: [Josué Alejandro Tamayo Ayrado]");
+        Console.WriteLine("Versión: 1.0");
+        Console.WriteLine("Fecha de lanzamiento: [En modificación ún]");
+        Console.WriteLine("-------------------------");
+        Console.WriteLine("Presiona cualquier tecla para regresar al menú...");
+        Console.ReadKey();
+        MostrarMenuInicio();
+    }
+
+    public void MostrarAcercaDe()
+    {
+        Console.Clear();
+        Console.WriteLine("Acerca de:");
+        Console.WriteLine("-------------------------");
+        Console.WriteLine("Este juego es un proyecto de [Josué Alejandro Tamayo Ayrado] para [Volver a mi Niñez].");
+        Console.WriteLine("El juego es un ejemplo de cómo se puede crear un juego en C# utilizando la biblioteca Spectre.Console.");
+        Console.WriteLine("-------------------------");
+        Console.WriteLine("Presiona cualquier tecla para regresar al menú...");
+        Console.ReadKey();
+        MostrarMenuInicio();
     }
 
     private void InscribirJugador()
     {
         Console.Write("Ingrese el nombre del Jugador: ");
         string nombre = Console.ReadLine();
-        jugadores[0] = new Jugador(nombre, 1, 1); //jug humano en (0,0)
+        jugadores[0] = new Jugador(nombre, 1, 1); 
     }
 
     private void CrearIA()
     {
         ia = new IA("IA", 1, 25);
-        jugadores[1] = ia.GetJugadorIA(); // IA 2do jugador
+        jugadores[1] = ia.GetJugadorIA(); 
     }
 
     private void InscribirJugadores()
@@ -108,12 +201,12 @@ public class Juego
 
         AnsiConsole.Render(panel);
         Console.ReadKey();
-        Console.Clear();
+        MostrarMenuInicio();
+
     }
 
     public void Jugar(int modoJuego)
     {
-
         while (true)
         {
             if (jugadores == null || jugadores.Length < 2)
@@ -158,7 +251,7 @@ public class Juego
         }
     }
     
-
+    
     private bool VerificarVictoria(Jugador jugador)
     {
         int filaMeta = 20;

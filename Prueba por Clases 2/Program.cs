@@ -13,6 +13,6 @@ class Program
         int filas = 27; // Número de filas del mapa
         int columnas = 27; // Número de columnas del mapa
         Juego juego = new Juego(filas, columnas);
-        juego.IniciarJuego();
+        juego.MostrarMenuInicio();
     }
 }
