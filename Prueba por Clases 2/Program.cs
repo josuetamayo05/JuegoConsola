@@ -10,8 +10,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        int filas = 27; // Número de filas del mapa
-        int columnas = 27; // Número de columnas del mapa
+        int filas = 27; 
+        int columnas = 27; 
         Juego juego = new Juego(filas, columnas);
         juego.MostrarMenuInicio();
     }

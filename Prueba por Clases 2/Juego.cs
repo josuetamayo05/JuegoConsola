@@ -16,7 +16,6 @@ public class Juego
     private int columnas;
     private IA ia;
 
-
     public Juego(int rows, int cols)
     {
         this.filas = rows; 
@@ -49,14 +48,56 @@ public class Juego
 
     }
 
-    
-    public void MostrarMenuInicio()
+    public void Introduction()
     {
         Console.Clear();
-        /*var imagen = new Image(@"B:\Pictures\Actividad Circunscripcion.jpg");
-        imagen.Width = 80;
-        imagen.Height = 20;
-        AnsiConsole.Write(imagen);*/
+
+        var table = new Table();
+        table.AddColumn("BIENVENIDOS");
+        table.AddRow(new Panel(new Markup("[bold green]BIENVENIDOS[/]"))
+            .Header(new PanelHeader("[bold cyan]MAZE RUNNERS[/]"))
+            .BorderColor(Color.Green)
+            .Border(BoxBorder.Rounded));
+
+        AnsiConsole.Render(table);
+
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
+
+        Console.Clear();
+
+        var panel = new Panel(new Markup("[bold yellow]¡Bienvenidos al juego de Maze Runners![/]"))
+            .Header(new PanelHeader("[bold cyan]¡Comienza la aventura![/]"))
+            .BorderColor(Color.Yellow)
+            .Border(BoxBorder.Rounded);
+
+        AnsiConsole.Render(panel);
+
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
+
+        Console.Clear();
+
+        var mensaje = new Markup("[bold green]BIENVENIDOS[/] [bold blue]al juego de[/] [bold red]Maze Runners[/] [bold yellow]¡Comienza la aventura![/]");
+        AnsiConsole.Write(mensaje);
+
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
+
+        Console.Clear();
+
+        var mensaje2 = new Markup("[bold cyan]¡Prepárate para[/] [bold green]correr[/] [bold blue]y[/] [bold red]evadir[/] [bold yellow]obstáculos![/]");
+        AnsiConsole.Write(mensaje2);
+
+        Thread.Sleep(2000); 
+    }
+
+    public void MostrarMenuInicio()
+    {
+        Introduction();
+        Console.Clear();
+        AnsiConsole.MarkupLine("[blue]¡Bienvenidos al Maze Runner![/]");
+        Console.WriteLine();
+        ImprimirMatrizMenu();
+        Console.WriteLine();
+
         var table = new Table();
         table.AddColumn("Menú de inicio");
 
@@ -72,8 +113,34 @@ public class Juego
         table.Width = 80;
         AnsiConsole.Render(table);
 
-        Console.Write("Elige una opción: ");
-        int opcion = int.Parse(Console.ReadLine());
+        int opcion = 0;
+        bool entradaValida = false;
+
+        while (!entradaValida)
+        {
+            try
+            {
+                Console.Write("Elige una opción: ");
+                opcion = int.Parse(Console.ReadLine());
+
+                if (opcion >= 1 && opcion <= 5)
+                {
+                    entradaValida = true;
+                }
+                else
+                {
+                    Console.WriteLine("Opción inválida. Por favor, elige un número entre 1 y 5.");
+                }
+            }
+            catch (FormatException) 
+            {
+                Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine($"Error inesperado: {ex.Message}");
+            }
+        }
 
         switch (opcion)
         {
@@ -98,6 +165,56 @@ public class Juego
                 break;
         }
     }
+
+    private void ImprimirMatrizMenu()
+    {
+        var matrizEjemplo = new string[10, 10];
+
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    matrizEjemplo[i, j] = "🏃"; 
+                }
+                else if (i == 9 && j == 9)
+                {
+                    matrizEjemplo[i, j] = "🏆"; 
+                }
+                else if (i == 5 && j == 5)
+                {
+                    matrizEjemplo[i, j] = "🚪"; 
+                }
+                else if (i == 2 && j == 7)
+                {
+                    matrizEjemplo[i, j] = "⚡"; 
+                }
+                else if (i == 3 && j == 3)
+                {
+                    matrizEjemplo[i, j] = "🌳"; 
+                }
+                else if (i == 7 && j == 2)
+                {
+                    matrizEjemplo[i, j] = "💰"; 
+                }
+                else
+                {
+                    matrizEjemplo[i, j] = "⬜"; 
+                }
+            }
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                Console.Write(matrizEjemplo[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+
     public int MostrarMenuJuego()
     {
         var table = new Table();
@@ -172,6 +289,8 @@ public class Juego
         }
     }
 
+    
+
     private void MostrarInstrucciones()
     {
         Console.Clear();
@@ -212,7 +331,7 @@ public class Juego
             if (jugadores == null || jugadores.Length < 2)
             {
                 Console.WriteLine("Error: Los jugadores no están correctamente inicializados.");
-                return; // Salir del método si hay un problema
+                return; 
             }
             for(int i = 0; i < 3; i++)
             {

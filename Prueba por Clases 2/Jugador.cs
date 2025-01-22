@@ -14,6 +14,8 @@ public class Jugador
     public int[] PosicionInicial { get; set; }  // [fila, columna]
     public int PoderesCaptura { get; set; }
     public bool TienePoderEspecial { get; set; }
+    public int TrampasDetectadas{ get; set; }
+    public int TrampasMaximas{ get; set; }
 
     public Jugador(string nombre, int fila, int columna)
     {
@@ -23,8 +25,15 @@ public class Jugador
         Puntos = 0;
         PoderesCaptura = 0;
         TienePoderEspecial = false;
+        TrampasDetectadas = 0;
+        TrampasMaximas = 2;
     }
-
+    public void Penalizar()
+    {
+        Console.WriteLine("Se te ha restado un punto por coger una trampa");
+        Puntos--;
+    }
+    
     public void RecogerRecompensa(int puntos)
     {
         Puntos += puntos;

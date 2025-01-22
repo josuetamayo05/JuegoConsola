@@ -92,6 +92,18 @@ public class MovimientoJugador
                 }
                 continue;
             }
+            /*else if( movimiento == 'p' || movimiento == 'P')
+            {
+                foreach (var trampa in mapa.Trampas)
+                {
+                    trampa.ToggleVisibility();
+                }
+                Thread.Sleep(2000);
+                foreach (var trampa in mapa.Trampas)
+                {
+                    trampa.ToggleVisibility();
+                }
+            }*/
 
             int[] posicion = jugadores[jugador - 1].Position;
             int nuevaFila = posicion[0];
@@ -99,16 +111,15 @@ public class MovimientoJugador
 
             switch (movimiento)
             {
-                case 'w': nuevaFila--; break; // Arriba
-                case 's': nuevaFila++; break; // Abajo
-                case 'a': nuevaColumna--; break; // Izquierda
-                case 'd': nuevaColumna++; break; // Derecha
+                case 'w': nuevaFila--; break; 
+                case 's': nuevaFila++; break; 
+                case 'a': nuevaColumna--; break; 
+                case 'd': nuevaColumna++; break; 
                 default:
                     Console.WriteLine("Movimiento no válido. Intenta de nuevo.");
-                    continue; // Si la tecla no es válida, volver a pedir movimiento
+                    continue; 
             }
 
-            // Verificar límites
             if (nuevaFila >= 0 && nuevaColumna >= 0 && nuevaFila < mapa.Rows && nuevaColumna < mapa.Cols)
             {
                 if (mapa.GetFicha(nuevaFila, nuevaColumna) == "🌳 ")
@@ -116,7 +127,6 @@ public class MovimientoJugador
                     // Verificar si el jugador tiene puntos para usar el poder
                     if (jugadores[jugador - 1].Puntos > 0)
                     {
-                        // Preguntar si quiere usar el poder
                         Console.WriteLine($"{nombreJugadorActual}, has caído en un árbol. ¿Quieres usar el poder para atravesarlo? Se te restará un punto de tu contador. Presiona 'F' para usar el poder o cualquier otra tecla para volver a tu posición inicial.");
                         char decision = Console.ReadKey().KeyChar;
                         Console.WriteLine(); // Salto de línea después de la entrada
@@ -140,16 +150,15 @@ public class MovimientoJugador
                     }
                     else
                     {
-                        //string mensajeTrampa = $"{nombreJugadorActual}, no tienes suficientes puntos para usar el poder. Vuelves a tu posición inicial."; // Mensaje de trampa
-                        Console.WriteLine(mensajeTrampa); // Imprimir el mensaje antes de restaurar la posición
+                        Console.WriteLine(mensajeTrampa);
                         
                         for (int j = 0; j < 3; j++)
                         {
                             Console.Write($"{nombreJugadorActual} retrocediendo a la posición inicial");
                             for (int k = 0; k < 3; k++)
                             {
-                                Console.Write("."); // Mostrar puntos para la animación
-                                System.Threading.Thread.Sleep(300); // Esperar un poco
+                                Console.Write("."); 
+                                System.Threading.Thread.Sleep(600); 
                             }
                             Console.WriteLine(); // Salto de línea después de cada retroceso
                         }
@@ -173,13 +182,12 @@ public class MovimientoJugador
                         for (int i = 0; i < 3; i++)
                         {
                             Console.Write(".");
-                            System.Threading.Thread.Sleep(700);
+                            System.Threading.Thread.Sleep(850);
                         }
                         Console.WriteLine();
 
                         posicion[0] = puerta2[0]; // Mover jugador 1 a
                         posicion[1] = puerta2[1];
-                        //mapa.Imprimir();
                     }
                         
                     else if (nuevaFila == puerta2[0] && nuevaColumna == puerta2[1])
@@ -188,13 +196,12 @@ public class MovimientoJugador
                         for (int i = 0; i < 3; i++)
                         {
                             Console.Write(".");
-                            System.Threading.Thread.Sleep(700);
+                            System.Threading.Thread.Sleep(850);
                         }
                         Console.WriteLine();
 
                         posicion[0] = puerta1[0];
                         posicion[1] = puerta1[1];
-                        //mapa.Imprimir();
                     }
 
                     Console.WriteLine("Evaluando posición");
@@ -219,9 +226,7 @@ public class MovimientoJugador
                             Console.WriteLine("🎊 🎊 🎊 ¡Felicidades, has recogido una ficha recompensa y puedes volver a jugar! 🎊 🎊 🎊");
                             System.Threading.Thread.Sleep(900); // Esperar medio segundo
                         }
-                            
-                            
-                        //mapa.Imprimir(); // Imprimir mapa actualiz
+                                
                         movimientoExtra = true;
                     }
                     else
@@ -229,12 +234,10 @@ public class MovimientoJugador
                         movimientoExtra = false;
                     }
                         
-                    //mapa.Imprimir();
-
                     if (mapa.GetFicha(nuevaFila, nuevaColumna) == "⚡ ")
                     {
                         AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} ha recogido una ficha de captura! 🎉 Puedes usar el poder de captura.");
-                        System.Threading.Thread.Sleep(1000); // Esperar medio segundo
+                        System.Threading.Thread.Sleep(1500); 
 
                         if (jugador == 1)
                         {

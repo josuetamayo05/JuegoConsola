@@ -4,16 +4,19 @@ using System.Text;
 using Spectre.Console;
 using System.Linq;
 
+
 namespace Prueba_por_Clases_2;
 
 
 public class Mapa
 {
     private string[,] mapa;
+    private string[,] mapaMenu;
     public int Rows { get; set;}
     public int Cols { get; set; }
     Random random = new Random();
     private Jugador[] jugadores;
+    //public List<Trampa> Trampas { get; set; }
 
     public Mapa(int rows, int cols)
     {
@@ -21,6 +24,8 @@ public class Mapa
         Cols = cols;
         this.jugadores = jugadores;
         InicializarMapa(rows, cols);
+        //Trampas = new List<Trampa>();
+       // GenerarTrampasAleatorias(10);        
     }
     
 
@@ -41,13 +46,40 @@ public class Mapa
         mapa[20, 20] = "🏠 ";
         mapa[15, 15] = "🚪 ";
         mapa[20, 24] = "🚪 ";
-
-        
         ColocarFichasRandom(6, "⚡ ");
         ColocarFichasRandom(12, "💰 ");
         ColocarFichasRandom(12, "🚩 ");
         ColocarFichasRandom(8, "🌳 ");
     }
+
+    
+    /*public void GenerarTrampasAleatorias(int cantidad)
+    {
+        Random random = new Random();
+
+        for (int i = 0; i < cantidad; i++)
+        {
+            int fila, columna;
+
+            do
+            {
+                fila = random.Next(1, Rows - 1);
+                columna = random.Next(1, Cols - 1);
+            } while (GetFicha(fila, columna) != "⬜ "); 
+
+            var trampa = new Trampa(fila, columna);
+            Trampas.Add(trampa);
+
+            // Mostrar la trampa una sola vez
+            //Console.WriteLine($"Trampa en posición ({trampa.Position[0]}, {trampa.Position[1]})");
+            // Ocultar la trampa después de mostrarla
+            trampa.ToggleVisibility();
+
+            SetFicha(fila, columna, "🚩 ");
+            Thread.Sleep(1000); // Esperar 1 segundo
+            SetFicha(fila, columna, "   ");
+        }
+    }*/
 
     public void GenerateMaze(int row, int col)
     {
@@ -91,7 +123,6 @@ public class Mapa
                 {
                     if (i == jugador.Position[0] && j == jugador.Position[1])
                     {
-                        // Imprimir el símbolo del jugador
                         Console.Write(jugador.Nombre == "IA" ? "🤖 " : "😃 "); // Usar un emoji diferente para la IA
                         jugadorEncontrado = true;
                         break; // Salir del bucle si se encontró un jugador
@@ -107,6 +138,37 @@ public class Mapa
             Console.WriteLine(); 
         }
     }
+    
+
+    /*public void VisualizarTrampa(Jugador jugador)
+    {
+        foreach (var trampa in Trampas)
+        {
+            trampa.ToggleVisibility();
+            SetFicha(trampa.Position[0], trampa.Position[1], "🚩 ");
+        }
+
+        Thread.Sleep(2000);
+
+        // Ocultar las trampas en el mapa
+        foreach (var trampa in Trampas)
+        {
+            trampa.ToggleVisibility();
+            SetFicha(trampa.Position[0], trampa.Position[1], " ");
+        }
+    }
+
+    public void ColisionarConTrampa(Jugador jugador)
+    {
+        foreach (var trampa in Trampas)
+        {
+            if (jugador.Position[0] == trampa.Position[0] && jugador.Position[1] == trampa.Position[1])
+            {
+                // Aplicar la penalización correspondiente
+                jugador.Penalizar();
+            }
+        }
+    }*/
 
     private void ColocarFichasRandom(int cantidad, string tipo)
     {
@@ -128,16 +190,7 @@ public class Mapa
         mapa[row, col] = tipo;
     }
 
-    /*private int GetValorPorTipo(TipoFicha tipo)
-    {
-        return tipo switch // dar valor a las fichas
-        {
-            TipoFicha.Poder => 3,
-            TipoFicha.Recompensa => 10,
-            TipoFicha.Trampa => 3,
-            _ => 0, // valor por defecto si el tipo no coincide
-        };
-    }*/
+    
     
 
     public string GetFicha(int fila, int columna)
