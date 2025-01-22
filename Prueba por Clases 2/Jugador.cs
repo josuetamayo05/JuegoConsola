@@ -8,6 +8,7 @@ namespace Prueba_por_Clases_2;
 
 public class Jugador
 {
+    public Personaje Personaje{ get; set; }
     public string Nombre { get; set; }
     public int Puntos { get; set; } 
     public int[] Position { get; set; }  // [fila, columna]
@@ -17,7 +18,7 @@ public class Jugador
     public int TrampasDetectadas{ get; set; }
     public int TrampasMaximas{ get; set; }
 
-    public Jugador(string nombre, int fila, int columna)
+    public Jugador(string nombre, int fila, int columna, Personaje personaje)
     {
         Nombre = nombre;
         PosicionInicial = new int[] { fila, columna };
@@ -25,8 +26,8 @@ public class Jugador
         Puntos = 0;
         PoderesCaptura = 0;
         TienePoderEspecial = false;
-        TrampasDetectadas = 0;
-        TrampasMaximas = 2;
+        Personaje = personaje;
+
     }
     public void Penalizar()
     {
@@ -39,5 +40,25 @@ public class Jugador
         Puntos += puntos;
     }
 
-    
+    public void UsarPoder(Personaje personaje)
+    {
+        switch (personaje.Poder)
+        {
+            case PoderEspecial.Velocidad:
+                // Aumentar la velocidad del jugador
+                break;
+            case PoderEspecial.Invisibilidad:
+                // Hacer que el jugador sea invisible durante un turno
+                break;
+            case PoderEspecial.Teletransporte:
+                // Teletransportar el jugador a una posición aleatoria en el mapa
+                break;
+            case PoderEspecial.Escudo:
+                // Dar al jugador un escudo que lo proteja de un ataque
+                break;
+            case PoderEspecial.DobleMovimiento:
+                // Permitir al jugador moverse dos veces en un turno
+                break;
+        }
+    }
 }

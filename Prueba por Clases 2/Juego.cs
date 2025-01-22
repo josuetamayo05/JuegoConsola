@@ -33,11 +33,21 @@ public class Juego
         Console.WriteLine("Presiona cualquier tecla para comenzar...");
         Console.ReadKey();
 
+        
+
         int modoJuego = MostrarMenuJuego();
 
         if (modoJuego == 1)
         {
-            InscribirJugador(); 
+            Console.WriteLine("Elige un personaje:");
+            foreach (var personaje in personajes)
+            {
+                Console.WriteLine($"{personajes.IndexOf(personaje) + 1}. {personaje.Nombre} - {personaje.Simbolo}");
+            }
+            int opcion1 = int.Parse(Console.ReadLine());
+            Personaje personajeElegido = personajes[opcion1 - 1];
+
+            InscribirJugador(personajeElegido);
             CrearIA();
         }
         else
@@ -48,50 +58,8 @@ public class Juego
 
     }
 
-    public void Introduction()
-    {
-        Console.Clear();
-
-        var table = new Table();
-        table.AddColumn("BIENVENIDOS");
-        table.AddRow(new Panel(new Markup("[bold green]BIENVENIDOS[/]"))
-            .Header(new PanelHeader("[bold cyan]MAZE RUNNERS[/]"))
-            .BorderColor(Color.Green)
-            .Border(BoxBorder.Rounded));
-
-        AnsiConsole.Render(table);
-
-        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
-
-        Console.Clear();
-
-        var panel = new Panel(new Markup("[bold yellow]¡Bienvenidos al juego de Maze Runners![/]"))
-            .Header(new PanelHeader("[bold cyan]¡Comienza la aventura![/]"))
-            .BorderColor(Color.Yellow)
-            .Border(BoxBorder.Rounded);
-
-        AnsiConsole.Render(panel);
-
-        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
-
-        Console.Clear();
-
-        var mensaje = new Markup("[bold green]BIENVENIDOS[/] [bold blue]al juego de[/] [bold red]Maze Runners[/] [bold yellow]¡Comienza la aventura![/]");
-        AnsiConsole.Write(mensaje);
-
-        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
-
-        Console.Clear();
-
-        var mensaje2 = new Markup("[bold cyan]¡Prepárate para[/] [bold green]correr[/] [bold blue]y[/] [bold red]evadir[/] [bold yellow]obstáculos![/]");
-        AnsiConsole.Write(mensaje2);
-
-        Thread.Sleep(2000); 
-    }
-
     public void MostrarMenuInicio()
     {
-        Introduction();
         Console.Clear();
         AnsiConsole.MarkupLine("[blue]¡Bienvenidos al Maze Runner![/]");
         Console.WriteLine();
@@ -110,6 +78,9 @@ public class Juego
         table.AddRow("[bold yellow]Créditos[/]");
 
         table.AddRow("[bold cyan]Acerca de[/]");
+
+        table.AddRow("[bold cyan]Lista de Jugadores[/]");
+
         table.Width = 80;
         AnsiConsole.Render(table);
 
@@ -123,7 +94,7 @@ public class Juego
                 Console.Write("Elige una opción: ");
                 opcion = int.Parse(Console.ReadLine());
 
-                if (opcion >= 1 && opcion <= 5)
+                if (opcion >= 1 && opcion <= 6)
                 {
                     entradaValida = true;
                 }
@@ -159,12 +130,53 @@ public class Juego
             case 5:
                 MostrarAcercaDe();
                 break;
+            case 6:
+                ListaJugadores();
+                break;
             default:
                 Console.WriteLine("Opción inválida. Por favor, elige una opción válida.");
                 MostrarMenuInicio();
                 break;
         }
     }
+
+    public void ListaJugadores()
+    {
+        Console.Clear();
+        var panel = new Panel(new Markup("[bold green]¡Bienvenido al menú de jugadores![/]\n" +
+            "[bold blue]Aquí te presentamos las acciones de cada jugador:[/]\n\n" +
+            "[bold yellow]1. Corredor[/]\n" +
+            "  - Velocidad: +20% de velocidad\n" +
+            "  - Acción especial: Correr 2 casillas adicionales\n\n" +
+            "[bold yellow]2. Fantasma[/]\n" +
+            "  - Invisibilidad: No puede ser visto por la IA\n" +
+            "  - Acción especial: Teletransportarse a una casilla aleatoria\n\n" +
+            "[bold yellow]3. Teleportador[/]\n" +
+            "  - Teletransporte: Teletransportarse a una casilla aleatoria\n" +
+            "  - Acción especial: Teletransportar a la IA a una casilla aleatoria\n\n" +
+            "[bold yellow]4. Defensor[/]\n" +
+            "  - Escudo: +20% de defensa\n" +
+            "  - Acción especial: Bloquear un ataque de la IA\n\n" +
+            "[bold yellow]5. Doble[/]\n" +
+            "  - Doble movimiento: Moverse 2 casillas en un turno\n" +
+            "  - Acción especial: Moverse 3 casillas en un turno\n\n" +
+            "[bold green]Presiona cualquier tecla para continuar...[/]"))
+            .Header(new PanelHeader("[bold cyan]Menú de jugadores[/]"))
+            .BorderColor(Color.Green)
+            .Border(BoxBorder.Rounded);
+
+        AnsiConsole.Render(panel);
+        Console.ReadKey();
+        MostrarMenuInicio();
+    }
+    private List<Personaje> personajes = new List<Personaje>()
+    {
+        new Personaje("Corredor", "", PoderEspecial.Velocidad),
+        new Personaje("Fantasma", "", PoderEspecial.Invisibilidad),
+        new Personaje("Teleportador", "", PoderEspecial.Teletransporte),
+        new Personaje("Defensor", "", PoderEspecial.Escudo),
+        new Personaje("Doble", "", PoderEspecial.DobleMovimiento)
+    };
 
     private void ImprimirMatrizMenu()
     {
@@ -264,16 +276,16 @@ public class Juego
         MostrarMenuInicio();
     }
 
-    private void InscribirJugador()
+    private void InscribirJugador(Personaje personaje)
     {
         Console.Write("Ingrese el nombre del Jugador: ");
         string nombre = Console.ReadLine();
-        jugadores[0] = new Jugador(nombre, 1, 1); 
+        jugadores[0] = new Jugador(nombre, 1, 1, personaje); 
     }
 
     private void CrearIA()
     {
-        ia = new IA("IA", 1, 25);
+        ia = new IA();
         jugadores[1] = ia.GetJugadorIA(); 
     }
 
@@ -283,9 +295,18 @@ public class Juego
         {
             Console.Write($"Ingresa el nombre del Jugador {i + 1}: ");
             string nombre = Console.ReadLine();
+
+            Console.WriteLine("Elige un personaje:");
+            foreach (var personaje in personajes)
+            {
+                Console.WriteLine($"{personajes.IndexOf(personaje) + 1}. {personaje.Nombre} - {personaje.Simbolo}");
+            }
+            int opcion = int.Parse(Console.ReadLine());
+            Personaje personajeElegido = personajes[opcion - 1];
+
             int fila = 1;  // Fila para ambos jugadores
-            int columna = i == 0 ? 1 : 25; // Jugador 1 en (1, 1), Jugador 2 en (1, 26)
-            jugadores[i] = new Jugador(nombre, fila, columna);
+            int columna = i == 0 ? 1 : 25; // Jugador 1 en (1, 1), Jugador 2 en (1, 25)
+            jugadores[i] = new Jugador(nombre, fila, columna, personajeElegido);
         }
     }
 

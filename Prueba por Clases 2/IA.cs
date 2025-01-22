@@ -1,14 +1,14 @@
 namespace Prueba_por_Clases_2;
 
-public class IA
+public class IA : Jugador
 {
     private Jugador jugadorIA;
     private Random random;
     private int poderCapturaUsado = 0;
 
-    public IA(string nombre, int fila, int columna)
+    public IA() : base("IA", 1, 25, null)
     {
-        jugadorIA = new Jugador(nombre, fila, columna);
+        jugadorIA = new Jugador("IA", 1, 25, null);
         random = new Random();
     }
 

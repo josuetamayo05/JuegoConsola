@@ -16,7 +16,6 @@ public class Mapa
     public int Cols { get; set; }
     Random random = new Random();
     private Jugador[] jugadores;
-    //public List<Trampa> Trampas { get; set; }
 
     public Mapa(int rows, int cols)
     {
@@ -24,8 +23,7 @@ public class Mapa
         Cols = cols;
         this.jugadores = jugadores;
         InicializarMapa(rows, cols);
-        //Trampas = new List<Trampa>();
-       // GenerarTrampasAleatorias(10);        
+             
     }
     
 
