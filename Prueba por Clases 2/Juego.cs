@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Spectre.Console;
+using System.Diagnostics;
 namespace Prueba_por_Clases_2;
-
-
 public class Juego
 {
+    private Stopwatch temporizador;
     private Mapa mapa;
     private Jugador[] jugadores;
     private int turnoActual;
@@ -24,6 +24,7 @@ public class Juego
         this.jugadores = new Jugador[2];
         this.turnoActual = 0;
         this.movimientoJugador = new MovimientoJugador(mapa, jugadores);
+        temporizador = new Stopwatch();
     }
 
     public void IniciarJuego()
@@ -33,8 +34,7 @@ public class Juego
         Console.WriteLine("Presiona cualquier tecla para comenzar...");
         Console.ReadKey();
 
-        
-
+        temporizador.Start();
         int modoJuego = MostrarMenuJuego();
 
         if (modoJuego == 1)
@@ -143,27 +143,28 @@ public class Juego
     public void ListaJugadores()
     {
         Console.Clear();
-        var panel = new Panel(new Markup("[bold green]¡Bienvenido al menú de jugadores![/]\n" +
-            "[bold blue]Aquí te presentamos las acciones de cada jugador:[/]\n\n" +
-            "[bold yellow]1. Corredor[/]\n" +
+        var panel = new Panel(new Markup(
+            "[bold green]¡Elige tu personaje![/]\n\n" +
+            "[bold yellow]1. 🏃 Corredor[/]\n" +
             "  - Velocidad: +20% de velocidad\n" +
             "  - Acción especial: Correr 2 casillas adicionales\n\n" +
-            "[bold yellow]2. Fantasma[/]\n" +
+            "[bold yellow]2. 👻 Fantasma[/]\n" +
             "  - Invisibilidad: No puede ser visto por la IA\n" +
             "  - Acción especial: Teletransportarse a una casilla aleatoria\n\n" +
-            "[bold yellow]3. Teleportador[/]\n" +
+            "[bold yellow]3. 🌀 Teleportador[/]\n" +
             "  - Teletransporte: Teletransportarse a una casilla aleatoria\n" +
             "  - Acción especial: Teletransportar a la IA a una casilla aleatoria\n\n" +
-            "[bold yellow]4. Defensor[/]\n" +
+            "[bold yellow]4. 🛡️ Defensor[/]\n" +
             "  - Escudo: +20% de defensa\n" +
             "  - Acción especial: Bloquear un ataque de la IA\n\n" +
-            "[bold yellow]5. Doble[/]\n" +
+            "[bold yellow]5. 🕴️ Doble[/]\n" +
             "  - Doble movimiento: Moverse 2 casillas en un turno\n" +
             "  - Acción especial: Moverse 3 casillas en un turno\n\n" +
-            "[bold green]Presiona cualquier tecla para continuar...[/]"))
-            .Header(new PanelHeader("[bold cyan]Menú de jugadores[/]"))
-            .BorderColor(Color.Green)
-            .Border(BoxBorder.Rounded);
+            "[bold green]Presiona el número correspondiente para elegir tu personaje...[/]"
+        ))
+        .Header(new PanelHeader("[bold cyan]Menú de personajes[/]"))
+        .BorderColor(Color.Green)
+        .Border(BoxBorder.Rounded);
 
         AnsiConsole.Render(panel);
         Console.ReadKey();
@@ -304,8 +305,8 @@ public class Juego
             int opcion = int.Parse(Console.ReadLine());
             Personaje personajeElegido = personajes[opcion - 1];
 
-            int fila = 1;  // Fila para ambos jugadores
-            int columna = i == 0 ? 1 : 25; // Jugador 1 en (1, 1), Jugador 2 en (1, 25)
+            int fila = 1;  
+            int columna = i == 0 ? 1 : 25; 
             jugadores[i] = new Jugador(nombre, fila, columna, personajeElegido);
         }
     }
@@ -361,6 +362,7 @@ public class Juego
 
             if (VerificarVictoria(jugadores[0]))
             {
+                temporizador.Stop();
                 MostrarMensajeVictoria(jugadores[0].Nombre);
                 break;
             }
@@ -371,6 +373,7 @@ public class Juego
 
                 if (VerificarVictoria(ia.GetJugadorIA()))
                 {
+                    temporizador.Stop();
                     MostrarMensajeVictoria(ia.GetJugadorIA().Nombre);
                     break;
                 }
@@ -383,6 +386,7 @@ public class Juego
 
                 if (VerificarVictoria(jugadores[1]))
                 {
+                    temporizador.Stop();
                     MostrarMensajeVictoria(jugadores[1].Nombre);
                     break; 
                 }
@@ -400,9 +404,27 @@ public class Juego
         return jugador.Position[0] == filaMeta && jugador.Position[1] == columnaMeta;
     }
 
+    /*public void ReiniciarJuego()
+    {
+        Console.Clear();
+        Console.WriteLine("Reiniciando el juego...");
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
+        Console.ReadKey();
+
+        mapa = new Mapa(25, 25);
+
+        jugadores = new Jugador[2];
+        jugadores[0] = new Jugador("Jugador 1", 1, 1, personajeElegido1); 
+        jugadores[1] = new Jugador("Jugador 2", 1, 25, personajeElegido2); 
+
+        turnoActual = 0;
+
+        MostrarMenuInicio();
+    }*/
     private void MostrarMensajeVictoria(string nombreGanador)
     {
-        
+        TimeSpan tiempoTranscurrido = temporizador.Elapsed;
+        string tiempoFormateado = string.Format("{0:00}:{1:00}:{2:00}", tiempoTranscurrido.Hours, tiempoTranscurrido.Minutes, tiempoTranscurrido.Seconds);   
          AnsiConsole.Status()
         .Spinner(Spinner.Known.CircleQuarters)
         .Start("Celebrando la victoria...", (_) =>
