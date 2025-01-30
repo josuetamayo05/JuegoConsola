@@ -35,32 +35,7 @@ public class MovimientoJugador
         {
             mapa.Imprimir(jugadores);
             AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
-            AnsiConsole.MarkupLine($"[bold blue]🎲 Poderes de Captura: [/][red]{jugadores[0].PoderesCaptura}[/] - Poderes de Inmunidad: [/][red]{jugadores[0].PoderesInmunidad}[/] | [bold blue]🎲 Poderes de Captura: [/][red]{jugadores[1].PoderesCaptura}[/] - Poderes de Inmunidad: [/][red]{jugadores[1].PoderesInmunidad}[/]");
-            hayPoderes= false;
-            for(int i = 0; i < jugadores.Length; i++)
-            {
-                if (jugadores[i].PoderesCaptura > 0 || jugadores[i].PoderesInmunidad > 0)
-                {
-                    hayPoderes = true;
-                    break;
-                }
-            }
-            if (hayPoderes)
-            {
-                Console.WriteLine("Poderes:");
-                for (int i = 0; i < jugadores.Length; i++)
-                {
-                    if (jugadores[i].PoderesCaptura > 0)
-                    {
-                        Console.WriteLine($"Jugador {i + 1} tiene {jugadores[i].PoderesCaptura} poderes de captura.");
-                    }
-                    if (jugadores[i].PoderesInmunidad > 0)
-                    {
-                        Console.WriteLine($"Jugador {i + 1} tiene {jugadores[i].PoderesInmunidad} poderes de inmunidad.");
-                    }
-                }
-            }
-
+            //AnsiConsole.MarkupLine($"[bold blue]🎲 Poderes de Captura: {jugadores[0].PoderesCaptura} - Poderes de Inmunidad: {jugadores[0].PoderesInmunidad} | [bold blue]🎲 Poderes de Captura: {jugadores[1].PoderesCaptura} - Poderes de Inmunidad: {jugadores[1].PoderesInmunidad}[/]");
             var table = new Table()
                 .Border(TableBorder.Rounded)
                 .AddColumn("[red]Opción[/]")
