@@ -91,7 +91,8 @@ public class Mapa
                 {
                     if (i == jugador.Position[0] && j == jugador.Position[1])
                     {
-                        Console.Write(jugador.Nombre == "IA" ? "🤖 " : "😃 "); // Usar un emoji diferente para la IA
+                        Console.Write(jugador.Emoji + " ");
+                       // Console.Write(jugador.Nombre == "IA" ? "🤖 " : "😃 "); // Usar un emoji diferente para la IA
                         jugadorEncontrado = true;
                         break;
                     }

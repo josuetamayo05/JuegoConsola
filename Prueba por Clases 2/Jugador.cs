@@ -18,9 +18,10 @@ public class Jugador
     public bool Inmune { get; set; }
     public int TurnosInmune { get; set; }
     public int PoderesInmunidad { get; set; }
+    public string Emoji { get; set; }
 
 
-    public Jugador(string nombre, int fila, int columna, Personaje personaje)
+    public Jugador(string nombre, int fila, int columna, string emoji)
     {
         Nombre = nombre;
         PosicionInicial = new int[] { fila, columna };
@@ -28,8 +29,8 @@ public class Jugador
         Puntos = 0;
         PoderesCaptura = 0;
         TienePoderEspecial = false;
-        Personaje = personaje;
         PoderesInmunidad = 0;
+        Emoji = emoji;
     }
     public void ActivarInmunidad()
     {
