@@ -93,7 +93,7 @@ public class Mapa
                     {
                         Console.Write(jugador.Nombre == "IA" ? "🤖 " : "😃 "); // Usar un emoji diferente para la IA
                         jugadorEncontrado = true;
-                        break; // Salir del bucle si se encontró un jugador
+                        break;
                     }
                 }
 

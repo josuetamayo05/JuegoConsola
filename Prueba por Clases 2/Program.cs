@@ -21,40 +21,31 @@ class Program
     {
         Console.Clear();
 
-        var table = new Table();
-        table.AddColumn("BIENVENIDOS");
-        table.AddRow(new Panel(new Markup("[bold green]BIENVENIDOS[/]"))
-            .Header(new PanelHeader("[bold cyan]MAZE RUNNERS[/]"))
-            .BorderColor(Color.Green)
-            .Border(BoxBorder.Rounded));
-
-        AnsiConsole.Render(table);
-
-        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
-
-        Console.Clear();
-
-        var panel = new Panel(new Markup("[bold yellow]¡Bienvenidos al juego de Maze Runners![/]"))
-            .Header(new PanelHeader("[bold cyan]¡Comienza la aventura![/]"))
-            .BorderColor(Color.Yellow)
-            .Border(BoxBorder.Rounded);
-
-        AnsiConsole.Render(panel);
-
-        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
-
-        Console.Clear();
-
-        var mensaje = new Markup("[bold green]BIENVENIDOS[/] [bold blue]al juego de[/] [bold red]Maze Runners[/] [bold yellow]¡Comienza la aventura![/]");
-        AnsiConsole.Write(mensaje);
-
-        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
-
-        Console.Clear();
-
-        var mensaje2 = new Markup("[bold cyan]¡Prepárate para[/] [bold green]correr[/] [bold blue]y[/] [bold red]evadir[/] [bold yellow]obstáculos![/]");
-        AnsiConsole.Write(mensaje2);
-
+        AnsiConsole.Write(new FigletText("BIENVENIDOS").Color(Color.Aqua));
         Thread.Sleep(2000); 
+
+        Console.Clear();
+
+        // Mostrar "MAZE RUNNERS" en letras grandes
+        AnsiConsole.Write(new FigletText("MAZE RUNNERS").Color(Color.Aqua));
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
+
+        Console.Clear();
+
+        // Mostrar "¡Bienvenidos al juego de Maze Runners!" en letras grandes
+        AnsiConsole.Write(new FigletText("¡Bienvenidos al juego de Maze Runners!").Color(Color.Aqua));
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
+
+        Console.Clear();
+
+        // Mostrar "¡Comienza la aventura!" en letras grandes
+        AnsiConsole.Write(new FigletText("¡Comienza la aventura!").Color(Color.Aqua));
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
+
+        Console.Clear();
+
+        // Mostrar "¡Prepárate para correr y evadir obstáculos!" en letras grandes
+        AnsiConsole.Write(new FigletText("¡Prepárate para correr y evadir obstáculos!").Color(Color.Aqua));
+        Thread.Sleep(2000); // Espera 2 segundos antes de continuar
     }
 }

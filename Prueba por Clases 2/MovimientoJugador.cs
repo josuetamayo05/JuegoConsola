@@ -35,8 +35,16 @@ public class MovimientoJugador
             mapa.Imprimir(jugadores);
 
             AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
-            Console.WriteLine();
+            var table = new Table()
+                .Border(TableBorder.Rounded)
+                .AddColumn("[red]Opción[/]")
+                .AddColumn("[red]Descripción[/]");
 
+            table.AddRow("[red]C[/]", "Captura '⚡'")
+                .AddRow("[red]P[/]", "Inmunidad'💊'");
+
+            AnsiConsole.Write(table);
+                   
             Console.WriteLine($"Turno de {nombreJugadorActual} (Jugador {jugador}), ingresa tu movimiento (W/A/S/D) o 'Q' para salir: ");
             char movimiento = Console.ReadKey().KeyChar;
             Console.WriteLine(); 
@@ -48,11 +56,12 @@ public class MovimientoJugador
             }
             if (movimiento == 'p' || movimiento == 'P')
             {
-                if (jugador.PoderesInmunidad > 0)
+                if (jugadores[jugador - 1].PoderesInmunidad > 0)
                 {
-                    jugador.ActivarInmunidad();
+                    jugadores[jugador-1].ActivarInmunidad();
                     Console.WriteLine("Has activado el poder de inmunidad.");
-                    jugador.PoderesInmunidad--;
+                    System.Threading.Thread.Sleep(2000); 
+                    jugadores[jugador-1].PoderesInmunidad--;
                 }
                 else
                 {
@@ -68,13 +77,13 @@ public class MovimientoJugador
                     if(jugador == 1 && jugadores[1].Inmune)
                     {
                         Console.WriteLine("El jugador 2 está inmune a la captura.");
-                        System.Threading.Thread.Sleep(1000); 
+                        System.Threading.Thread.Sleep(2000); 
                         jugadores[0].PoderesCaptura--;
                     }
                     else if (jugador == 2 && jugadores[0].Inmune)
                     {
                         Console.WriteLine("El jugador 1 está inmune a la captura.");
-                        System.Threading.Thread.Sleep(1000); 
+                        System.Threading.Thread.Sleep(2000); 
                         jugadores[1].PoderesCaptura--;
                     }
                     
@@ -261,18 +270,22 @@ public class MovimientoJugador
                         mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
                         jugadores[jugador -1].PoderesInmunidad++;
                         Console.WriteLine("Has cogido la ficha 💊. Estás inmune a los poderes de captura durante 2 turnos.");
+                        System.Threading.Thread.Sleep(1000); 
                     }
                     
                 }
                 else
                 {
                     AnsiConsole.MarkupLine("[bold red]¡No puedes moverte allí! Hay una pared.[/]");
+                    System.Threading.Thread.Sleep(500); 
                     break;
                 }
             }
             else
             {
                 AnsiConsole.MarkupLine("[bold red]¡Te has salido de los límites![/]");
+                System.Threading.Thread.Sleep(500); 
+
                 break;
             }
         } while(movimientoExtra);

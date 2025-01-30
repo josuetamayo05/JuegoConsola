@@ -40,6 +40,7 @@ public class Juego
 
         if (modoJuego == 1)
         {
+            
             Console.WriteLine("Elige un personaje:");
             foreach (var personaje in personajes)
             {
