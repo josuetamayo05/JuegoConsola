@@ -38,35 +38,9 @@ public class Juego
 
         temporizador.Start();
         int modoJuego = MostrarMenuJuego();
-        var personajes = new[]
-        {
-            new { Nombre = "Invoker", Emoji = "👾" },
-            new { Nombre = "Sofia", Emoji = "👧" },
-            new { Nombre = "Luis", Emoji = "🤖" },
-            new { Nombre = "Ana", Emoji = "👸" },
-            new { Nombre = "Juan", Emoji = "🤓" },
-        };
-
+        
         if (modoJuego == 1)
         {
-
-            Console.WriteLine("Elige un personaje:");
-            for (int i = 0; i < personajes.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}. {personajes[i].Nombre} {personajes[i].Emoji}");
-            }
-            Console.Write("Ingrese el número del personaje que desea seleccionar: ");
-            int seleccion = Convert.ToInt32(Console.ReadLine()) - 1;
-            if (seleccion >= 0 && seleccion < personajes.Length)
-            {
-                var jugador = personajes[seleccion];
-                jugadores[0] = new Jugador(jugador.Nombre, 1, 1, jugador.Emoji);
-            }
-            else
-            {
-                Console.WriteLine("Selección inválida");
-            }
-
             InscribirJugador();
             CrearIA();
         }
@@ -88,11 +62,11 @@ public class Juego
         bool entradaValida = false;
         var personajes = new[]
         {
-            new { Nombre = "Invoker", Emoji = "👾" },
-            new { Nombre = "Sofia", Emoji = "👧" },
-            new { Nombre = "Luis", Emoji = "🤖" },
-            new { Nombre = "Ana", Emoji = "👸" },
-            new { Nombre = "Juan", Emoji = "🤓" },
+            new { Nombre = "Slyrak", Emoji = "👾" },
+            new { Nombre = "Luna", Emoji = "👧" },
+            new { Nombre = "Rush", Emoji = "👺" },
+            new { Nombre = "Mirana", Emoji = "👸" },
+            new { Nombre = "Abaddon", Emoji = "👽" },
         };
 
         for (int i = 0; i < 2; i++)
@@ -145,11 +119,11 @@ public class Juego
         bool entradaValida = false;
         var personajes = new[]
         {
-            new { Nombre = "Invoker", Emoji = "👾" },
-            new { Nombre = "Sofia", Emoji = "👧" },
-            new { Nombre = "Luis", Emoji = "🤖" },
-            new { Nombre = "Ana", Emoji = "👸" },
-            new { Nombre = "Juan", Emoji = "🤓" },
+            new { Nombre = "Slyrak", Emoji = "👾" },
+            new { Nombre = "Luna", Emoji = "👧" },
+            new { Nombre = "Rush", Emoji = "👺" },
+            new { Nombre = "Mirana", Emoji = "👸" },
+            new { Nombre = "Abaddon", Emoji = "👽" },
         };
 
         Console.Write("Ingresa el nombre del Jugador: ");
@@ -376,14 +350,7 @@ public class Juego
         Console.ReadKey();
         MostrarMenuInicio();
     }
-    private List<Personaje> personajes = new List<Personaje>()
-    {
-        new Personaje("Corredor", "", PoderEspecial.Velocidad),
-        new Personaje("Fantasma", "", PoderEspecial.Invisibilidad),
-        new Personaje("Teleportador", "", PoderEspecial.Teletransporte),
-        new Personaje("Defensor", "", PoderEspecial.Escudo),
-        new Personaje("Doble", "", PoderEspecial.DobleMovimiento)
-    };
+    
 
     private void ImprimirMatrizMenu()
     {

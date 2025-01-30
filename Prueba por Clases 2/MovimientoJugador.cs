@@ -9,8 +9,8 @@ public class MovimientoJugador
     private Juego juego;
     private Jugador[] jugadores;
     private Mapa mapa;
-    private int[] puerta1 = {15, 15};
-    private int[] puerta2 = {20, 24};
+    private int[] puerta1 = {8, 13};
+    private int[] puerta2 = {17, 23};
     private bool[] poderCapturaDisponible;
 
     public MovimientoJugador(Juego juego)
@@ -29,12 +29,38 @@ public class MovimientoJugador
     {
         bool movimientoExtra = false;
         string nombreJugadorActual = jugadores[jugador - 1].Nombre;
+        bool hayPoderes = false;
 
         do
         {
             mapa.Imprimir(jugadores);
-
             AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
+            AnsiConsole.MarkupLine($"[bold blue]🎲 Poderes de Captura: [/][red]{jugadores[0].PoderesCaptura}[/] - Poderes de Inmunidad: [/][red]{jugadores[0].PoderesInmunidad}[/] | [bold blue]🎲 Poderes de Captura: [/][red]{jugadores[1].PoderesCaptura}[/] - Poderes de Inmunidad: [/][red]{jugadores[1].PoderesInmunidad}[/]");
+            hayPoderes= false;
+            for(int i = 0; i < jugadores.Length; i++)
+            {
+                if (jugadores[i].PoderesCaptura > 0 || jugadores[i].PoderesInmunidad > 0)
+                {
+                    hayPoderes = true;
+                    break;
+                }
+            }
+            if (hayPoderes)
+            {
+                Console.WriteLine("Poderes:");
+                for (int i = 0; i < jugadores.Length; i++)
+                {
+                    if (jugadores[i].PoderesCaptura > 0)
+                    {
+                        Console.WriteLine($"Jugador {i + 1} tiene {jugadores[i].PoderesCaptura} poderes de captura.");
+                    }
+                    if (jugadores[i].PoderesInmunidad > 0)
+                    {
+                        Console.WriteLine($"Jugador {i + 1} tiene {jugadores[i].PoderesInmunidad} poderes de inmunidad.");
+                    }
+                }
+            }
+
             var table = new Table()
                 .Border(TableBorder.Rounded)
                 .AddColumn("[red]Opción[/]")
@@ -90,6 +116,7 @@ public class MovimientoJugador
                     else
                     {
                         AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
+                        System.Threading.Thread.Sleep(500); 
                         for (int i = 0; i < 3; i++)
                         {
                             Console.Write("Capturando al otro jugador");
@@ -117,6 +144,7 @@ public class MovimientoJugador
                 else
                 {
                     AnsiConsole.MarkupLine("[bold red]¡No puedes usar el poder de captura! El otro jugador no está en la misma fila o columna.[/]");
+                    System.Threading.Thread.Sleep(300); 
                     jugadores[jugador - 1].PoderesCaptura--;
                 }
                 continue;
@@ -166,6 +194,7 @@ public class MovimientoJugador
                     else
                     {
                         Console.WriteLine("Has caído en un árbol");
+                        System.Threading.Thread.Sleep(400); 
                         
                         for (int j = 0; j < 3; j++)
                         {
@@ -179,6 +208,8 @@ public class MovimientoJugador
                         }
 
                         Console.WriteLine($"{nombreJugadorActual}, no tienes suficientes puntos para usar el poder. Regresando a la posición inicial.");
+                        System.Threading.Thread.Sleep(600); 
+
                         posicion[0] = jugadores[jugador - 1].PosicionInicial[0];
                         posicion[1] = jugadores[jugador - 1].PosicionInicial[1];
                         return;  // Salir del método para evitar más movimientos

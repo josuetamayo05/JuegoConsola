@@ -42,8 +42,8 @@ public class Mapa
         GenerateMaze(1, 1);
         
         mapa[25, 13] = "🏠 ";
-        mapa[15, 9] = "🚪 ";
-        mapa[14, 20] = "🚪 ";
+        mapa[8, 13] = "🚪 ";
+        mapa[17, 23] = "🚪 ";
         ColocarFichasRandom(6, "⚡ ");
         ColocarFichasRandom(12, "💰 ");
         ColocarFichasRandom(20, "💊 ");
@@ -85,14 +85,20 @@ public class Mapa
         {
             for (int j = 0; j < Cols; j++)
             {
-                // Verificar si hay un jugador en la posición actual
                 bool jugadorEncontrado = false;
                 foreach (var jugador in jugadores)
                 {
                     if (i == jugador.Position[0] && j == jugador.Position[1])
                     {
-                        Console.Write(jugador.Emoji + " ");
-                       // Console.Write(jugador.Nombre == "IA" ? "🤖 " : "😃 "); // Usar un emoji diferente para la IA
+                        if(jugador.Nombre == "IA")
+                        {
+                            Console.Write("🤖 ");
+                        }
+                        else
+                        {
+                            Console.Write(jugador.Emoji + " ");     
+                                              
+                        }
                         jugadorEncontrado = true;
                         break;
                     }
