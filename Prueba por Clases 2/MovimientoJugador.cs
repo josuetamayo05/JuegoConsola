@@ -29,22 +29,9 @@ public class MovimientoJugador
     {
         bool movimientoExtra = false;
         string nombreJugadorActual = jugadores[jugador - 1].Nombre;
-        string mensajeRecompensa = "";
-        string mensajeTrampa = "";
 
         do
         {
-            if (!string.IsNullOrEmpty(mensajeRecompensa))
-            {
-                Console.WriteLine(mensajeRecompensa);
-                mensajeRecompensa = ""; 
-            }
-
-            if (!string.IsNullOrEmpty(mensajeTrampa))
-            {
-                Console.WriteLine(mensajeTrampa);
-                mensajeTrampa = ""; 
-            }
             mapa.Imprimir(jugadores);
 
             AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
@@ -54,27 +41,23 @@ public class MovimientoJugador
             char movimiento = Console.ReadKey().KeyChar;
             Console.WriteLine(); 
 
-            /*if (movimiento == 'r' || movimiento == 'R')
-            {
-                Console.WriteLine("¿Estás seguro de que quieres reiniciar el juego? (s/n)");
-                char confirmacion = Console.ReadKey().KeyChar;
-                Console.WriteLine();
-
-                if (confirmacion == 's' || confirmacion == 'S')
-                {
-                    juego.ReiniciarJuego();
-                    return; // Salir del método para reiniciar el juego
-                }
-                else
-                {
-                    continue; // Continuar con el turno actual
-                }
-            }*/
-
             if (movimiento == 'q' || movimiento == 'Q') 
             {
                 Console.WriteLine("¡Gracias por jugar!");
                 Environment.Exit(0); 
+            }
+            if (movimiento == 'p' || movimiento == 'P')
+            {
+                if (jugador.PoderesInmunidad > 0)
+                {
+                    jugador.ActivarInmunidad();
+                    Console.WriteLine("Has activado el poder de inmunidad.");
+                    jugador.PoderesInmunidad--;
+                }
+                else
+                {
+                    Console.WriteLine("No tienes poderes de inmunidad disponibles.");
+                }
             }
 
             if (jugadores[jugador - 1].PoderesCaptura > 0 && (movimiento == 'c' || movimiento == 'C'))
@@ -82,29 +65,45 @@ public class MovimientoJugador
                 int[] otroJugador = jugador == 1 ? jugadores[1].Position : jugadores[0].Position;
                 if (otroJugador[0] == jugadores[jugador - 1].Position[0] || otroJugador[1] == jugadores[jugador - 1].Position[1])
                 {
-                    AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
-                    for (int i = 0; i < 3; i++)
+                    if(jugador == 1 && jugadores[1].Inmune)
                     {
-                        Console.Write("Capturando al otro jugador");
-                        for (int j = 0; j < 3; j++)
-                        {
-                            Console.Write("."); 
-                                System.Threading.Thread.Sleep(300); 
-                        }
-                        Console.WriteLine(); 
+                        Console.WriteLine("El jugador 2 está inmune a la captura.");
+                        System.Threading.Thread.Sleep(1000); 
+                        jugadores[0].PoderesCaptura--;
                     }
-
-                    if (jugador == 1)
+                    else if (jugador == 2 && jugadores[0].Inmune)
                     {
-                        jugadores[1].Position[0] = jugadores[1].PosicionInicial[0];
-                        jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
+                        Console.WriteLine("El jugador 1 está inmune a la captura.");
+                        System.Threading.Thread.Sleep(1000); 
+                        jugadores[1].PoderesCaptura--;
                     }
+                    
                     else
                     {
-                        jugadores[0].Position[0] = jugadores[0].PosicionInicial[0];
-                        jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
+                        AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Console.Write("Capturando al otro jugador");
+                            for (int j = 0; j < 3; j++)
+                            {
+                                Console.Write("."); 
+                                    System.Threading.Thread.Sleep(300); 
+                            }
+                            Console.WriteLine(); 
+                        }
+
+                        if (jugador == 1)
+                        {
+                            jugadores[1].Position[0] = jugadores[1].PosicionInicial[0];
+                            jugadores[1].Position[1] = jugadores[1].PosicionInicial[1];
+                        }
+                        else
+                        {
+                            jugadores[0].Position[0] = jugadores[0].PosicionInicial[0];
+                            jugadores[0].Position[1] = jugadores[0].PosicionInicial[1];
+                        }
+                        jugadores[jugador - 1].PoderesCaptura--; 
                     }
-                    jugadores[jugador - 1].PoderesCaptura--; 
                 }
                 else
                 {
@@ -152,12 +151,12 @@ public class MovimientoJugador
                             Console.WriteLine($"{nombreJugadorActual}, has decidido no usar el poder. Regresando a la posición inicial.");
                             posicion[0] = jugadores[jugador - 1].PosicionInicial[0];
                             posicion[1] = jugadores[jugador - 1].PosicionInicial[1];
-                            return;  // Salir del método para evitar más movimientos
+                            return;  
                         }
                     }
                     else
                     {
-                        Console.WriteLine(mensajeTrampa);
+                        Console.WriteLine("Has caído en un árbol");
                         
                         for (int j = 0; j < 3; j++)
                         {
@@ -257,6 +256,12 @@ public class MovimientoJugador
                             jugadores[1].PoderesCaptura++;
                         }
                     }    
+                    if(mapa.GetFicha(nuevaFila, nuevaColumna) == "💊 ")
+                    {
+                        mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
+                        jugadores[jugador -1].PoderesInmunidad++;
+                        Console.WriteLine("Has cogido la ficha 💊. Estás inmune a los poderes de captura durante 2 turnos.");
+                    }
                     
                 }
                 else

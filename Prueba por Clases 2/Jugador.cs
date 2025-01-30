@@ -15,8 +15,10 @@ public class Jugador
     public int[] PosicionInicial { get; set; }  // [fila, columna]
     public int PoderesCaptura { get; set; }
     public bool TienePoderEspecial { get; set; }
-    public int TrampasDetectadas{ get; set; }
-    public int TrampasMaximas{ get; set; }
+    public bool Inmune { get; set; }
+    public int TurnosInmune { get; set; }
+    public int PoderesInmunidad { get; set; }
+
 
     public Jugador(string nombre, int fila, int columna, Personaje personaje)
     {
@@ -27,38 +29,22 @@ public class Jugador
         PoderesCaptura = 0;
         TienePoderEspecial = false;
         Personaje = personaje;
-
+        PoderesInmunidad = 0;
     }
-    public void Penalizar()
+    public void ActivarInmunidad()
     {
-        Console.WriteLine("Se te ha restado un punto por coger una trampa");
-        Puntos--;
+        Inmune = true;
+        TurnosInmune = 2;
     }
-    
-    public void RecogerRecompensa(int puntos)
+    public void ActualizarInmunidad()
     {
-        Puntos += puntos;
-    }
-
-    public void UsarPoder(Personaje personaje)
-    {
-        switch (personaje.Poder)
+        if (Inmune)
         {
-            case PoderEspecial.Velocidad:
-                // Aumentar la velocidad del jugador
-                break;
-            case PoderEspecial.Invisibilidad:
-                // Hacer que el jugador sea invisible durante un turno
-                break;
-            case PoderEspecial.Teletransporte:
-                // Teletransportar el jugador a una posición aleatoria en el mapa
-                break;
-            case PoderEspecial.Escudo:
-                // Dar al jugador un escudo que lo proteja de un ataque
-                break;
-            case PoderEspecial.DobleMovimiento:
-                // Permitir al jugador moverse dos veces en un turno
-                break;
+            TurnosInmune--;
+            if(TurnosInmune == 0)
+            {
+                Inmune = false;
+            }
         }
     }
 }

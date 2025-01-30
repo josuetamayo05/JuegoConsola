@@ -41,44 +41,14 @@ public class Mapa
 
         GenerateMaze(1, 1);
         
-        mapa[20, 20] = "🏠 ";
-        mapa[15, 15] = "🚪 ";
-        mapa[20, 24] = "🚪 ";
+        mapa[25, 13] = "🏠 ";
+        mapa[15, 9] = "🚪 ";
+        mapa[14, 20] = "🚪 ";
         ColocarFichasRandom(6, "⚡ ");
         ColocarFichasRandom(12, "💰 ");
-        ColocarFichasRandom(12, "🚩 ");
+        ColocarFichasRandom(20, "💊 ");
         ColocarFichasRandom(8, "🌳 ");
     }
-
-    
-    /*public void GenerarTrampasAleatorias(int cantidad)
-    {
-        Random random = new Random();
-
-        for (int i = 0; i < cantidad; i++)
-        {
-            int fila, columna;
-
-            do
-            {
-                fila = random.Next(1, Rows - 1);
-                columna = random.Next(1, Cols - 1);
-            } while (GetFicha(fila, columna) != "⬜ "); 
-
-            var trampa = new Trampa(fila, columna);
-            Trampas.Add(trampa);
-
-            // Mostrar la trampa una sola vez
-            //Console.WriteLine($"Trampa en posición ({trampa.Position[0]}, {trampa.Position[1]})");
-            // Ocultar la trampa después de mostrarla
-            trampa.ToggleVisibility();
-
-            SetFicha(fila, columna, "🚩 ");
-            Thread.Sleep(1000); // Esperar 1 segundo
-            SetFicha(fila, columna, "   ");
-        }
-    }*/
-
     public void GenerateMaze(int row, int col)
     {
         mapa[row, col] = "   ";
@@ -137,37 +107,6 @@ public class Mapa
         }
     }
     
-
-    /*public void VisualizarTrampa(Jugador jugador)
-    {
-        foreach (var trampa in Trampas)
-        {
-            trampa.ToggleVisibility();
-            SetFicha(trampa.Position[0], trampa.Position[1], "🚩 ");
-        }
-
-        Thread.Sleep(2000);
-
-        // Ocultar las trampas en el mapa
-        foreach (var trampa in Trampas)
-        {
-            trampa.ToggleVisibility();
-            SetFicha(trampa.Position[0], trampa.Position[1], " ");
-        }
-    }
-
-    public void ColisionarConTrampa(Jugador jugador)
-    {
-        foreach (var trampa in Trampas)
-        {
-            if (jugador.Position[0] == trampa.Position[0] && jugador.Position[1] == trampa.Position[1])
-            {
-                // Aplicar la penalización correspondiente
-                jugador.Penalizar();
-            }
-        }
-    }*/
-
     private void ColocarFichasRandom(int cantidad, string tipo)
     {
         for (int i = 0; i < cantidad; i++)
@@ -187,9 +126,6 @@ public class Mapa
         
         mapa[row, col] = tipo;
     }
-
-    
-    
 
     public string GetFicha(int fila, int columna)
     {
