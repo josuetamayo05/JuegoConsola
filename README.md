@@ -88,9 +88,7 @@ A continuación, te proporcionamos información relevante sobre cómo se desarro
 
 Aquí te dejo algunas capturas de pantalla del juego:
 
-![Captura de pantalla del juego](https://github.com/tu_usuario/juego-laberinto/blob/main/captura1.png)
-
-![Captura de pantalla del juego](https://github.com/tu_usuario/juego-laberinto/blob/main/captura2.png)
+![Captura de pantalla del juego](Img.jpg)
 
 ## Contribuciones
 
