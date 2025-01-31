@@ -42,7 +42,7 @@ public class IA : Jugador
         if(turno >= 5 && !jugadorTieneInmunidad)
         {
             Console.Write("La IA ya está armada, puede atraparte si estás en su fila o columna");
-            System.Threading.Thread.Sleep(1200); 
+            System.Threading.Thread.Sleep(1500); 
 
            if (jugadorIA.Position[0] == jugadorHumano.Position[0] || jugadorIA.Position[1] == jugadorHumano.Position[1])
             {

@@ -518,6 +518,7 @@ public class Juego
     
     private void MostrarMensajeVictoria(string nombreGanador)
     {
+        temporizador.Stop();
         TimeSpan tiempoTranscurrido = temporizador.Elapsed;
         string tiempoFormateado = string.Format("{0:00}:{1:00}:{2:00}", tiempoTranscurrido.Hours, tiempoTranscurrido.Minutes, tiempoTranscurrido.Seconds);   
          AnsiConsole.Status()
@@ -535,18 +536,18 @@ public class Juego
             AnsiConsole.MarkupLine("[blue]¡Tu habilidad y estrategia te han llevado a la victoria![/]");
             AnsiConsole.MarkupLine("[red]¡No te rindas, sigue adelante y sigue mejorando![/]");
             AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {nombreGanador} : [/][red]1000[/]");
+            AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {nombreGanador} : [/][red] 1000[/]");
             AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine($"[bold blue]Tiempo de juego: {tiempoFormateado}[/]");
             var table = new Table();
             table.AddColumn("Estadísticas de la partida");
             table.AddRow($"Nombre del jugador: {nombreGanador}");
             table.AddRow($"Puntuación: 1000");
-            table.AddRow($"Tiempo de juego: 10 minutos");
             AnsiConsole.Render(table);
             AnsiConsole.WriteLine();
             AnsiConsole.MarkupLine("[bold blue]¡Gracias por jugar! Esperamos verte de nuevo pronto.[/]");
             AnsiConsole.MarkupLine("[bold blue]Presiona cualquier tecla para salir...[/]");
-            Console.ReadKey(); // Esperar a que el jugador presione una tecla
+            Console.ReadKey();
         });        
     }
 }

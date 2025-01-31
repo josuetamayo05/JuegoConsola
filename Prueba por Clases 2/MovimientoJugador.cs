@@ -45,7 +45,7 @@ public class MovimientoJugador
 
             table.AddRow("[red]C[/]", "Captura '⚡'", "Flecha arriba", "Presiona 'C' para activar")
                 .AddRow("[red]P[/]", "Inmunidad'💊'", "Flecha abajo", "Presiona 'P' para activar")
-                .AddRow("[red]V[/]", "Teletransportación'🎁'", "Flecha izquierda", "Presiona 'T' para activar");
+                .AddRow("[red]T[/]", "Teletransportación'🎁'", "Flecha izquierda", "Presiona 'T' para activar");
 
             AnsiConsole.Write(table);
                    
@@ -321,8 +321,13 @@ public class MovimientoJugador
     private void TeletransportarJugador(int jugador, string name)
     {
         Random aleatorio = new Random();
-        int nuevaFila = aleatorio.Next(0, mapa.Rows);
-        int nuevaColumna = aleatorio.Next(0, mapa.Cols);
+        int nuevaFila, nuevaColumna;
+
+        do
+        {
+            nuevaFila = aleatorio.Next(0, mapa.Rows);
+            nuevaColumna = aleatorio.Next(0, mapa.Cols);
+        } while (mapa.GetFicha(nuevaFila, nuevaColumna) == "⬜ " || mapa.GetFicha(nuevaFila, nuevaColumna) == "🌳 " || mapa.GetFicha(nuevaFila, nuevaColumna) == "🏠 " || mapa.GetFicha(nuevaFila, nuevaColumna) == "💰 " || mapa.GetFicha(nuevaFila, nuevaColumna) == "⚡ " || mapa.GetFicha(nuevaFila, nuevaColumna) == "💊 " || mapa.GetFicha(nuevaFila, nuevaColumna) == "🚪 " );
 
         jugadores[jugador - 1].Position[0] = nuevaFila;
         jugadores[jugador - 1].Position[1] = nuevaColumna;

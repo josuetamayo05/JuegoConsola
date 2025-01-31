@@ -62,7 +62,7 @@ public class Mapa
         ColocarFichasRandom(12, "💰 ");
         ColocarFichasRandom(5, "💊 ");
         ColocarFichasRandom(8, "🌳 ");
-        ColocarFichasRandom(20, "🎁 ");
+        ColocarFichasRandom(3, "🎁 ");
     }
     public void GenerateMaze(int row, int col)
     {
