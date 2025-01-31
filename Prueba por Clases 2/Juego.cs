@@ -83,7 +83,7 @@ public class Juego
                         Console.WriteLine($"{j + 1}. {personajes[j].Nombre} - {personajes[j].Emoji}");
                     }
                     opcion = int.Parse(Console.ReadLine()!);
-                    if(opcion >= 1 || opcion <= personajes.Length) 
+                    if(opcion >= 1 && opcion <= personajes.Length) 
                     {
                         entradaValida = true;
                     }
@@ -253,13 +253,13 @@ public class Juego
 
         table.AddRow("[bold blue]Instrucciones[/]");
 
-        table.AddRow("[bold red]Salir[/]");
+        table.AddRow("[bold cyan]Lista de Jugadores[/]");
 
         table.AddRow("[bold yellow]Créditos[/]");
 
         table.AddRow("[bold cyan]Acerca de[/]");
 
-        table.AddRow("[bold cyan]Lista de Jugadores[/]");
+        table.AddRow("[bold red]Salir[/]");
 
         table.Width = 80;
         AnsiConsole.Render(table);
@@ -302,7 +302,7 @@ public class Juego
                 MostrarInstrucciones();
                 break;
             case 3:
-                Salir();
+                ListaJugadores();
                 break;
             case 4:
                 MostrarCreditos();
@@ -311,7 +311,7 @@ public class Juego
                 MostrarAcercaDe();
                 break;
             case 6:
-                ListaJugadores();
+                Salir();
                 break;
             default:
                 Console.WriteLine("Opción inválida. Por favor, elige una opción válida.");
@@ -323,30 +323,32 @@ public class Juego
     public void ListaJugadores()
     {
         Console.Clear();
-        var panel = new Panel(new Markup(
-            "[bold green]¡Elige tu personaje![/]\n\n" +
-            "[bold yellow]1. 🏃 Corredor[/]\n" +
-            "  - Velocidad: +20% de velocidad\n" +
-            "  - Acción especial: Correr 2 casillas adicionales\n\n" +
-            "[bold yellow]2. 👻 Fantasma[/]\n" +
-            "  - Invisibilidad: No puede ser visto por la IA\n" +
-            "  - Acción especial: Teletransportarse a una casilla aleatoria\n\n" +
-            "[bold yellow]3. 🌀 Teleportador[/]\n" +
-            "  - Teletransporte: Teletransportarse a una casilla aleatoria\n" +
-            "  - Acción especial: Teletransportar a la IA a una casilla aleatoria\n\n" +
-            "[bold yellow]4. 🛡️ Defensor[/]\n" +
-            "  - Escudo: +20% de defensa\n" +
-            "  - Acción especial: Bloquear un ataque de la IA\n\n" +
-            "[bold yellow]5. 🕴️ Doble[/]\n" +
-            "  - Doble movimiento: Moverse 2 casillas en un turno\n" +
-            "  - Acción especial: Moverse 3 casillas en un turno\n\n" +
-            "[bold green]Presiona el número correspondiente para elegir tu personaje...[/]"
-        ))
-        .Header(new PanelHeader("[bold cyan]Menú de personajes[/]"))
-        .BorderColor(Color.Green)
-        .Border(BoxBorder.Rounded);
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn("[red]Jugador[/]")
+            .AddColumn("[red]Historia[/]");
+            
+        table.AddRow(
+            new[] { "[blue]Slyrak 👾[/]", "[green]Slyrak es un alienígena de un planeta lejano que ha sido enviado a la Tierra para explorar y descubrir nuevos mundos. Con su tecnología avanzada y su capacidad para adaptarse a cualquier entorno, Slyrak es un personaje formidable en el juego. Su objetivo es encontrar la salida del laberinto y regresar a su planeta natal.[/]" }
+        );
+        table.AddEmptyRow();
+        table.AddRow(
+            new[] { "[blue]Luna 👧[/]", "[green]Luna es una joven aventurera que ha sido atrapada en el laberinto mientras buscaba un tesoro legendario. Con su agilidad y su capacidad para resolver problemas, Luna es un personaje rápido y astuto en el juego. Su objetivo es encontrar la salida del laberinto y escapar de la trampa que la ha atrapado.[/]" }
+        );
+        table.AddEmptyRow();
+        table.AddRow(
+            new[] { "[blue]Rush 👺[/]", "[green]Rush es un guerrero feroz que ha sido enviado al laberinto para probar su valentía y su habilidad en combate. Con su fuerza y su velocidad, Rush es un personaje formidable en el juego. Su objetivo es encontrar la salida del laberinto y demostrar su superioridad sobre los demás personajes.[/]" }
+        );
+        table.AddEmptyRow();
+        table.AddRow(
+            new[] { "[blue]Mirana 👸[/]", "[green]Mirana es una princesa de un reino lejano que ha sido secuestrada por un malvado hechicero y llevada al laberinto. Con su inteligencia y su capacidad para resolver problemas, Mirana es un personaje astuto y estratégico en el juego. Su objetivo es encontrar la salida del laberinto y escapar de la trampa que la ha atrapado.[/]" }
+        );
+        table.AddEmptyRow();
+        table.AddRow(
+            new[] { "[blue]Abaddon 👽[/]", "[green]Abaddon es un demonio del infierno que ha sido enviado al laberinto para causar caos y destrucción. Con su poder y su capacidad para manipular el fuego, Abaddon es un personaje formidable y temido en el juego. Su objetivo es encontrar la salida del laberinto y regresar al infierno para seguir causando destrucción.[/]" }
+        );
 
-        AnsiConsole.Render(panel);
+        AnsiConsole.Write(table);
         Console.ReadKey();
         MostrarMenuInicio();
     }
@@ -460,7 +462,7 @@ public class Juego
         Console.WriteLine("-------------------------");
         Console.WriteLine("Desarrollador: [Josué Alejandro Tamayo Ayrado]");
         Console.WriteLine("Versión: 1.0");
-        Console.WriteLine("Fecha de lanzamiento: [En modificación ún]");
+        Console.WriteLine("Fecha de lanzamiento: [En modificación aún]");
         Console.WriteLine("-------------------------");
         Console.WriteLine("Presiona cualquier tecla para regresar al menú...");
         Console.ReadKey();

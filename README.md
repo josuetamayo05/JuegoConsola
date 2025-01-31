@@ -8,6 +8,7 @@
 - **Interfaz de Consola**: Una interfaz simple y fácil de usar que permite a los jugadores interactuar con el juego.
 - **Niveles de Dificultad**: Diferentes niveles de dificultad que afectan el tamaño y la complejidad del laberinto.
 - **Sistema de Puntuación**: Registra el tiempo que tarda el jugador en encontrar la salida.
+- **Importante**: El juego está probado en Sistema Operativo Windows en la Terminal del Visual Studio Code, no se garantiza el correcto funcionamiento en otra Terminal o Sistema Operativo, ya que puede no cargar los emojis del mapa o saltarse caracteres en las paredes del mapa.
 
 ## Requisitos
 
@@ -70,10 +71,11 @@ Para evaluar el funcionamiento del juego, necesitas entender cómo interactuar c
 
 ### Teclas de poderes
 
-* **Ficha de destrucción de obstáculos 💰**: tecla 'F'
-* **Ficha de invisibilidad Inmunidad a Poderes Captura 💊**: tecla 'P'
-* **Ficha de captura ⚡**: tecla 'C'
-* **Ficha de Teletransportación ⏱🚪**: Cuando un jugador alcance una puerta de teletransportación, será teletransportado a una nueva dimensión del mapa.
+* **Ficha de destrucción de obstáculos '💰'**: tecla 'F'
+* **Ficha de invisibilidad Inmunidad a Poderes Captura '💊'**: tecla 'P'
+* **Ficha de captura '⚡'**: tecla 'C'
+* **Puertas de Teletransportación ⏱🚪**: Cuando un jugador alcance una puerta de teletransportación, será teletransportado a una nueva dimensión del mapa.
+* **Ficha de Teletransportación Aleatoria '🎁'**: tecla 'T'
 
 ### Jugadores
 

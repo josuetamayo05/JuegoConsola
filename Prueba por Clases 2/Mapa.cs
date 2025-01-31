@@ -25,7 +25,21 @@ public class Mapa
         InicializarMapa(rows, cols);
              
     }
-    
+    public override string ToString()
+    {
+        string mapaString = "";
+
+        for (int i = 0; i < Rows; i++)
+        {
+            for (int j = 0; j < Cols; j++)
+            {
+                mapaString += GetFicha(i, j) + " ";
+            }
+            mapaString += Environment.NewLine;
+        }
+
+        return mapaString;
+    }
 
     private void InicializarMapa(int rows, int cols)
     {
@@ -46,8 +60,9 @@ public class Mapa
         mapa[17, 23] = "🚪 ";
         ColocarFichasRandom(6, "⚡ ");
         ColocarFichasRandom(12, "💰 ");
-        ColocarFichasRandom(20, "💊 ");
+        ColocarFichasRandom(5, "💊 ");
         ColocarFichasRandom(8, "🌳 ");
+        ColocarFichasRandom(20, "🎁 ");
     }
     public void GenerateMaze(int row, int col)
     {

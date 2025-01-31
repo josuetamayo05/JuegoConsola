@@ -19,7 +19,7 @@ public class Jugador
     public int TurnosInmune { get; set; }
     public int PoderesInmunidad { get; set; }
     public string Emoji { get; set; }
-
+    public int PoderesTeletransportacion { get; set; }
 
     public Jugador(string nombre, int fila, int columna, string emoji)
     {
@@ -31,6 +31,7 @@ public class Jugador
         TienePoderEspecial = false;
         PoderesInmunidad = 0;
         Emoji = emoji;
+        PoderesTeletransportacion = 0;
     }
     public void ActivarInmunidad()
     {

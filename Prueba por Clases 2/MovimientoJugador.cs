@@ -13,6 +13,7 @@ public class MovimientoJugador
     private int[] puerta2 = {17, 23};
     private bool[] poderCapturaDisponible;
 
+
     public MovimientoJugador(Juego juego)
     {
         this.juego = juego; 
@@ -21,7 +22,7 @@ public class MovimientoJugador
     {
         this.mapa = mapa;
         this.jugadores = jugadores;
-        this.poderCapturaDisponible = new bool[jugadores.Length]; // Bandera para controlar el mensaje de poder de captura
+        this.poderCapturaDisponible = new bool[jugadores.Length]; 
 
     }
 
@@ -29,20 +30,22 @@ public class MovimientoJugador
     {
         bool movimientoExtra = false;
         string nombreJugadorActual = jugadores[jugador - 1].Nombre;
-        bool hayPoderes = false;
 
         do
         {
             mapa.Imprimir(jugadores);
+            
             AnsiConsole.MarkupLine($"[bold blue]🎲 Puntos {jugadores[0].Nombre} : [/][red]{jugadores[0].Puntos}[/] | [bold blue]🎲 Puntos {jugadores[1].Nombre} : [/][red]{jugadores[1].Puntos}[/]");
-            //AnsiConsole.MarkupLine($"[bold blue]🎲 Poderes de Captura: {jugadores[0].PoderesCaptura} - Poderes de Inmunidad: {jugadores[0].PoderesInmunidad} | [bold blue]🎲 Poderes de Captura: {jugadores[1].PoderesCaptura} - Poderes de Inmunidad: {jugadores[1].PoderesInmunidad}[/]");
             var table = new Table()
                 .Border(TableBorder.Rounded)
                 .AddColumn("[red]Opción[/]")
-                .AddColumn("[red]Descripción[/]");
+                .AddColumn("[red]Descripción[/]")
+                .AddColumn("[red]Controles[/]")
+                .AddColumn("[red]Activar[/]");
 
-            table.AddRow("[red]C[/]", "Captura '⚡'")
-                .AddRow("[red]P[/]", "Inmunidad'💊'");
+            table.AddRow("[red]C[/]", "Captura '⚡'", "Flecha arriba", "Presiona 'C' para activar")
+                .AddRow("[red]P[/]", "Inmunidad'💊'", "Flecha abajo", "Presiona 'P' para activar")
+                .AddRow("[red]V[/]", "Teletransportación'🎁'", "Flecha izquierda", "Presiona 'T' para activar");
 
             AnsiConsole.Write(table);
                    
@@ -68,6 +71,15 @@ public class MovimientoJugador
                 {
                     Console.WriteLine("No tienes poderes de inmunidad disponibles.");
                 }
+            }
+            
+            if (movimiento == 't' || movimiento == 'T')
+            {
+                if (jugadores[jugador - 1].PoderesTeletransportacion > 0)
+                {
+                    TeletransportarJugador(jugador, nombreJugadorActual);
+                    jugadores[jugador - 1].PoderesTeletransportacion--;
+                }                
             }
 
             if (jugadores[jugador - 1].PoderesCaptura > 0 && (movimiento == 'c' || movimiento == 'C'))
@@ -141,6 +153,8 @@ public class MovimientoJugador
                     continue; 
             }
 
+            
+
             if (nuevaFila >= 0 && nuevaColumna >= 0 && nuevaFila < mapa.Rows && nuevaColumna < mapa.Cols)
             {
                 if (mapa.GetFicha(nuevaFila, nuevaColumna) == "🌳 ")
@@ -187,7 +201,7 @@ public class MovimientoJugador
 
                         posicion[0] = jugadores[jugador - 1].PosicionInicial[0];
                         posicion[1] = jugadores[jugador - 1].PosicionInicial[1];
-                        return;  // Salir del método para evitar más movimientos
+                        return;  
                     }    
                 }
                 
@@ -278,6 +292,14 @@ public class MovimientoJugador
                         Console.WriteLine("Has cogido la ficha 💊. Estás inmune a los poderes de captura durante 2 turnos.");
                         System.Threading.Thread.Sleep(1000); 
                     }
+
+                    if (mapa.GetFicha(nuevaFila, nuevaColumna) == "🎁 ")
+                    {
+                        mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
+                        jugadores[jugador - 1].PoderesTeletransportacion++;
+                        Console.WriteLine("Has cogido una ficha de teletransportación.");
+                        System.Threading.Thread.Sleep(1000); 
+                    }
                     
                 }
                 else
@@ -295,6 +317,22 @@ public class MovimientoJugador
                 break;
             }
         } while(movimientoExtra);
+    }
+    private void TeletransportarJugador(int jugador, string name)
+    {
+        Random aleatorio = new Random();
+        int nuevaFila = aleatorio.Next(0, mapa.Rows);
+        int nuevaColumna = aleatorio.Next(0, mapa.Cols);
+
+        jugadores[jugador - 1].Position[0] = nuevaFila;
+        jugadores[jugador - 1].Position[1] = nuevaColumna;
+
+        AnsiConsole.MarkupLine($"{name}, estás siendo teletransportado a un Lugar Random del Mapa.");
+        for (int i = 0; i < 3; i++)
+        {
+            Console.Write(".");
+            System.Threading.Thread.Sleep(850);
+        }
     }
 
     
