@@ -6,8 +6,9 @@
 
 - **Navegación en el Laberinto**: Mueve al jugador a través de un laberinto generado aleatoriamente.
 - **Interfaz de Consola**: Una interfaz simple y fácil de usar que permite a los jugadores interactuar con el juego.
-- **Niveles de Dificultad**: Diferentes niveles de dificultad que afectan el tamaño y la complejidad del laberinto.
+- **Niveles de Dificultad**: Diferentes niveles de dificultad que afectan el tamaño y la complejidad del laberinto. 
 - **Sistema de Puntuación**: Registra el tiempo que tarda el jugador en encontrar la salida.
+- **Recomendación**: No cambiar el tamaño del laberinto
 - **Importante**: El juego está probado en Sistema Operativo Windows en la Terminal del Visual Studio Code, no se garantiza el correcto funcionamiento en otra Terminal o Sistema Operativo, ya que puede no cargar los emojis del mapa o saltarse caracteres en las paredes del mapa.
 
 ## Requisitos
@@ -46,15 +47,9 @@ El objetivo del juego es encontrar la salida del laberinto antes que el segundo 
 * **Mover al jugador**: Utiliza las teclas de flecha para mover al jugador a través del laberinto.(W/A/S/D).
 * **Utilizar poderes**: Utiliza las teclas de función (C, F, P) para utilizar los poderes del jugador.
 
-### Poderes del jugador
-
-* **Ficha de velocidad**: Aumenta la velocidad del jugador durante 5 segundos.
-* **Ficha de invisibilidad**: Hace que el jugador sea invisible durante 3 segundos.
-* **Ficha de fuerza**: Aumenta la fuerza del jugador durante 2 segundos.
-
 ### Inteligencia artificial (IA)
 
-La IA controla al segundo jugador y utiliza un algoritmo de búsqueda para encontrar la salida del laberinto. La IA también puede utilizar los poderes del jugador para intentar bloquear al primer jugador.
+La IA controla al segundo jugador y utiliza un algoritmo de búsqueda para encontrar la salida del laberinto. La IA también puede utilizar los poderes del jugador para intentar bloquear al primer jugador. Es tramposa y su único objetivo es llegar a la meta antes que tú, suerte con ella.🤖
 
 ### Condición de victoria
 
