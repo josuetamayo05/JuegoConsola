@@ -8,11 +8,10 @@ namespace Prueba_por_Clases_2;
 
 public class Jugador
 {
-    public Personaje Personaje{ get; set; }
     public string Nombre { get; set; }
     public int Puntos { get; set; } 
-    public int[] Position { get; set; }  // [fila, columna]
-    public int[] PosicionInicial { get; set; }  // [fila, columna]
+    public int[] Position { get; set; }  
+    public int[] PosicionInicial { get; set; }  
     public int PoderesCaptura { get; set; }
     public bool TienePoderEspecial { get; set; }
     public bool Inmune { get; set; }

@@ -25,22 +25,7 @@ public class Mapa
         InicializarMapa(rows, cols);
              
     }
-    public override string ToString()
-    {
-        string mapaString = "";
-
-        for (int i = 0; i < Rows; i++)
-        {
-            for (int j = 0; j < Cols; j++)
-            {
-                mapaString += GetFicha(i, j) + " ";
-            }
-            mapaString += Environment.NewLine;
-        }
-
-        return mapaString;
-    }
-
+    
     private void InicializarMapa(int rows, int cols)
     {
         mapa = new string[rows, cols];
@@ -82,13 +67,11 @@ public class Mapa
             int nRow = row + dRow;
             int nCol = col + dCol;
 
-            //Verificar si la new posicion está dentro de los límites
             if (nRow > 0 && nRow < Rows && nCol > 0 && nCol < Cols && mapa[nRow, nCol] == "⬜ ")
             {
                 mapa[row + dRow / 2, col + dCol / 2] = "   ";
                 GenerateMaze(nRow, nCol); 
-                // Aquí se elimina la pared entre la celda actual y la nueva celda 
-                // Luego se llama a la Recursión
+                
             }
         }
     }
