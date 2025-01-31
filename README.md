@@ -142,7 +142,7 @@ A continuación, te proporcionamos información relevante sobre cómo se desarro
 
 Aquí te dejo algunas capturas de pantalla del juego:
 
-![Captura de pantalla del juego](Img.jpg)
+![Captura de pantalla del juego](Img_1.jpg)
 
 ## Contribuciones
 
