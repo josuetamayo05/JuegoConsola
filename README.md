@@ -22,15 +22,15 @@
 
 2. **Navega al directorio del proyecto**:
    ```bash
-cd juego-laberinto
+   cd juego-laberinto
 
 3. **Restaurar las dependencias**:
    ```bash
-dotnet restore
+   dotnet restore
 
 4. **Ejecuta el juego**:
    ```bash
-dotnet run
+   dotnet run
 
 
 ## ¿Cómo jugar?
@@ -60,9 +60,9 @@ Para evaluar el funcionamiento del juego, necesitas entender cómo interactuar c
 
 ### Teclas de poderes
 
-* **Ficha de velocidad**: tecla 'V'
-* **Ficha de invisibilidad**: tecla 'I'
-* **Ficha de fuerza**: tecla 'F'
+* **Ficha de destrucción de obstáculos**: tecla 'F'
+* **Ficha de invisibilidad**: tecla 'P'
+* **Ficha de captura**: tecla 'C'
 
 ## Detalles de la implementación
 
