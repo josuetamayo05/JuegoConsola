@@ -42,8 +42,8 @@ El objetivo del juego es encontrar la salida del laberinto antes que el segundo 
 
 ### Controles del juego
 
-* **Mover al jugador**: Utiliza las teclas de flecha para mover al jugador a través del laberinto.
-* **Utilizar poderes**: Utiliza las teclas de función (F1, F2, F3, etc.) para utilizar los poderes del jugador.
+* **Mover al jugador**: Utiliza las teclas de flecha para mover al jugador a través del laberinto.(W/A/S/D).
+* **Utilizar poderes**: Utiliza las teclas de función (C, F, P) para utilizar los poderes del jugador.
 
 ### Poderes del jugador
 
@@ -57,7 +57,7 @@ La IA controla al segundo jugador y utiliza un algoritmo de búsqueda para encon
 
 ### Condición de victoria
 
-El juego termina cuando el primer jugador encuentra la salida del laberinto o cuando la IA encuentra la salida del laberinto antes que el primer jugador.
+El juego termina cuando el primer jugador encuentra la salida del laberinto o cuando la IA encuentra la salida del laberinto represenada como 🏠 antes que el primer jugador.
 
 ## ¿Cómo jugar?
 
@@ -68,11 +68,12 @@ Para evaluar el funcionamiento del juego, necesitas entender cómo interactuar c
 * Usa las teclas para mover al jugador a través del laberinto.
 * El objetivo es encontrar la salida del laberinto.
 
-### Fichas y sus poderes
+### Teclas de poderes
 
-* **Ficha de velocidad**: aumenta la velocidad del jugador durante 5 segundos.
-* **Ficha de invisibilidad**: hace que el jugador sea invisible durante 3 segundos.
-* **Ficha de fuerza**: aumenta la fuerza del jugador durante 2 segundos.
+* **Ficha de destrucción de obstáculos 💰**: tecla 'F'
+* **Ficha de invisibilidad Inmunidad a Poderes Captura 💊**: tecla 'P'
+* **Ficha de captura ⚡**: tecla 'C'
+* **Ficha de Teletransportación ⏱🚪**: Cuando un jugador alcance una puerta de teletransportación, será teletransportado a una nueva dimensión del mapa.
 
 ### Jugadores
 
@@ -119,11 +120,6 @@ Mirana es una princesa de un reino lejano que ha sido secuestrada por un malvado
 
 Abaddon es un demonio del infierno que ha sido enviado al laberinto para causar caos y destrucción. Con su poder y su capacidad para manipular el fuego, Abaddon es un personaje formidable y temido en el juego. Su objetivo es encontrar la salida del laberinto y regresar al infierno para seguir causando destrucción.
 
-### Teclas de poderes
-
-* **Ficha de destrucción de obstáculos 💰**: tecla 'F'
-* **Ficha de invisibilidad Inmunidad a Poderes Captura 💊**: tecla 'P'
-* **Ficha de captura ⚡**: tecla 'C'
 
 ## Detalles de la implementación
 
