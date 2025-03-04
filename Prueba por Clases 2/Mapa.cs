@@ -28,8 +28,7 @@ public class Mapa
     
     private void InicializarMapa(int rows, int cols)
     {
-        mapa = new string[rows, cols];
-        
+        mapa = new string[rows, cols];        
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
@@ -37,9 +36,7 @@ public class Mapa
                 mapa[i, j] = "⬜ ";
             }
         }
-
-        GenerateMaze(1, 1);
-        
+        GenerateMaze(1, 1);        
         mapa[25, 13] = "🏠 ";
         mapa[8, 13] = "🚪 ";
         mapa[17, 23] = "🚪 ";
@@ -70,8 +67,7 @@ public class Mapa
             if (nRow > 0 && nRow < Rows && nCol > 0 && nCol < Cols && mapa[nRow, nCol] == "⬜ ")
             {
                 mapa[row + dRow / 2, col + dCol / 2] = "   ";
-                GenerateMaze(nRow, nCol); 
-                
+                GenerateMaze(nRow, nCol);                 
             }
         }
     }
@@ -94,15 +90,12 @@ public class Mapa
                         }
                         else
                         {
-                            Console.Write(jugador.Emoji + " ");     
-                                              
+                            Console.Write(jugador.Emoji + " ");                                                  
                         }
                         jugadorEncontrado = true;
                         break;
                     }
-                }
-
-                
+                }               
                 if (!jugadorEncontrado)
                 {
                     Console.Write(mapa[i, j]);
@@ -127,8 +120,7 @@ public class Mapa
         {
             row = random.Next(1, Rows - 1);
             col = random.Next(1, Cols - 1);
-        } while(mapa[row, col] != "⬜ ");
-        
+        } while(mapa[row, col] != "⬜ ");        
         mapa[row, col] = tipo;
     }
 

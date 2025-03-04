@@ -13,24 +13,17 @@ public class MovimientoJugador
     private int[] puerta2 = {17, 23};
     private bool[] poderCapturaDisponible;
 
-
-    public MovimientoJugador(Juego juego)
-    {
-        this.juego = juego; 
-    }
     public MovimientoJugador(Mapa mapa, Jugador[] jugadores)
     {
         this.mapa = mapa;
         this.jugadores = jugadores;
         this.poderCapturaDisponible = new bool[jugadores.Length]; 
-
     }
 
     public void MoverJugador(int jugador )
     {
         bool movimientoExtra = false;
         string nombreJugadorActual = jugadores[jugador - 1].Nombre;
-
         do
         {
             mapa.Imprimir(jugadores);
@@ -43,9 +36,9 @@ public class MovimientoJugador
                 .AddColumn("[red]Controles[/]")
                 .AddColumn("[red]Activar[/]");
 
-            table.AddRow("[red]C[/]", "Captura '⚡'", "Flecha arriba", "Presiona 'C' para activar")
-                .AddRow("[red]P[/]", "Inmunidad'💊'", "Flecha abajo", "Presiona 'P' para activar")
-                .AddRow("[red]T[/]", "Teletransportación'🎁'", "Flecha izquierda", "Presiona 'T' para activar");
+            table.AddRow("[red]C[/]", "Captura '⚡'", "Presiona 'C' para activar")
+                .AddRow("[red]P[/]", "Inmunidad'💊'", "Presiona 'P' para activar")
+                .AddRow("[red]T[/]", "Teletransportación'🎁'", "Presiona 'T' para activar");
 
             AnsiConsole.Write(table);
                    
@@ -252,7 +245,7 @@ public class MovimientoJugador
                         }
                         else
                         {
-                            jugadores[0].Puntos++;            
+                            jugadores[1].Puntos++;            
                             AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} has recogido una ficha de recompensa! 🎉 Puntos: {jugadores[1].Puntos}");
                         }
 

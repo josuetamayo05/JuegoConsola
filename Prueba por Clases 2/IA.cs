@@ -35,8 +35,7 @@ public class IA : Jugador
             if (nuevaFila >= 0 && nuevaFila < mapa.Rows && nuevaColumna >= 0 && nuevaColumna < mapa.Cols)
             {
                 jugadorIA.Position[0] = nuevaFila;
-                jugadorIA.Position[1] = nuevaColumna;
-                
+                jugadorIA.Position[1] = nuevaColumna; 
             }          
         }
         if(turno >= 5 && !jugadorTieneInmunidad)
@@ -49,6 +48,7 @@ public class IA : Jugador
                     
                 if (poderCapturaUsado < 3)
                 {
+                    Console.WriteLine();
                     Console.Write("Capturando al otro jugador");
                     for (int j = 0; j < 3; j++)
                     {
@@ -83,14 +83,12 @@ public class IA : Jugador
         {
             return MoverseHacia(posicionJugador[0], posicionJugador[1]);
         }
-
         int[] posicionMeta = BuscarMeta(mapa);
         
         if (posicionMeta != null)
         {
             return MoverseHacia(posicionMeta[0], posicionMeta[1]);
         }
-
         return MoverseAleatoriamente(mapa);
     }
 
@@ -105,14 +103,12 @@ public class IA : Jugador
             movimiento[0] = -1; 
         else
             movimiento[0] = 0;
-
         if (objetivoY > posicionIA[1])
             movimiento[1] = 1; 
         else if (objetivoY < posicionIA[1])
             movimiento[1] = -1; 
         else
             movimiento[1] = 0;
-
         return movimiento;
     }
 

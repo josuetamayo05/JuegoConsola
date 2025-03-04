@@ -10,7 +10,6 @@ public class Juego
     private Mapa mapa;
     private Jugador[] jugadores;
     private int turnoActual;
-    private bool movimientoExtra;
     private MovimientoJugador movimientoJugador;
     private int filas; 
     private int columnas;
@@ -26,216 +25,6 @@ public class Juego
         this.movimientoJugador = new MovimientoJugador(mapa, jugadores);
         temporizador = new Stopwatch();
     }
-
-    public void IniciarJuego()
-    {
-        
-        Console.Clear();
-        AnsiConsole.Write(new FigletText("Hola").Color(Color.Aqua));
-        Console.WriteLine("¡Bienvenido al juego!");
-        Console.WriteLine("Presiona cualquier tecla para comenzar...");
-        Console.ReadKey();
-
-        temporizador.Start();
-        int modoJuego = MostrarMenuJuego();
-        
-        if (modoJuego == 1)
-        {
-            InscribirJugador();
-            CrearIA();
-        }
-        else
-        {
-            InscribirJugadores(); 
-        }
-        Jugar(modoJuego);
-    }
-    private void CrearIA()
-    {
-        ia = new IA();
-        jugadores[1] = ia.GetJugadorIA(); 
-    }
-
-    private void InscribirJugadores()
-    {
-        int opcion = 0;
-        bool entradaValida = false;
-        var personajes = new[]
-        {
-            new { Nombre = "Slyrak", Emoji = "👾" },
-            new { Nombre = "Luna", Emoji = "👧" },
-            new { Nombre = "Rush", Emoji = "👺" },
-            new { Nombre = "Mirana", Emoji = "👸" },
-            new { Nombre = "Abaddon", Emoji = "👽" },
-        };
-
-        for (int i = 0; i < 2; i++)
-        {
-            Console.Write($"Ingresa el nombre del Jugador {i + 1}: ");
-            string nombre = Console.ReadLine()!;
-            while(!entradaValida)
-            {
-                try
-                {
-                    Console.WriteLine("Elige un personaje:");
-                    for (int j = 0; j < personajes.Length; j++)
-                    {
-                        Console.WriteLine($"{j + 1}. {personajes[j].Nombre} - {personajes[j].Emoji}");
-                    }
-                    opcion = int.Parse(Console.ReadLine()!);
-                    if(opcion >= 1 && opcion <= personajes.Length) 
-                    {
-                        entradaValida = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Opción inválida. Por favor, elige un número entre 1 y " + personajes.Length);
-                    }
-                }
-                catch (FormatException ex)
-                {
-                    Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
-                }
-                catch (OverflowException ex)
-                {
-                    Console.WriteLine("Error: El número ingresado es demasiado grande. Inténtalo de nuevo.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error inesperado: " + ex.Message);
-                }
-            }
-            int fila = 1;  
-            int columna = i == 0 ? 1 : 25; 
-            var personaje = personajes[opcion - 1];
-            jugadores[i] = new Jugador(nombre, fila, columna, personaje.Emoji);
-
-            entradaValida = false;
-        }
-    }
-    private void InscribirJugador()
-    {
-        int opcion = 0;
-        bool entradaValida = false;
-        var personajes = new[]
-        {
-            new { Nombre = "Slyrak", Emoji = "👾" },
-            new { Nombre = "Luna", Emoji = "👧" },
-            new { Nombre = "Rush", Emoji = "👺" },
-            new { Nombre = "Mirana", Emoji = "👸" },
-            new { Nombre = "Abaddon", Emoji = "👽" },
-        };
-
-        Console.Write("Ingresa el nombre del Jugador: ");
-        string nombre = Console.ReadLine()!;
-
-        while (!entradaValida)
-        {
-            try
-            {
-                Console.WriteLine("Elige un personaje:");
-                for (int j = 0; j < personajes.Length; j++)
-                {
-                    Console.WriteLine($"{j + 1}. {personajes[j].Nombre} - {personajes[j].Emoji}");
-                }
-                opcion = int.Parse(Console.ReadLine()!);
-
-                if (opcion >= 1 && opcion <= personajes.Length)
-                {
-                    entradaValida = true;
-                }
-                else
-                {
-                    Console.WriteLine("Opción inválida. Por favor, elige un número entre 1 y " + personajes.Length);
-                }
-            }
-            catch (FormatException ex)
-            {
-                Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
-            }
-            catch (OverflowException ex)
-            {
-                Console.WriteLine("Error: El número ingresado es demasiado grande. Inténtalo de nuevo.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error inesperado: " + ex.Message);
-            }
-        }
-
-        int fila = 1;
-        int columna = 1;
-
-        var personaje = personajes[opcion - 1];
-        jugadores[0] = new Jugador(nombre, fila, columna, personaje.Emoji);
-
-        ia = new IA();
-        jugadores[1] = ia.GetJugadorIA();
-    }
-    public void Jugar(int modoJuego)
-    {
-        while (true)
-        {
-            if (jugadores == null || jugadores.Length < 2)
-            {
-                Console.WriteLine("Error: Los jugadores no están correctamente inicializados.");
-                return; 
-            }
-            for(int i = 0; i < 3; i++)
-            {
-                movimientoJugador.MoverJugador(1);
-                if (VerificarVictoria(jugadores[0]))
-                {
-                    temporizador.Stop();
-                    MostrarMensajeVictoria(jugadores[0].Nombre);
-                    break;
-                }
-            }
-
-            if (VerificarVictoria(jugadores[0]))
-            {
-                temporizador.Stop();
-                MostrarMensajeVictoria(jugadores[0].Nombre);
-                break;
-            }
-
-            if (modoJuego == 1)
-            {
-                ia.Mover(mapa, jugadores[0]);
-
-                if (VerificarVictoria(ia.GetJugadorIA()))
-                {
-                    temporizador.Stop();
-                    MostrarMensajeVictoria(ia.GetJugadorIA().Nombre);
-                    break;
-                }
-            }
-
-            else if (modoJuego == 2)
-            {
-                for( int i = 0; i < 3; i++)
-                {
-                    movimientoJugador.MoverJugador(2); 
-                    if (VerificarVictoria(jugadores[1]))
-                    {
-                        temporizador.Stop();
-                        MostrarMensajeVictoria(jugadores[1].Nombre);
-                        break; 
-                    }
-                }
-            }
-            turnoActual = (turnoActual + 1) % jugadores.Length;
-        }
-    }
-
-    private bool VerificarVictoria(Jugador jugador)
-    {
-        int filaMeta = 25;
-        int columnaMeta = 13;
-
-        return jugador.Position[0] == filaMeta && jugador.Position[1] == columnaMeta;
-    }
-
     public void MostrarMenuInicio()
     {
         Console.Clear();
@@ -319,6 +108,251 @@ public class Juego
                 break;
         }
     }
+    public void IniciarJuego()
+    {    
+        Console.Clear();
+        AnsiConsole.Write(new FigletText("Hola").Color(Color.Aqua));
+        Console.WriteLine("¡Bienvenido al juego!");
+        Console.WriteLine("Presiona cualquier tecla para comenzar...");
+        Console.ReadKey();
+        temporizador.Start();
+        int modoJuego = MostrarMenuJuego();    
+        if (modoJuego == 1)
+        {
+            InscribirJugador();
+            CrearIA();
+        }
+        else
+        {
+            InscribirJugadores(); 
+        }
+        Jugar(modoJuego);
+    }
+    private void CrearIA()
+    {
+        ia = new IA();
+        jugadores[1] = ia.GetJugadorIA(); 
+    }
+    public int MostrarMenuJuego()
+    {
+        var table = new Table();
+        table.AddColumn("Menú de juego");
+        table.AddRow("[bold green]Juego contra la IA[/]");
+        table.AddRow("[bold blue]Juego contra otro jugador[/]");
+
+        AnsiConsole.Render(table);
+        int opcion = 0;
+        bool entradaValida = false;
+        while(!entradaValida)
+        {
+            try
+            {
+                Console.Write("Elige una opción: ");
+                opcion = int.Parse(Console.ReadLine()!);
+                if (opcion == 1 || opcion == 2) entradaValida = true;
+                else
+                {
+                    Console.WriteLine("Opción inválida. Por favor, elige 1 para jugar contra la IA o 2 para jugar contra un jugador.");
+                    Console.WriteLine("Presiona 'c' para cancelar y regresar al menú principal.");
+                    string cancelar = Console.ReadLine()!.ToLower();
+
+                    if (cancelar == "c")
+                    {
+                        MostrarMenuInicio();
+                    }
+                }                
+            }
+            catch(FormatException ex)
+            {
+                Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
+            }
+            catch(OverflowException ex)  
+            {
+                Console.WriteLine("Error: El número ingresado es demasiado grande. Inténtalo de nuevo.");
+            }
+            catch(Exception ex) 
+            {
+               Console.WriteLine("Error inesperado: + ex.Message");
+            }
+        }
+        return opcion;
+    }
+    private void InscribirJugador()
+    {
+        int opcion = 0;
+        bool entradaValida = false;
+        var personajes = new[]
+        {
+            new { Nombre = "Slyrak", Emoji = "👾" },
+            new { Nombre = "Luna", Emoji = "👧" },
+            new { Nombre = "Rush", Emoji = "👺" },
+            new { Nombre = "Mirana", Emoji = "👸" },
+            new { Nombre = "Abaddon", Emoji = "👽" },
+        };
+
+        Console.Write("Ingresa el nombre del Jugador: ");
+        string nombre = Console.ReadLine()!;
+
+        while (!entradaValida)
+        {
+            try
+            {
+                Console.WriteLine("Elige un personaje:");
+                for (int j = 0; j < personajes.Length; j++)
+                {
+                    Console.WriteLine($"{j + 1}. {personajes[j].Nombre} - {personajes[j].Emoji}");
+                }
+                opcion = int.Parse(Console.ReadLine()!);
+
+                if (opcion >= 1 && opcion <= personajes.Length)
+                {
+                    entradaValida = true;
+                }
+                else
+                {
+                    Console.WriteLine("Opción inválida. Por favor, elige un número entre 1 y " + personajes.Length);
+                }
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
+            }
+            catch (OverflowException ex)
+            {
+                Console.WriteLine("Error: El número ingresado es demasiado grande. Inténtalo de nuevo.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error inesperado: " + ex.Message);
+            }
+        }
+        int fila = 1;
+        int columna = 1;
+        var personaje = personajes[opcion - 1];
+        jugadores[0] = new Jugador(nombre, fila, columna, personaje.Emoji);
+        ia = new IA();
+        jugadores[1] = ia.GetJugadorIA();
+    }
+    private void InscribirJugadores()
+    {
+        int opcion = 0;
+        bool entradaValida = false;
+        var personajes = new[]
+        {
+            new { Nombre = "Slyrak", Emoji = "👾" },
+            new { Nombre = "Luna", Emoji = "👧" },
+            new { Nombre = "Rush", Emoji = "👺" },
+            new { Nombre = "Mirana", Emoji = "👸" },
+            new { Nombre = "Abaddon", Emoji = "👽" },
+        };
+
+        for (int i = 0; i < 2; i++)
+        {
+            Console.Write($"Ingresa el nombre del Jugador {i + 1}: ");
+            string nombre = Console.ReadLine()!;
+            while(!entradaValida)
+            {
+                try
+                {
+                    Console.WriteLine("Elige un personaje:");
+                    for (int j = 0; j < personajes.Length; j++)
+                    {
+                        Console.WriteLine($"{j + 1}. {personajes[j].Nombre} - {personajes[j].Emoji}");
+                    }
+                    opcion = int.Parse(Console.ReadLine()!);
+                    if(opcion >= 1 && opcion <= personajes.Length) 
+                    {
+                        entradaValida = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Opción inválida. Por favor, elige un número entre 1 y " + personajes.Length);
+                    }
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
+                }
+                catch (OverflowException ex)
+                {
+                    Console.WriteLine("Error: El número ingresado es demasiado grande. Inténtalo de nuevo.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error inesperado: " + ex.Message);
+                }
+            }
+            int fila = 1;  
+            int columna = i == 0 ? 1 : 25; 
+            var personaje = personajes[opcion - 1];
+            jugadores[i] = new Jugador(nombre, fila, columna, personaje.Emoji);
+            entradaValida = false;
+        }
+    }
+    
+    public void Jugar(int modoJuego)
+    {
+        while (true)
+        {
+            if (jugadores == null || jugadores.Length < 2)
+            {
+                Console.WriteLine("Error: Los jugadores no están correctamente inicializados.");
+                return; 
+            }
+            for(int i = 0; i < 3; i++)
+            {
+                movimientoJugador.MoverJugador(1);
+                if (VerificarVictoria(jugadores[0]))
+                {
+                    temporizador.Stop();
+                    MostrarMensajeVictoria(jugadores[0].Nombre);
+                    break;
+                }
+            }
+            if (VerificarVictoria(jugadores[0]))
+            {
+                temporizador.Stop();
+                MostrarMensajeVictoria(jugadores[0].Nombre);
+                break;
+            }
+
+            if (modoJuego == 1)
+            {
+                ia.Mover(mapa, jugadores[0]);
+                if (VerificarVictoria(ia.GetJugadorIA()))
+                {
+                    temporizador.Stop();
+                    MostrarMensajeVictoria(ia.GetJugadorIA().Nombre);
+                    break;
+                }
+            }
+
+            else if (modoJuego == 2)
+            {
+                for( int i = 0; i < 3; i++)
+                {
+                    movimientoJugador.MoverJugador(2); 
+                    if (VerificarVictoria(jugadores[1]))
+                    {
+                        temporizador.Stop();
+                        MostrarMensajeVictoria(jugadores[1].Nombre);
+                        break; 
+                    }
+                }
+            }
+            turnoActual = (turnoActual + 1) % jugadores.Length;
+        }
+    }
+
+    private bool VerificarVictoria(Jugador jugador)
+    {
+        int filaMeta = 25;
+        int columnaMeta = 13;
+
+        return jugador.Position[0] == filaMeta && jugador.Position[1] == columnaMeta;
+    }
+
+    
 
     public void ListaJugadores()
     {
@@ -403,50 +437,7 @@ public class Juego
         }
     }
 
-    public int MostrarMenuJuego()
-    {
-        var table = new Table();
-        table.AddColumn("Menú de juego");
-        table.AddRow("[bold green]Juego contra la IA[/]");
-        table.AddRow("[bold blue]Juego contra otro jugador[/]");
-
-        AnsiConsole.Render(table);
-        int opcion = 0;
-        bool entradaValida = false;
-        while(!entradaValida)
-        {
-            try
-            {
-                Console.Write("Elige una opción: ");
-                opcion = int.Parse(Console.ReadLine()!);
-                if (opcion == 1 || opcion == 2) entradaValida = true;
-                else
-                {
-                    Console.WriteLine("Opción inválida. Por favor, elige 1 para jugar contra la IA o 2 para jugar contra un jugador.");
-                    Console.WriteLine("Presiona 'c' para cancelar y regresar al menú principal.");
-                    string cancelar = Console.ReadLine()!.ToLower();
-
-                    if (cancelar == "c")
-                    {
-                        MostrarMenuInicio();
-                    }
-                }                
-            }
-            catch(FormatException ex)
-            {
-                Console.WriteLine("Error: Debes ingresar un número válido. Inténtalo de nuevo.");
-            }
-            catch(OverflowException ex)  
-            {
-                Console.WriteLine("Error: El número ingresado es demasiado grande. Inténtalo de nuevo.");
-            }
-            catch(Exception ex) 
-            {
-               Console.WriteLine("Error inesperado: + ex.Message");
-            }
-        }
-        return opcion;
-    }
+    
     public void Salir()
     {
         Console.Clear();
@@ -548,6 +539,7 @@ public class Juego
             AnsiConsole.MarkupLine("[bold blue]¡Gracias por jugar! Esperamos verte de nuevo pronto.[/]");
             AnsiConsole.MarkupLine("[bold blue]Presiona cualquier tecla para salir...[/]");
             Console.ReadKey();
+            Environment.Exit(0);
         });        
     }
 }
