@@ -92,7 +92,6 @@ public class MovimientoJugador
                         System.Threading.Thread.Sleep(2000); 
                         jugadores[1].PoderesCaptura--;
                     }
-                    
                     else
                     {
                         AnsiConsole.MarkupLine($"[bold red]{nombreJugadorActual} ha usado el poder de captura! 🎯[/]");
@@ -107,7 +106,6 @@ public class MovimientoJugador
                             }
                             Console.WriteLine(); 
                         }
-
                         if (jugador == 1)
                         {
                             jugadores[1].Position[0] = jugadores[1].PosicionInicial[0];
@@ -124,17 +122,14 @@ public class MovimientoJugador
                 else
                 {
                     AnsiConsole.MarkupLine("[bold red]¡No puedes usar el poder de captura! El otro jugador no está en la misma fila o columna.[/]");
-                    System.Threading.Thread.Sleep(300); 
+                    System.Threading.Thread.Sleep(1000); 
                     jugadores[jugador - 1].PoderesCaptura--;
                 }
                 continue;
             }
-            
-
             int[] posicion = jugadores[jugador - 1].Position;
             int nuevaFila = posicion[0];
             int nuevaColumna = posicion[1];
-
             switch (movimiento)
             {
                 case 'w': nuevaFila--; break; 
@@ -144,9 +139,7 @@ public class MovimientoJugador
                 default:
                     Console.WriteLine("Movimiento no válido. Intenta de nuevo.");
                     continue; 
-            }
-
-            
+            }    
 
             if (nuevaFila >= 0 && nuevaColumna >= 0 && nuevaFila < mapa.Rows && nuevaColumna < mapa.Cols)
             {
@@ -157,7 +150,6 @@ public class MovimientoJugador
                         Console.WriteLine($"{nombreJugadorActual}, has caído en un árbol. ¿Quieres usar el poder para atravesarlo? Se te restará un punto de tu contador. Presiona 'F' para usar el poder o cualquier otra tecla para volver a tu posición inicial.");
                         char decision = Console.ReadKey().KeyChar;
                         Console.WriteLine(); 
-
                         if (decision == 'f' || decision == 'F')
                         {
                             jugadores[jugador - 1].Puntos--;               
@@ -176,8 +168,7 @@ public class MovimientoJugador
                     else
                     {
                         Console.WriteLine("Has caído en un árbol");
-                        System.Threading.Thread.Sleep(400); 
-                        
+                        System.Threading.Thread.Sleep(400);     
                         for (int j = 0; j < 3; j++)
                         {
                             Console.Write($"{nombreJugadorActual} retrocediendo a la posición inicial");
@@ -188,22 +179,18 @@ public class MovimientoJugador
                             }
                             Console.WriteLine(); 
                         }
-
                         Console.WriteLine($"{nombreJugadorActual}, no tienes suficientes puntos para usar el poder. Regresando a la posición inicial.");
                         System.Threading.Thread.Sleep(600); 
-
                         posicion[0] = jugadores[jugador - 1].PosicionInicial[0];
                         posicion[1] = jugadores[jugador - 1].PosicionInicial[1];
                         return;  
                     }    
-                }
-                
+                }   
             
                 if (mapa.GetFicha(nuevaFila, nuevaColumna) != "⬜ ")
                 {
                     posicion[0] = nuevaFila;
                     posicion[1] = nuevaColumna;
-
                     if (nuevaFila == puerta1[0] && nuevaColumna == puerta1[1])
                     {
                         AnsiConsole.MarkupLine($"{nombreJugadorActual}, estás siendo teletransportado a la Puerta 2.");
@@ -213,7 +200,6 @@ public class MovimientoJugador
                             System.Threading.Thread.Sleep(850);
                         }
                         Console.WriteLine();
-
                         posicion[0] = puerta2[0]; 
                         posicion[1] = puerta2[1];
                     }
@@ -227,7 +213,6 @@ public class MovimientoJugador
                             System.Threading.Thread.Sleep(850);
                         }
                         Console.WriteLine();
-
                         posicion[0] = puerta1[0];
                         posicion[1] = puerta1[1];
                     }
@@ -236,12 +221,10 @@ public class MovimientoJugador
                     if (mapa.GetFicha(nuevaFila, nuevaColumna) == "💰 ")
                     {
                         mapa.SetFicha(nuevaFila, nuevaColumna, "   "); 
-
                         if (jugador == 1)
                         {                            
                             jugadores[0].Puntos++;     
                             AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} has recogido una ficha de recompensa! 🎉 Puntos: {jugadores[0].Puntos}");
-                            
                         }
                         else
                         {
@@ -251,10 +234,9 @@ public class MovimientoJugador
 
                         for (int j = 0; j < 1; j++)
                         {
-                            Console.WriteLine("🎊 🎊 🎊 ¡Felicidades, has recogido una ficha recompensa y puedes volver a jugar! 🎊 🎊 🎊");
+                            Console.WriteLine("Puedes volver a jugar!");
                             System.Threading.Thread.Sleep(1500); 
-                        }
-                                
+                        }    
                         movimientoExtra = true;
                     }
                     else
@@ -266,7 +248,6 @@ public class MovimientoJugador
                     {
                         AnsiConsole.MarkupLine($"¡🎉 {nombreJugadorActual} ha recogido una ficha de captura! 🎉 Puedes usar el poder de captura.");
                         System.Threading.Thread.Sleep(1500); 
-
                         if (jugador == 1)
                         {
                             mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
@@ -282,7 +263,7 @@ public class MovimientoJugador
                     {
                         mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
                         jugadores[jugador -1].PoderesInmunidad++;
-                        Console.WriteLine("Has cogido la ficha 💊. Estás inmune a los poderes de captura durante 2 turnos.");
+                        Console.WriteLine("Has cogido la ficha 💊. Puedes activarla usando la tecla P.");
                         System.Threading.Thread.Sleep(1000); 
                     }
 
@@ -290,7 +271,7 @@ public class MovimientoJugador
                     {
                         mapa.SetFicha(nuevaFila, nuevaColumna, "   ");
                         jugadores[jugador - 1].PoderesTeletransportacion++;
-                        Console.WriteLine("Has cogido una ficha de teletransportación.");
+                        Console.WriteLine("Has recogido una ficha de teletransportación.");
                         System.Threading.Thread.Sleep(1000); 
                     }
                     
@@ -306,7 +287,6 @@ public class MovimientoJugador
             {
                 AnsiConsole.MarkupLine("[bold red]¡Te has salido de los límites![/]");
                 System.Threading.Thread.Sleep(500); 
-
                 break;
             }
         } while(movimientoExtra);
